@@ -1,0 +1,17 @@
+
+
+# Shellcheck settings:
+
+# 2148 - Because this file does not need shebang by design. (Add a shebang)
+# 2207 - Prefer mapfile or read -a to split command output (or quote to avoid splitting).
+
+# We disable 2207 because or basic calls like
+# COMPREPLY+=( $(compgen -W "something" -- "something") )
+# that are considered to be a standard way of doing things
+
+# shellcheck shell=bash disable=SC2207,SC2148
+
+disable=SC2148
+disable=SC2207
+
+#external-sources=true

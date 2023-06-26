@@ -1,0 +1,17 @@
+#!/bin/bash
+
+function __stub_qvm_pool() {
+
+    # cSpell:disable
+    echo \
+'audiovm-dom0
+created-by-dom0
+guivm-dom0
+anon-vm
+anon-gateway
+whonix-updatevm
+debian'
+    # cSpell:enable
+}
+
+__stub_qvm_pool "$@"

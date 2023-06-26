@@ -1,0 +1,80 @@
+#!/bin/bash
+
+function __stub_qvm_device() {
+    
+    local device_class="${1}"
+    local command="${2}"
+    local qube="${3}"
+
+    # cSpell:disable
+
+    local block_devices=\
+'dom0:sda        WDC_SOMEDISK ()   sys-usb (read-only=no, frontend-dev=xvdx)
+dom0:sdb        WORK_SOMEDISK ()
+dom0:sdb1       WORK_SOMEDISK ()  work (read-only=no)
+sys-usb:dm-0    somecrypt1        work (read-only=no, frontend-dev=xvdf)
+sys-usb:dm-1    somecrypt2        work (read-only=no, frontend-dev=xvdh)
+sys-usb:dm-4    somecrypt5        personal (read-only=no)'
+
+    local pci_devices=\
+'dom0:00_00.0  Host bridge: Intel Corporation                                                  
+dom0:00_10.0  SATA controller: Intel Corporation                                              
+dom0:00_1a.0  PCI bridge: Intel Corporation                                                   
+dom0:00_1b.0  PCI bridge: Intel Corporation Tiger Lake-H PCI Express Root Port #1             
+dom0:00_1b.1  PCI bridge: Intel Corporation                                                   
+dom0:00_1f.1  Audio device: Intel Corporation Tiger Lake-H HD Audio Controller                
+dom0:00_1f.2  SMBus: Intel Corporation Tiger Lake-H SMBus Controller                          
+dom0:00_1f.3  Unknown: Intel Corporation Tiger Lake-H SPI Controller                          
+dom0:01_00.0  USB controller: NEC Corporation USB 3.0 Host Controller                         sys-usb, work
+dom0:02_00.0  Ethernet controller: Realtek Semiconductor Co., Ltd. RTL                        sys-net
+dom0:03_00.0  USB controller: NEC Corporation USB 3.0 Host Controller                         printer, sys-usb
+dom0:04_04.4  Multimedia audio controller: C-Media Electronics Inc [Oxygen HD Audio]          
+dom0:05_1a.1  PCI bridge: Intel Corporation                                                   
+dom0:06_1b.5  Audio device: Intel Corporation Tiger Lake-H HD Audio Controller                
+dom0:07_1b.6  SMBus: Intel Corporation Tiger Lake-H SMBus Controller                          
+dom0:11_01.0  USB controller: NEC Corporation USB 3.0 Host Controller                         sys-usb, work
+dom0:12_02.0  Ethernet controller: Realtek Semiconductor Co., Ltd. RTL                        sys-net
+dom0:13_03.0  USB controller: NEC Corporation USB 3.0 Host Controller                         printer, sys-usb
+dom0:14_04.0  Multimedia audio controller: C-Media Electronics Inc [Oxygen HD Audio]          '
+
+    local usb_devices=\
+'dom0:4-2.3          Logitech_USB_Receiver
+sys-usb:printer     Some printer           work
+sys-usb:1-2.3       Logitech_USB_Receiver
+sys-usb:2-2.3       Logitech2              personal
+sys-usb:3-2.3       Logitech3              personal'
+
+    local mic_devices=\
+'dom0:mic  Microphone  work'
+
+    # cSpell:enable
+
+    if [[ "${command}" != 'list' ]]; then
+        exit 0
+    fi
+
+
+    local output_devices=''
+    case "${device_class}" in
+    	block)
+    		output_devices="${block_devices}"
+    		;;
+    	usb)
+    		output_devices="${usb_devices}"
+    		;;
+    	mic)
+    		output_devices="${mic_devices}"
+    		;;
+    	pci)
+    		output_devices="${pci_devices}"
+    		;;
+        *)
+            exit 1
+            ;;
+    esac
+
+    echo "${output_devices}" | grep "${qube}"
+}
+
+__stub_qvm_device "$@"
+

@@ -1,0 +1,12 @@
+
+# Codium/VSCode dir (decided to publish it, too)
+#.vscode/
+
+# Auxiliary dirs
+other/
+
+# Outdated tests
+test/outdated/
+
+# Log file
+log/qubes_completion_debug.log

@@ -1,0 +1,47 @@
+#!/bin/bash
+
+function __stub_qvm_firewall() {
+
+    local first_arg="${1}"
+
+    if [[ "${first_arg}" == '--raw' ]]; then
+
+    # cSpell:disable
+
+        echo \
+'action=drop
+action=drop proto=icmp icmptype=7 specialtarget=dns expire=1673793646
+action=drop proto=icmp dst4=92.168.0.2/16 icmptype=6 specialtarget=dns expire=1673891646
+action=drop proto=tcp dst4=192.168.0.0/16 dstports=81-90 specialtarget=dns
+action=accept
+action=accept proto=icmp icmptype=7 specialtarget=dns expire=1673793646
+action=accept proto=icmp dst4=92.168.0.2/16 icmptype=6 specialtarget=dns expire=1673891646
+action=accept proto=tcp dst4=192.168.0.0/16 dstports=81-90 specialtarget=dns
+action=drop
+action=drop proto=icmp icmptype=7 specialtarget=dns expire=1673793646
+action=drop proto=icmp dst4=92.168.0.2/16 icmptype=6 specialtarget=dns expire=1673891646
+action=drop proto=tcp dst4=192.168.0.0/16 dstports=81-90 specialtarget=dns'
+
+    else
+
+        echo 'NO  ACTION  HOST              PROTOCOL  PORT(S)  SPECIAL TARGET  ICMP TYPE  EXPIRE   COMMENT
+0   drop    -                 -         -        -               -          -        -
+1   drop    -                 icmp      -        dns             7          +1905s   -
+2   drop    92.168.0.2/16     icmp      -        dns             6          +99905s  -
+3   drop    192.168.0.0/16    tcp       81-90    dns             -          -        -
+4   drop    -                 -         -        -               -          -        -
+5   drop    -                 icmp      -        dns             7          +1905s   -
+6   drop    92.168.0.2/16     icmp      -        dns             6          +99905s  -
+7   drop    192.168.0.0/16    tcp       81-90    dns             -          -        -
+8   drop    -                 -         -        -               -          -        -
+9   drop    -                 icmp      -        dns             7          +1905s   -
+10  drop    92.168.0.2/16     icmp      -        dns             6          +99905s  -
+11  drop    192.168.0.0/16    tcp       81-90    dns             -          -        -'
+
+    fi
+
+    # cSpell:enable
+
+}
+
+__stub_qvm_firewall "$@"

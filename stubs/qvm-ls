@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Simple stub that expects calls only as:
+# qvm-ls --raw-data --fields="..."
+
+function __stub_qvm_ls() {
+
+    # cSpell:disable
+    local raw_data='sys-usb|Running|AppVM
+personal|Running|AppVM
+vault|Transient|AppVM
+work|Halted|AppVM
+running|Running|AppVM
+transient|Transient|AppVM
+halted|Halted|AppVM
+paused|Paused|AppVM
+runname2|Running|AppVM
+template1|Halted|TemplateVM
+template2|Paused|TemplateVM
+template3|Running|TemplateVM
+template4|Transient|TemplateVM
+standalone1|Halted|StandaloneVM
+standalone2|Paused|StandaloneVM
+standalone3|Running|StandaloneVM
+standalone4|Transient|StandaloneVM
+disp|Running|DispVM
+other|Paused|AppVM'
+    # cSpell:enable
+
+    local fields=''
+    for arg in "$@"
+    do
+        if [[ "${arg}" == "--fields="* ]]; then
+
+            # remove arg name
+            fields="${arg#--fields=}"
+
+            # strip quotes
+            fields="${fields#\"}"
+            fields="${fields%\"}"
+
+            fields="${fields#\'}"
+            fields="${fields%\'}"
+        fi
+    done
+
+    # Currently as a stub we support only 4 options of fields arg
+    if [[ "${fields}" == 'NAME' ]]; then
+        # NAME
+        echo "${raw_data}" | cut --fields=1 --delimiter='|'
+    elif [[ "${fields}" == 'NAME,STATE' ]]; then
+        # NAME,STATE
+        echo "${raw_data}" | cut --fields=1,2 --delimiter='|'
+    elif [[ "${fields}" == 'NAME,STATE,CLASS' ]]; then
+        # NAME,STATE,CLASS
+        echo "${raw_data}" | cut --fields=1,2,3 --delimiter='|'
+    elif [[ "${fields}" == 'NAME,CLASS' ]]; then
+        # NAME,CLASS
+        echo "${raw_data}" | cut --fields=1,3 --delimiter='|'
+    else
+        # we do not process anything else
+        exit 1
+    fi
+}
+
+__stub_qvm_ls "$@"
+

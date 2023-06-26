@@ -1,0 +1,54 @@
+The project includes a small piece of code, about 50 loc long, from
+the bash-completion project (from a _command_offset() function).
+
+This code is used in __qubes_dom0_update_run_dnf_completion() function,
+and basically provides arguments shift for completion with another command,
+e.g. like sudo does. In our case it is about passing completion to dnf.
+
+Note, that this piece of code does not follow qubes-completion guidelines and
+style, shellcheck is also suppressed (disabled) for several places.
+Still it was decided to keep it as is to have connection with original code.
+
+bash-completion project also uses GPLv2 or later license, so there is no issue.
+But in case this code has to be removed (e.g. due to change of the license), 
+it could be:
+- rewritten (because it is small), or 
+- somehow sourced out to an external file or package (but it would break 
+    a single-file installation approach).
+
+Either way, the work of bash-completion authors is very much appreciated.
+The list of authors of bash-completion and header of bash_completion file
+that was used to get this piece of code is provided below:
+
+AUTHORS
+    David Paleino (Debian) <d.paleino@gmail.com>
+    Freddy Vulto <fvulto@gmail.com>
+    Guillame Rousse (Mandriva) <Guillaume.Rousse@inria.fr>
+    Igor Murzov <e-mail@date.by>
+    Mike Kelly (Exherbo) <pioto@pioto.org>
+    Santiago M. Mola (Exherbo) <cooldwind@gmail.com>
+    Ville Skyttä <ville.skytta@iki.fi>
+
+
+bash_completion - programmable completion functions for bash 4.1+
+
+Copyright © 2006-2008, Ian Macdonald <ian@caliban.org>
+          © 2009-2018, Bash Completion Maintainers
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+The latest version of this software can be obtained here:
+
+https://github.com/scop/bash-completion

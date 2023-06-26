@@ -1,0 +1,14 @@
+#!/bin/bash
+
+function __stub_qvm_pool() {
+
+    # cSpell:disable
+    echo \
+'NAME          DRIVER
+varlibqubes   file
+linux-kernel  linux-kernel
+vm-pool       lvm_thin'
+    # cSpell:enable
+}
+
+__stub_qvm_pool "$@"
