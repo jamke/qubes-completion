@@ -3250,7 +3250,7 @@ function _qubes_prefs() {
     # TODO: add completion of pools?
     local sys_properties_pools='default_pool default_pool_kernel default_pool_private default_pool_root default_pool_volatile'
     local sys_properties_string="${sys_properties_pools} default_kernel default_qrexec_timeout default_shutdown_timeout stats_interval"
-    local sys_properties_all="${sys_properties_bool} ${sys_properties_qube} ${sys_properties_string}}"
+    local sys_properties_all="${sys_properties_bool} ${sys_properties_qube} ${sys_properties_string}"
 
     local sys_properties_values_generic_bool='True False'
 
