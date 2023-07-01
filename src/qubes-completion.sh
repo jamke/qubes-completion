@@ -2127,7 +2127,7 @@ function _qvm_prefs() {
     local vm_properties_dom0='default_dispvm icon include_in_backups keyboard_layout klass label name qid updateable uuid'
 
     local vm_properties_values_generic_bool='True true on 1 False false off 0'
-    local vm_properties_values_for_virt_mode='hvm pv'
+    local vm_properties_values_for_virt_mode='hvm pv pvh'
     local vm_properties_values_for_klass="${QVM_VM_CLASSES}"
     # cSpell:enable
 
@@ -2145,7 +2145,7 @@ function _qvm_prefs() {
         # we should stop if there was --help-properties
         __was_flag_used "--help-properties" && return 0
 
-        # or provide full properties list otherwise        
+        # or provide full properties list otherwise
         local qube="${QB_alone_args[0]}"
         if [[ "${qube}"  == 'dom0' ]]; then
             # for dom0
