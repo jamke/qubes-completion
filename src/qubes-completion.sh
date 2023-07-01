@@ -2145,13 +2145,14 @@ function _qvm_prefs() {
         # we should stop if there was --help-properties
         __was_flag_used "--help-properties" && return 0
 
+        # or provide full properties list otherwise        
         local qube="${QB_alone_args[0]}"
         if [[ "${qube}"  == 'dom0' ]]; then
-            # or provide all properties for dom0 otherwise
+            # for dom0
             __complete_string "${vm_properties_dom0}"
             return 0
         else
-            # or provide all properties otherwise
+            # for any other qube
             __complete_string "${vm_properties_all}"
             return 0
         fi
