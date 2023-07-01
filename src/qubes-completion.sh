@@ -2124,6 +2124,7 @@ function _qvm_prefs() {
     local vm_properties_string='default_user ip kernel kernelopts mac maxmem memory name qrexec_timeout stubdom_mem stubdom_xid vcpus backup_timestamp dns gateway gateway6 icon ip6 keyboard_layout qid shutdown_timeout start_time uuid visible_gateway visible_gateway6 visible_ip visible_ip6 visible_netmask xid'
     local vm_properties_custom='label virt_mode klass'
     local vm_properties_all="${vm_properties_bool} ${vm_properties_qube} ${vm_properties_string} ${vm_properties_custom}"
+    local vm_properties_dom0='default_dispvm icon include_in_backups keyboard_layout klass label name qid updateable uuid'
 
     local vm_properties_values_generic_bool='True true on 1 False false off 0'
     local vm_properties_values_for_virt_mode='hvm pv'
@@ -2144,9 +2145,16 @@ function _qvm_prefs() {
         # we should stop if there was --help-properties
         __was_flag_used "--help-properties" && return 0
 
-        # or provide all properties otherwise
-        __complete_string "${vm_properties_all}"
-        return 0
+        local qube="${QB_alone_args[0]}"
+        if [[ "${qube}"  == 'dom0' ]]; then
+            # or provide all properties for dom0 otherwise
+            __complete_string "${vm_properties_dom0}"
+            return 0
+        else
+            # or provide all properties otherwise
+            __complete_string "${vm_properties_all}"
+            return 0
+        fi
     fi
 
     if (( QB_alone_args_count == 2 )); then
