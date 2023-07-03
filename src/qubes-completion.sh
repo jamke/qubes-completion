@@ -2304,6 +2304,47 @@ function _qvm_volume() {
 }
 
 
+function _qvm_backup() {
+
+    __init_qubes_completion '--profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z ' || return 0
+
+    # TODO: Is there anything else but gzip used available regularly
+    local backup_compression_filters='gzip'
+
+    case "${QB_prev_flag}" in
+        --dest-vm|-d)
+            __complete_qubes_list 'all'
+            return 0
+            ;;
+        --exclude|-x)
+            __complete_qubes_list 'all'
+            return 0
+            ;;
+        --compress-filter|-Z)
+            __complete_string "${backup_compression_filters}"
+            return 0
+            ;;
+        --passphrase-file|-p|--profile|--save-profile)
+            __run_filedir
+            return 0
+            ;;
+        ?*)
+            # unknown prev flag expects sub-argument
+            return 0
+            ;;
+    esac
+
+
+    local flags='--verbose -v --quiet -q --help -h --yes -y --encrypt -e  --compress -z --no-compress --profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z '
+    __complete_all_starting_flags_if_needed "${flags}" && return 0
+
+
+    # NOTE: Now complete directories in dom0. Obviously ambiguous with 'dest-vm'
+    __run_filedir
+    return 0
+}
+
+
 function _qvm_sync_appmenus() {
 
     __init_qubes_completion || return 0
