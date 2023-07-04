@@ -2306,14 +2306,16 @@ function _qvm_volume() {
 
 function _qvm_backup() {
 
-    __init_qubes_completion '--profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z ' || return 0
+    local flags_require_one='--profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z '
+    local flags_require_zero='--yes -y --encrypt -e  --compress -z --no-compress'
+    __init_qubes_completion "${flags_require_one}" || return 0
 
-    # TODO: Is there anything else but gzip used available regularly
+    # TODO: Is there anything else but gzip used available regularly?
     local backup_compression_filters='gzip'
 
     case "${QB_prev_flag}" in
         --dest-vm|-d)
-            __complete_qubes_list 'all'
+            __complete_qubes_list 'running'
             return 0
             ;;
         --exclude|-x)
@@ -2334,14 +2336,23 @@ function _qvm_backup() {
             ;;
     esac
 
+    __complete_all_starting_flags_if_needed "${flags_require_zero} ${flags_require_one}" && return 0
 
-    local flags='--verbose -v --quiet -q --help -h --yes -y --encrypt -e  --compress -z --no-compress --profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z '
-    __complete_all_starting_flags_if_needed "${flags}" && return 0
-
-
-    # NOTE: Now complete directories in dom0. Obviously ambiguous with 'dest-vm'
-    __run_filedir
-    return 0
+    if (( QB_alone_args_count == 0 )); then
+        # fist argument is meant to be an directory
+        if __was_flag_used '--dest-vm'; then
+            return 0
+        else
+            # only provide directory completion if dest-vm flag is not provided
+            # TODO: corner case dest-vm=dom0 is set explicitly remains
+            __run_filedir
+            return 0
+        fi
+    elif (( QB_alone_args_count > 0 )); then
+        # every other argument is meant to be a qube
+        __complete_qubes_list 'all'
+        return 0
+    fi
 }
 
 
