@@ -1817,7 +1817,7 @@ function _qvm_remove() {
 
     case "${QB_prev_flag}" in
         --exclude)
-            __complete_qubes_list 'halted'
+            __complete_qubes_list 'all'
             return 0
             ;;
         ?*)
