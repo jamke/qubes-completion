@@ -1817,7 +1817,7 @@ function _qvm_remove() {
 
     case "${QB_prev_flag}" in
         --exclude)
-            __complete_qubes_list 'all'
+            __complete_qubes_list 'halted'
             return 0
             ;;
         ?*)
@@ -1829,7 +1829,7 @@ function _qvm_remove() {
     local flags='--all --exclude --force -f --force-root --just-db'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
-    __complete_qubes_list 'all'
+    __complete_qubes_list 'halted'
 
     return 0
 }
