@@ -1829,7 +1829,7 @@ function _qvm_remove() {
     local flags='--all --exclude --force -f --force-root --just-db'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
-    __complete_qubes_list 'all'
+    __complete_qubes_list 'halted'
 
     return 0
 }
@@ -2016,8 +2016,13 @@ function __process_device_completion() {
                 local flags='--ro --persistent -p --option -o'
                 __complete_all_flags_if_needed "${flags}" && return 0
 
-                __complete_qubes_list 'all'
-                return 0
+                if __was_flag_used '--persistent'; then
+                    __complete_qubes_list 'all'
+                    return 0
+                else
+                    __complete_qubes_list 'running'
+                    return 0
+                fi
 
             elif [[ "${extra_argument}" == '' ]]; then
                 # qube name is set
