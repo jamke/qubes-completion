@@ -2306,7 +2306,7 @@ function _qvm_volume() {
 
 function _qvm_backup() {
 
-    local flags_require_one='--profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z '
+    local flags_require_one='--profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
     local flags_require_zero='--yes -y --encrypt -e  --compress -z --no-compress'
     __init_qubes_completion "${flags_require_one}" || return 0
 
