@@ -2313,7 +2313,6 @@ function _qvm_backup() {
 
     local flags_require_one='--profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
     local flags_require_zero='--yes -y --encrypt -e  --compress -z --no-compress'
-    # TODO: Is there anything else but gzip used available regularly?
     local backup_compression_filters='gzip bzip2 xz'
 
     __init_qubes_completion "${flags_require_one}" || return 0
@@ -2365,7 +2364,6 @@ function _qvm_backup_restore() {
 
     local flags_require_one='--exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
     local flags_require_zero='--verify-only --skip-broken --ignore-missing --skip-conflicting --rename-conflicting --skip-dom0-home --ignore-username-mismatch --ignore-size-limit --paranoid-mode --plan-b --location-is-service --auto-close'
-    # TODO: Is there anything else but gzip used available regularly?
     local backup_compression_filters='gzip bzip2 xz'
 
     __init_qubes_completion "${flags_require_one}" || return 0
