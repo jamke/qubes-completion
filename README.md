@@ -381,6 +381,28 @@ All functions initialize specific `Qubes OS` completion model by calling `__init
 The project has tests that are performed by BATS ([Bash Automated Testing System](https://github.com/bats-core/bats-core)).
 Tests are located in `test/tests` sub-directory.
 
+#### Install the testing tools
+
+The necessary BATS modules are included as Git submodules.
+
+```sh
+# Initialize the repository to use the submodules:
+git submodule init
+
+# Download the tools:
+git submodule update
+```
+
+#### Run the test suite
+
+Once the testing tools are installed, the test suite can run:
+
+```sh
+cd tests/ && ./test_helper/bats/bin/bats tests/
+```
+
+#### Writing tests
+
 Testing bash completions in general is not that easy.
 Unlike `bash completion` project that uses `python` and other third-party stuff to run tests the current project has it in Bash.
 The magic of test preparation and execution is done by functions in file `test/tests_common.sh` that make Bash completion variables look the same as they are prepared by Bash in the terminal (using GNU function in C).
