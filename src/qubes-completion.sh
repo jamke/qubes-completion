@@ -2,6 +2,8 @@
 #
 #   qubes-completion - BASH completion for Qubes OS
 #
+#   Copyright © 2006-2008, Ian Macdonald <ian@caliban.org>
+#   Copyright © 2009-2018, Bash Completion Maintainers
 #   Copyright © 2022-2023, @jamke (https://github.com/jamke)
 #
 #   This program is free software; you can redistribute it and/or modify
