@@ -398,7 +398,7 @@ git submodule update
 Once the testing tools are installed, the test suite can run:
 
 ```sh
-cd tests/ && ./test_helper/bats/bin/bats tests/
+cd test/ && ./bats/bin/bats tests/
 ```
 
 #### Writing tests
