@@ -89,8 +89,8 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qvm-template'              #TODO: Not implemented yet
     'qvm-template-postprocess'  #TODO: Not implemented yet
-    'qvm-backup'                #TODO: Not implemented yet
-    'qvm-backup-restore'        #TODO: Not implemented yet
+    'qvm-backup'                # Tests: Basic # Features: 100%
+    'qvm-backup-restore'        # Tests: Basic # Features: 100%
 
     'qvm-pool'                  #TODO: Not implemented yet
 
