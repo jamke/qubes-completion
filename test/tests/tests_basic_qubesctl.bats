@@ -23,12 +23,12 @@ function test_wrapper() {
 }
 
 @test "Test 001. qubesctl: qubesctl -" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--shot-output" [3]="--force-color" [4]="-skip-dom0" [5]="--max-concurrency" [6]="--templates" [7]="--standalones" [8]="--app" [9]="--targets" [10]="--all")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--show-output" [3]="--force-color" [4]="--skip-dom0" [5]="--max-concurrency" [6]="--templates" [7]="--standalones" [8]="--app" [9]="--targets" [10]="--all")
     test_wrapper 'qubesctl -'
 }
 
 @test "Test 002. qubesctl: qubesctl --" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="--shot-output" [2]="--force-color" [3]="--max-concurrency" [4]="--templates" [5]="--standalones" [6]="--app" [7]="--targets" [8]="--all")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="--show-output" [2]="--force-color" [3]="--skip-dom0" [4]="--max-concurrency" [5]="--templates" [6]="--standalones" [7]="--app" [8]="--targets" [9]="--all")
     test_wrapper 'qubesctl --'
 }
 
@@ -163,12 +163,12 @@ function test_wrapper() {
 }
 
 @test "Test 029. qubesctl: qubesctl --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--shot-output" [3]="--force-color" [4]="-skip-dom0" [5]="--max-concurrency" [6]="--templates" [7]="--standalones" [8]="--app" [9]="--targets" [10]="--all")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--show-output" [3]="--force-color" [4]="--skip-dom0" [5]="--max-concurrency" [6]="--templates" [7]="--standalones" [8]="--app" [9]="--targets" [10]="--all")
     test_wrapper 'qubesctl --something_unknown -'
 }
 
 @test "Test 030. qubesctl: qubesctl --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="--shot-output" [2]="--force-color" [3]="--max-concurrency" [4]="--templates" [5]="--standalones" [6]="--app" [7]="--targets" [8]="--all")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="--show-output" [2]="--force-color" [3]="--skip-dom0" [4]="--max-concurrency" [5]="--templates" [6]="--standalones" [7]="--app" [8]="--targets" [9]="--all")
     test_wrapper 'qubesctl --something_unknown --'
 }
 
