@@ -6,6 +6,7 @@
     "clocksync",
     "colour",
     "COMPREPLY",
+    "cspec",
     "cword",
     "delim",
     "devtype",

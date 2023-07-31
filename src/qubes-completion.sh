@@ -3574,69 +3574,61 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
 
 function __qubes_dom0_update_run_dnf_completion() {
 
-    # --------------------------------------------------------------------
-    # NOTE: We can just all _dnf functions as we know it completes dnf
+    # NOTE: We can just use '_dnf' function as we know it completes dnf
     # but this approach with search of this function is more reliable,
-    # prevents thing from breaking in case _dnf is renamed or something.
+    # prevents things from breaking in case _dnf is renamed or something.
     # It also is more flexible as it allows user to use custom dnf completion.
-    #
-    # NOTE: This code is mostly taken from _command_offset() of bash-completion
-    # Modified just a bit and is a bit better according to shellcheck
-    # cSpell:disable
-    # BEGIN --------------------------------------------------------------
-    local cmd=${COMP_WORDS[0]} compcmd=${COMP_WORDS[0]}
+
+    local dnf_cmd='dnf'
+    
+    # Existing completion specifications in a way that allows them to be reused as input
     local cspec
-    cspec=$( complete -p "$cmd" 2>/dev/null )
-
-    # If we have no completion for $cmd yet, see if we have for basename
-    if [[ ! $cspec && $cmd == */* ]]; then
-        cspec=$( complete -p "${cmd##*/}" 2>/dev/null )
-        [[ $cspec ]] && compcmd=${cmd##*/}
+    cspec="$( complete -p "${dnf_cmd}" 2>/dev/null )"
+    __debug_msg "cspec 1 = \"${cspec}\""
+    
+    # If we have no completion for dnf yet, try to load it
+    if [[ "${cspec}" == '' ]]; then
+        _completion_loader "${dnf_cmd}"
+        cspec="$( complete -p "${dnf_cmd}" 2>/dev/null )"
     fi
+    __debug_msg "cspec 2 = \"${cspec}\""
 
-    # If still nothing, just load it for the basename
-    if [[ ! $cspec ]]; then
-        compcmd=${cmd##*/}
-        _completion_loader "$compcmd"
-        cspec=$(complete -p "$compcmd" 2>/dev/null)
+    # If fail to find dnf completion
+    if [[ "${cspec}" == '' ]]; then
+        return
     fi
+    
+    if [[ "${cspec}" =~ [[:blank:]]-F[[:blank:]] ]]; then
+        
+        # Completion uses `complete -F function dnf`
+        __debug_msg "Completion uses complete -F function dnf"
+        
+        # Crop out function name:
+        local func_name="${cspec#*-F[[:blank:]]}"
+        func_name="${func_name%%[[:blank:]]*}"
 
-    if [[ -n $cspec ]]; then
-        if [[ "${cspec#* -F }" != "$cspec" ]]; then
-            # complete -F <function>
-
-            # get function name
-            local func=${cspec#*-F }
-            func=${func%% *}
-
-            if [[ ${#COMP_WORDS[@]} -ge 2 ]]; then
-                # shellcheck disable=SC2086 # This block is an unchanged third-party code from bash-completion package
-                $func $cmd "${COMP_WORDS[${#COMP_WORDS[@]}-1]}" "${COMP_WORDS[${#COMP_WORDS[@]}-2]}"
-            else
-                # shellcheck disable=SC2086 # This block is an unchanged third-party code from bash-completion package
-                $func $cmd "${COMP_WORDS[${#COMP_WORDS[@]}-1]}"
-            fi
-
-            # restore initial compopts
-            local opt
-            while [[ $cspec == *" -o "* ]]; do
-                # FIXME: should we take "+o opt" into account?
-                cspec=${cspec#*-o }
-                opt=${cspec%% *}
-                # shellcheck disable=SC2086 # This block is an unchanged third-party code from bash-completion package
-                compopt -o $opt &>/dev/null # to /dev/null because output interferes with running tests
-                # shellcheck disable=SC2295 # This block is an unchanged third-party code from bash-completion package
-                cspec=${cspec#$opt}
-            done
+        # Call function with dnf as $1 arg, and last and one before last as $2 and optional $3 (more in `man complete`)
+        local comp_words_count="${#COMP_WORDS[@]}"
+        if (( comp_words_count >= 2 )); then
+            "${func_name}" "${dnf_cmd}" "${COMP_WORDS[${comp_words_count}-1]}" "${COMP_WORDS[${comp_words_count}-2]}"
         else
-            cspec=${cspec#complete}
-            # shellcheck disable=SC2295 # This block is an unchanged third-party code from bash-completion package
-            cspec=${cspec%%$compcmd}
-            COMPREPLY=( $( eval compgen "$cspec" -- '$cur' ) )
+            "${func_name}" "${dnf_cmd}" "${COMP_WORDS[${comp_words_count}-1]}"
         fi
+
+        # NOTE: We have no need to restore initial compopt options
+        # So, $cspec can have -o/+o options, we do not care,
+        # because we passed all control to dnf completion and 
+        # will not act nor process after.
+    else
+        
+        __debug_msg "Completion uses complete <anything> dnf"
+        
+        # Crop out string between 'complete' and 'dnf' with any options
+        # and eval it to get output from compgen for any possible args inside ${cspec}
+        cspec="${cspec#complete[[:blank:]]}"
+        cspec="${cspec%%[[:blank:]]"${dnf_cmd}"}"
+        COMPREPLY=( $( eval "compgen ${cspec} -- '${QB_orig_cur}'" ) )
     fi
-    # END ----------------------------------------------------------------
-    # cSpell:enable
 }
 
 
