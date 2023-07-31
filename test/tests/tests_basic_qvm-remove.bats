@@ -18,7 +18,7 @@ function test_wrapper() {
 }
 
 @test "Test 000. qvm-remove: qvm-remove " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="halted" [2]="other" [3]="paused" [4]="personal" [5]="runname2" [6]="running" [7]="standalone1" [8]="standalone2" [9]="standalone3" [10]="standalone4" [11]="sys-usb" [12]="template1" [13]="template2" [14]="template3" [15]="template4" [16]="transient" [17]="vault" [18]="work")
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-remove '
 }
 
@@ -33,7 +33,7 @@ function test_wrapper() {
 }
 
 @test "Test 003. qvm-remove: qvm-remove -- " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="halted" [2]="other" [3]="paused" [4]="personal" [5]="runname2" [6]="running" [7]="standalone1" [8]="standalone2" [9]="standalone3" [10]="standalone4" [11]="sys-usb" [12]="template1" [13]="template2" [14]="template3" [15]="template4" [16]="transient" [17]="vault" [18]="work")
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-remove -- '
 }
 
@@ -53,62 +53,62 @@ function test_wrapper() {
 }
 
 @test "Test 007. qvm-remove: qvm-remove run" {
-    EXPECTED_COMPREPLY=([0]="runname2" [1]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-remove run'
 }
 
 @test "Test 008. qvm-remove: qvm-remove runnin" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-remove runnin'
 }
 
 @test "Test 009. qvm-remove: qvm-remove running" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-remove running'
 }
 
 @test "Test 010. qvm-remove: qvm-remove running " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="halted" [2]="other" [3]="paused" [4]="personal" [5]="runname2" [6]="running" [7]="standalone1" [8]="standalone2" [9]="standalone3" [10]="standalone4" [11]="sys-usb" [12]="template1" [13]="template2" [14]="template3" [15]="template4" [16]="transient" [17]="vault" [18]="work")
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-remove running '
 }
 
 @test "Test 011. qvm-remove: qvm-remove \"run" {
-    EXPECTED_COMPREPLY=([0]="runname2" [1]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-remove "run'
 }
 
 @test "Test 012. qvm-remove: qvm-remove \"runnin" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-remove "runnin'
 }
 
 @test "Test 013. qvm-remove: qvm-remove \"running" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-remove "running'
 }
 
 @test "Test 014. qvm-remove: qvm-remove \"running\" " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="halted" [2]="other" [3]="paused" [4]="personal" [5]="runname2" [6]="running" [7]="standalone1" [8]="standalone2" [9]="standalone3" [10]="standalone4" [11]="sys-usb" [12]="template1" [13]="template2" [14]="template3" [15]="template4" [16]="transient" [17]="vault" [18]="work")
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-remove "running" '
 }
 
 @test "Test 015. qvm-remove: qvm-remove 'run" {
-    EXPECTED_COMPREPLY=([0]="runname2" [1]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-remove '\''run'
 }
 
 @test "Test 016. qvm-remove: qvm-remove 'runnin" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-remove '\''runnin'
 }
 
 @test "Test 017. qvm-remove: qvm-remove 'running" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-remove '\''running'
 }
 
 @test "Test 018. qvm-remove: qvm-remove 'running' " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="halted" [2]="other" [3]="paused" [4]="personal" [5]="runname2" [6]="running" [7]="standalone1" [8]="standalone2" [9]="standalone3" [10]="standalone4" [11]="sys-usb" [12]="template1" [13]="template2" [14]="template3" [15]="template4" [16]="transient" [17]="vault" [18]="work")
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-remove '\''running'\'' '
 }
 
@@ -118,7 +118,7 @@ function test_wrapper() {
 }
 
 @test "Test 020. qvm-remove: qvm-remove nonexistent " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="halted" [2]="other" [3]="paused" [4]="personal" [5]="runname2" [6]="running" [7]="standalone1" [8]="standalone2" [9]="standalone3" [10]="standalone4" [11]="sys-usb" [12]="template1" [13]="template2" [14]="template3" [15]="template4" [16]="transient" [17]="vault" [18]="work")
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-remove nonexistent '
 }
 
@@ -133,7 +133,7 @@ function test_wrapper() {
 }
 
 @test "Test 023. qvm-remove: qvm-remove nonexistent -- " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="halted" [2]="other" [3]="paused" [4]="personal" [5]="runname2" [6]="running" [7]="standalone1" [8]="standalone2" [9]="standalone3" [10]="standalone4" [11]="sys-usb" [12]="template1" [13]="template2" [14]="template3" [15]="template4" [16]="transient" [17]="vault" [18]="work")
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-remove nonexistent -- '
 }
 
@@ -153,7 +153,7 @@ function test_wrapper() {
 }
 
 @test "Test 027. qvm-remove: qvm-remove --something_unknown " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="halted" [2]="other" [3]="paused" [4]="personal" [5]="runname2" [6]="running" [7]="standalone1" [8]="standalone2" [9]="standalone3" [10]="standalone4" [11]="sys-usb" [12]="template1" [13]="template2" [14]="template3" [15]="template4" [16]="transient" [17]="vault" [18]="work")
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-remove --something_unknown '
 }
 
@@ -173,7 +173,7 @@ function test_wrapper() {
 }
 
 @test "Test 031. qvm-remove: qvm-remove --something_unknown -- " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="halted" [2]="other" [3]="paused" [4]="personal" [5]="runname2" [6]="running" [7]="standalone1" [8]="standalone2" [9]="standalone3" [10]="standalone4" [11]="sys-usb" [12]="template1" [13]="template2" [14]="template3" [15]="template4" [16]="transient" [17]="vault" [18]="work")
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-remove --something_unknown -- '
 }
 
