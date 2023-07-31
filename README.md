@@ -296,6 +296,8 @@ Symbol `*` marks commands that have completion with limited implementation or a 
 * `qvm-prefs`
 * `qvm-features`
 * `qvm-volume` *
+* `qvm-backup`
+* `qvm-backup-restore`
 * `qvm-check`
 * `qvm-firewall`
 * `qvm-service`
