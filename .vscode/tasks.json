@@ -6,7 +6,8 @@
     {
       "label": "Run BATS tests",
       "type": "shell",
-      "command": "cd ${workspaceFolder}/test && bats tests/",
+      // "command": "cd ${workspaceFolder}/test && bats tests/", // Global version of calling BATS
+      "command": "cd ${workspaceFolder}/test && ./bats/bin/bats tests/",
       "problemMatcher": [],
       "group": {
         "kind": "build",
