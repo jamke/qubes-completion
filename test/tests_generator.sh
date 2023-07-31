@@ -373,6 +373,9 @@ function tests_generator_main() {
     tests_create_all_basic_tests_and_save 'qvm-appmenus'
     tests_create_all_basic_tests_and_save 'qubesctl'
     tests_create_all_basic_tests_and_save 'qubesd-query'
+    tests_create_all_basic_tests_and_save 'qvm-backup'
+    tests_create_all_basic_tests_and_save 'qvm-backup-restore'
+    
     
     # dnf provides too big output with a full list of packages that are also env-dependent
     #tests_create_all_basic_tests_and_save 'qubes-dom0-update' 
