@@ -18,7 +18,7 @@ function test_wrapper() {
 }
 
 @test "Test 000. qubes-prefs: qubes-prefs " {
-    EXPECTED_COMPREPLY=([0]="check_updates_vm" [1]="clockvm" [2]="default_audiovm" [3]="default_dispvm" [4]="default_guivm" [5]="default_netvm" [6]="default_template" [7]="management_dispvm" [8]="updatevm" [9]="default_pool" [10]="default_pool_kernel" [11]="default_pool_private" [12]="default_pool_root" [13]="default_pool_volatile" [14]="default_kernel" [15]="default_qrexec_timeout" [16]="default_shutdown_timeout" [17]="stats_interval}")
+    EXPECTED_COMPREPLY=([0]="check_updates_vm" [1]="clockvm" [2]="default_audiovm" [3]="default_dispvm" [4]="default_guivm" [5]="default_netvm" [6]="default_template" [7]="management_dispvm" [8]="updatevm" [9]="default_pool" [10]="default_pool_kernel" [11]="default_pool_private" [12]="default_pool_root" [13]="default_pool_volatile" [14]="default_kernel" [15]="default_qrexec_timeout" [16]="default_shutdown_timeout" [17]="stats_interval")
     test_wrapper 'qubes-prefs '
 }
 
@@ -33,7 +33,7 @@ function test_wrapper() {
 }
 
 @test "Test 003. qubes-prefs: qubes-prefs -- " {
-    EXPECTED_COMPREPLY=([0]="check_updates_vm" [1]="clockvm" [2]="default_audiovm" [3]="default_dispvm" [4]="default_guivm" [5]="default_netvm" [6]="default_template" [7]="management_dispvm" [8]="updatevm" [9]="default_pool" [10]="default_pool_kernel" [11]="default_pool_private" [12]="default_pool_root" [13]="default_pool_volatile" [14]="default_kernel" [15]="default_qrexec_timeout" [16]="default_shutdown_timeout" [17]="stats_interval}")
+    EXPECTED_COMPREPLY=([0]="check_updates_vm" [1]="clockvm" [2]="default_audiovm" [3]="default_dispvm" [4]="default_guivm" [5]="default_netvm" [6]="default_template" [7]="management_dispvm" [8]="updatevm" [9]="default_pool" [10]="default_pool_kernel" [11]="default_pool_private" [12]="default_pool_root" [13]="default_pool_volatile" [14]="default_kernel" [15]="default_qrexec_timeout" [16]="default_shutdown_timeout" [17]="stats_interval")
     test_wrapper 'qubes-prefs -- '
 }
 
@@ -153,7 +153,7 @@ function test_wrapper() {
 }
 
 @test "Test 027. qubes-prefs: qubes-prefs --something_unknown " {
-    EXPECTED_COMPREPLY=([0]="check_updates_vm" [1]="clockvm" [2]="default_audiovm" [3]="default_dispvm" [4]="default_guivm" [5]="default_netvm" [6]="default_template" [7]="management_dispvm" [8]="updatevm" [9]="default_pool" [10]="default_pool_kernel" [11]="default_pool_private" [12]="default_pool_root" [13]="default_pool_volatile" [14]="default_kernel" [15]="default_qrexec_timeout" [16]="default_shutdown_timeout" [17]="stats_interval}")
+    EXPECTED_COMPREPLY=([0]="check_updates_vm" [1]="clockvm" [2]="default_audiovm" [3]="default_dispvm" [4]="default_guivm" [5]="default_netvm" [6]="default_template" [7]="management_dispvm" [8]="updatevm" [9]="default_pool" [10]="default_pool_kernel" [11]="default_pool_private" [12]="default_pool_root" [13]="default_pool_volatile" [14]="default_kernel" [15]="default_qrexec_timeout" [16]="default_shutdown_timeout" [17]="stats_interval")
     test_wrapper 'qubes-prefs --something_unknown '
 }
 
@@ -173,7 +173,7 @@ function test_wrapper() {
 }
 
 @test "Test 031. qubes-prefs: qubes-prefs --something_unknown -- " {
-    EXPECTED_COMPREPLY=([0]="check_updates_vm" [1]="clockvm" [2]="default_audiovm" [3]="default_dispvm" [4]="default_guivm" [5]="default_netvm" [6]="default_template" [7]="management_dispvm" [8]="updatevm" [9]="default_pool" [10]="default_pool_kernel" [11]="default_pool_private" [12]="default_pool_root" [13]="default_pool_volatile" [14]="default_kernel" [15]="default_qrexec_timeout" [16]="default_shutdown_timeout" [17]="stats_interval}")
+    EXPECTED_COMPREPLY=([0]="check_updates_vm" [1]="clockvm" [2]="default_audiovm" [3]="default_dispvm" [4]="default_guivm" [5]="default_netvm" [6]="default_template" [7]="management_dispvm" [8]="updatevm" [9]="default_pool" [10]="default_pool_kernel" [11]="default_pool_private" [12]="default_pool_root" [13]="default_pool_volatile" [14]="default_kernel" [15]="default_qrexec_timeout" [16]="default_shutdown_timeout" [17]="stats_interval")
     test_wrapper 'qubes-prefs --something_unknown -- '
 }
 
