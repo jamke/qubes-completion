@@ -390,6 +390,27 @@ function __was_flag_used() {
 }
 
 
+function __get_following_arg() {
+
+    local arg_to_find="${1}"
+
+    local max_arg_index="${#QB_all_args[@]}"
+    (( max_arg_index-- ))   # because we want the next argument after the arg_to_find
+
+    local i
+    for (( i=0; i < "${max_arg_index}"; i++ )); do
+        if [[ "${QB_all_args[${i}]}" == "${arg_to_find}" ]]; then
+            (( i++ ))   # because we want the next argument after the arg_to_find
+            echo "${QB_all_args[${i}]}"
+            return 0
+            # break
+        fi
+    done
+    
+    return 1
+}
+
+
 function __is_prev_flag_not_empty() {
 
     if [[ "${QB_prev_flag}" != '' ]]; then
@@ -2355,12 +2376,22 @@ function _qvm_backup() {
     if (( QB_alone_args_count == 0 )); then
     
         # fist argument is meant to be an directory
-        if __was_flag_used '--dest-vm'; then
-            # no completion for directories in some dest-vm
-            # TODO: corner case `--dest-vm dom0` is set explicitly remains
+        if __was_flag_used '--dest-vm' || __was_flag_used '-d'; then
+            # no completion for directories in some dest-vm except dom0
+            local dest_vm
+            dest_vm="$( __get_following_arg '--dest-vm' )"
+            if [[ "${dest_vm}" == '' ]]; then
+                dest_vm="$( __get_following_arg '-d' )"
+            fi
+            
+            if [[ "${dest_vm}" == 'dom0' ]]; then
+                __run_filedir
+                return 0
+            fi
+            
             return 0
         else
-            # only provide directory completion if dest-vm flag is not provided
+            # provide directory completion if dest-vm was not provided
             __run_filedir
             return 0
         fi
@@ -2412,12 +2443,22 @@ function _qvm_backup_restore() {
     if (( QB_alone_args_count == 0 )); then
     
         # fist argument is meant to be an directory
-        if __was_flag_used '--dest-vm'; then
-            # no completion for directories in some dest-vm
-            # TODO: corner case dest-vm=dom0 is set explicitly remains
+        if __was_flag_used '--dest-vm' || __was_flag_used '-d'; then
+            # no completion for directories in some dest-vm except dom0
+            local dest_vm
+            dest_vm="$( __get_following_arg '--dest-vm' )"
+            if [[ "${dest_vm}" == '' ]]; then
+                dest_vm="$( __get_following_arg '-d' )"
+            fi
+            
+            if [[ "${dest_vm}" == 'dom0' ]]; then
+                __run_filedir
+                return 0
+            fi
+            
             return 0
         else
-            # only provide directory completion if dest-vm flag is not provided
+            # provide directory completion if dest-vm was not provided
             __run_filedir
             return 0
         fi
