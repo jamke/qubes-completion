@@ -2309,6 +2309,108 @@ function _qvm_volume() {
 }
 
 
+function _qvm_backup() {
+
+    local flags_require_one='--profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
+    local flags_require_zero='--yes -y --encrypt -e  --compress -z --no-compress'
+    local backup_compression_filters='gzip bzip2 xz'
+
+    __init_qubes_completion "${flags_require_one}" || return 0
+
+    case "${QB_prev_flag}" in
+        --dest-vm|-d)
+            __complete_qubes_list 'running'
+            return 0
+            ;;
+        --exclude|-x)
+            __complete_qubes_list 'all'
+            return 0
+            ;;
+        --compress-filter|-Z)
+            __complete_string "${backup_compression_filters}"
+            return 0
+            ;;
+        --passphrase-file|-p|--profile|--save-profile)
+            __run_filedir
+            return 0
+            ;;
+        ?*)
+            # unknown prev flag expects sub-argument
+            return 0
+            ;;
+    esac
+
+    __complete_all_starting_flags_if_needed "${flags_require_zero} ${flags_require_one}" && return 0
+
+    if (( QB_alone_args_count == 0 )); then
+        # fist argument is meant to be an directory
+        if __was_flag_used '--dest-vm'; then
+            return 0
+        else
+            # only provide directory completion if dest-vm flag is not provided
+            # TODO: corner case dest-vm=dom0 is set explicitly remains
+            __run_filedir
+            return 0
+        fi
+    elif (( QB_alone_args_count > 0 )); then
+        # every other argument is meant to be a qube
+        __complete_qubes_list 'all'
+        return 0
+    fi
+}
+
+
+function _qvm_backup_restore() {
+
+    local flags_require_one='--exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
+    local flags_require_zero='--verify-only --skip-broken --ignore-missing --skip-conflicting --rename-conflicting --skip-dom0-home --ignore-username-mismatch --ignore-size-limit --paranoid-mode --plan-b --location-is-service --auto-close'
+    local backup_compression_filters='gzip bzip2 xz'
+
+    __init_qubes_completion "${flags_require_one}" || return 0
+
+    case "${QB_prev_flag}" in
+        --dest-vm|-d)
+            __complete_qubes_list 'running'
+            return 0
+            ;;
+        --exclude|-x)
+            __complete_qubes_list 'all'
+            return 0
+            ;;
+        --compress-filter|-Z)
+            __complete_string "${backup_compression_filters}"
+            return 0
+            ;;
+        --passphrase-file|-p)
+            __run_filedir
+            return 0
+            ;;
+        ?*)
+            # unknown prev flag expects sub-argument
+            return 0
+            ;;
+    esac
+
+    __complete_all_starting_flags_if_needed "${flags_require_zero} ${flags_require_one}" && return 0
+
+    if (( QB_alone_args_count == 0 )); then
+        # fist argument is meant to be an directory
+        if __was_flag_used '--dest-vm'; then
+            return 0
+        else
+            # only provide directory completion if dest-vm flag is not provided
+            # TODO: corner case dest-vm=dom0 is set explicitly remains
+            __run_filedir
+            return 0
+        fi
+    elif (( QB_alone_args_count > 0 )); then
+        # every other argument is meant to be a qube
+        __complete_qubes_list 'all'
+        return 0
+    fi
+}
+
+
 function _qvm_sync_appmenus() {
 
     __init_qubes_completion || return 0
