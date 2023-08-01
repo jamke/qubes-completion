@@ -962,6 +962,7 @@ function __get_qubes_list() {
 
     local state="${1}"
     local class="${2}"
+    local excluded_regexp="${3}"
 
     local delim_char='|'
 
@@ -1007,6 +1008,7 @@ function __get_qubes_list() {
 
     result_qubes="$( echo "${result_qubes}" \
         | cut --fields=1 --delimiter="${delim_char}" \
+        | grep --invert-match --basic-regexp "${excluded_regexp}" \
         | sort )"
 
     echo "${result_qubes}"
@@ -1226,7 +1228,19 @@ function __complete_qubes_list() {
     local type="${2}"
 
     local qubes
-    qubes="$( __get_qubes_list "${state}" "${type}" )"
+    qubes="$( __get_qubes_list "${state}" "${type}" '^$' )"
+
+    __complete_string "${qubes}"
+}
+
+
+function __complete_qubes_list_without_dom0() {
+
+    local state="${1}"
+    local type="${2}"
+
+    local qubes
+    qubes="$( __get_qubes_list "${state}" "${type}" '^dom0$' )"
 
     __complete_string "${qubes}"
 }
@@ -1575,10 +1589,10 @@ function _qvm_create() {
     local flags='--class -C --property -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R --standalone --disp --help-classes --force-root'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
-    # List qubes (up to 2)
+    # List qubes
     if (( QB_alone_args_count = 0 )); then
         # Provide names of qubes to make it easy to create qube with similar name
-        __complete_qubes_list 'all'
+        __complete_qubes_list_without_dom0 'all'
     fi
 
     return 0
@@ -1623,7 +1637,7 @@ function _qvm_clone() {
 
     # List qubes (up to 2)
     if (( QB_alone_args_count < 2 )); then
-        __complete_qubes_list 'all'
+        __complete_qubes_list_without_dom0 'all'
     fi
 
     return 0
@@ -1699,7 +1713,7 @@ function _qvm_shutdown() {
     # NOTE: provide qube names indefinitely as the qvm-shutdown --help says
     # but man qvm-shutdown shows that only one qube is allowed
     # I checked and currently multiple qubes are allowed
-    __complete_qubes_list 'running'
+    __complete_qubes_list_without_dom0 'running'
 
     return 0
 }
@@ -1723,7 +1737,7 @@ function _qvm_kill() {
     local flags='--all --exclude'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
-    __complete_qubes_list 'run_and_transient'
+    __complete_qubes_list_without_dom0 'run_and_transient'
 
     return 0
 }
@@ -1750,7 +1764,7 @@ function _qvm_pause() {
     # NOTE: provide qube names indefinitely as the qvm-pause --help says
     # but man qvm-pause shows that only one qube is allowed
     # I checked and currently multiple qubes are allowed
-    __complete_qubes_list 'running'
+    __complete_qubes_list_without_dom0 'running'
 
     return 0
 }
@@ -1777,7 +1791,7 @@ function _qvm_unpause() {
     # NOTE: provide qube names indefinitely as the qvm-unpause --help says
     # but man qvm-unpause shows that only one qube is allowed
     # I checked and currently multiple qubes are allowed
-    __complete_qubes_list 'paused'
+    __complete_qubes_list_without_dom0 'paused'
 
     return 0
 }
@@ -2485,7 +2499,7 @@ function _qvm_sync_appmenus() {
     local flags='--force-root --force-rpc --regenerate-only'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
-    __complete_qubes_list 'all'
+    __complete_qubes_list_without_dom0 'all'
 
     return 0
 }
@@ -2546,7 +2560,7 @@ function _qvm_copy_to_vm() {
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     if (( QB_alone_args_count == 0 )); then
-        __complete_qubes_list 'all'
+        __complete_qubes_list_without_dom0 'all'
         return 0
     fi
 
@@ -2691,7 +2705,7 @@ function _qvm_run() {
         if (( QB_alone_args_count == 0 )); then
             case "${QB_prev_flag}" in
                 --dispvm)
-                    __complete_qubes_list 'all' 'DispVM'
+                    __complete_qubes_list_without_dom0 'all' 'DispVM'
                     return 0
                     ;;
                 ?*)
@@ -2715,7 +2729,7 @@ function _qvm_run() {
         __complete_all_flags_if_needed "${flags}" && return 0
 
         if (( QB_alone_args_count == 0 )); then
-            __complete_qubes_list 'all'
+            __complete_qubes_list_without_dom0 'all'
         elif (( QB_alone_args_count > 0 )); then
             # not completing COMMAND nor ARGS
             return 0
@@ -2764,7 +2778,7 @@ function _qvm_firewall() {
         local flags='--reload -r --raw'
         __complete_all_starting_flags_if_needed "${flags}" && return 0
 
-        __complete_qubes_list 'all'
+        __complete_qubes_list_without_dom0 'all'
         return 0
     fi
 
@@ -3079,7 +3093,7 @@ function _qubes_bug_report() {
             return 0
         fi
 
-        __complete_qubes_list 'all'
+        __complete_qubes_list_without_dom0 'all'
         return 0
     fi
 
@@ -3105,7 +3119,7 @@ function _qvm_console_dispvm() {
             return 0
         fi
 
-        __complete_qubes_list 'all'
+        __complete_qubes_list_without_dom0 'all'
         return 0
     fi
 
@@ -3131,7 +3145,7 @@ function _qvm_get_image() {
             return 0
         fi
 
-        __complete_qubes_list 'all'
+        __complete_qubes_list_without_dom0 'all'
         return 0
     fi
 
@@ -3172,7 +3186,7 @@ function _qvm_get_tinted_image() {
             return 0
         fi
 
-        __complete_qubes_list 'all'
+        __complete_qubes_list_without_dom0 'all'
         return 0
     fi
 
@@ -3322,7 +3336,7 @@ function _qubes_vm_settings() {
     local flags='--tab'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
-    __complete_qubes_list 'all'
+    __complete_qubes_list_without_dom0 'all'
 
     return 0
 }
@@ -3330,7 +3344,7 @@ function _qubes_vm_settings() {
 
 function _qubes_vm_clone() {
 
-    __command_standard_flags_with_one_vmname
+    __command_standard_flags_with_one_vmname_without_dom0
 
     return 0
 }
@@ -3338,13 +3352,13 @@ function _qubes_vm_clone() {
 
 function _qubes_vm_boot_from_device() {
 
-    __command_standard_flags_with_one_vmname
+    __command_standard_flags_with_one_vmname_without_dom0
 
     return 0
 }
 
 
-function __command_standard_flags_with_one_vmname() {
+function __command_standard_flags_with_one_vmname_without_dom0() {
 
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
@@ -3356,7 +3370,7 @@ function __command_standard_flags_with_one_vmname() {
 
     __complete_all_starting_flags_if_needed '' && return 0
 
-    __complete_qubes_list 'all'
+    __complete_qubes_list_without_dom0 'all'
 
     return 0
 }
