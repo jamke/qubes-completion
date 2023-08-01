@@ -13,6 +13,17 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Run BATS tests (Global BATS)",
+      "type": "shell",
+      // "command": "cd ${workspaceFolder}/test && bats tests/", // Global version of calling BATS
+      "command": "cd ${workspaceFolder}/test && bats tests/",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     }
   ]
 }
