@@ -48,7 +48,7 @@ function test_wrapper() {
 }
 
 @test "Test 006. qvm-shutdown: qvm-shutdown --exclude " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="personal" [2]="runname2" [3]="running" [4]="standalone3" [5]="sys-usb" [6]="template3")
+    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="personal" [3]="runname2" [4]="running" [5]="standalone3" [6]="sys-usb" [7]="template3")
     test_wrapper 'qvm-shutdown --exclude '
 }
 
@@ -78,7 +78,7 @@ function test_wrapper() {
 }
 
 @test "Test 012. qvm-shutdown: qvm-shutdown --exclude=" {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="personal" [2]="runname2" [3]="running" [4]="standalone3" [5]="sys-usb" [6]="template3")
+    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="personal" [3]="runname2" [4]="running" [5]="standalone3" [6]="sys-usb" [7]="template3")
     test_wrapper 'qvm-shutdown --exclude='
 }
 
@@ -118,7 +118,7 @@ function test_wrapper() {
 }
 
 @test "Test 020. qvm-shutdown: qvm-shutdown \"--exclude=" {
-    EXPECTED_COMPREPLY=([0]="--exclude=disp" [1]="--exclude=personal" [2]="--exclude=runname2" [3]="--exclude=running" [4]="--exclude=standalone3" [5]="--exclude=sys-usb" [6]="--exclude=template3")
+    EXPECTED_COMPREPLY=([0]="--exclude=disp" [1]="--exclude=dom0" [2]="--exclude=personal" [3]="--exclude=runname2" [4]="--exclude=running" [5]="--exclude=standalone3" [6]="--exclude=sys-usb" [7]="--exclude=template3")
     test_wrapper 'qvm-shutdown "--exclude='
 }
 
@@ -148,7 +148,7 @@ function test_wrapper() {
 }
 
 @test "Test 026. qvm-shutdown: qvm-shutdown '--exclude=" {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="personal" [2]="runname2" [3]="running" [4]="standalone3" [5]="sys-usb" [6]="template3")
+    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="personal" [3]="runname2" [4]="running" [5]="standalone3" [6]="sys-usb" [7]="template3")
     test_wrapper 'qvm-shutdown '\''--exclude='
 }
 
@@ -263,7 +263,7 @@ function test_wrapper() {
 }
 
 @test "Test 049. qvm-shutdown: qvm-shutdown --exclude \"" {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="personal" [2]="runname2" [3]="running" [4]="standalone3" [5]="sys-usb" [6]="template3")
+    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="personal" [3]="runname2" [4]="running" [5]="standalone3" [6]="sys-usb" [7]="template3")
     test_wrapper 'qvm-shutdown --exclude "'
 }
 
@@ -293,7 +293,7 @@ function test_wrapper() {
 }
 
 @test "Test 055. qvm-shutdown: qvm-shutdown --exclude '" {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="personal" [2]="runname2" [3]="running" [4]="standalone3" [5]="sys-usb" [6]="template3")
+    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="personal" [3]="runname2" [4]="running" [5]="standalone3" [6]="sys-usb" [7]="template3")
     test_wrapper 'qvm-shutdown --exclude '\'''
 }
 
@@ -323,7 +323,7 @@ function test_wrapper() {
 }
 
 @test "Test 061. qvm-shutdown: qvm-shutdown --exclude=\"" {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="personal" [2]="runname2" [3]="running" [4]="standalone3" [5]="sys-usb" [6]="template3")
+    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="personal" [3]="runname2" [4]="running" [5]="standalone3" [6]="sys-usb" [7]="template3")
     test_wrapper 'qvm-shutdown --exclude="'
 }
 
@@ -353,7 +353,7 @@ function test_wrapper() {
 }
 
 @test "Test 067. qvm-shutdown: qvm-shutdown --exclude='" {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="personal" [2]="runname2" [3]="running" [4]="standalone3" [5]="sys-usb" [6]="template3")
+    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="personal" [3]="runname2" [4]="running" [5]="standalone3" [6]="sys-usb" [7]="template3")
     test_wrapper 'qvm-shutdown --exclude='\'''
 }
 
