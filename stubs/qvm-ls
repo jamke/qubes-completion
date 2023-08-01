@@ -24,6 +24,7 @@ standalone2|Paused|StandaloneVM
 standalone3|Running|StandaloneVM
 standalone4|Transient|StandaloneVM
 disp|Running|DispVM
+dom0|Running|AdminVM|black|-|-
 other|Paused|AppVM'
     # cSpell:enable
 
