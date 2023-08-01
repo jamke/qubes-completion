@@ -3814,10 +3814,16 @@ function main() {
     __debug_init
 
     for supported_command in "${SUPPORTED_COMMANDS_LIST[@]}"; do
+    
         if [[ -x /usr/bin/${supported_command} ]] || (( QB_DEBUG_MODE == 1 )) ; then
+            
             command_processor="$(echo "_${supported_command}" | tr '-' '_')"
-            complete -F "${command_processor}" "${supported_command}"
+            
+            if [[ $( type -t "${command_processor}" ) == function ]]; then
+                complete -F "${command_processor}" "${supported_command}"
+            fi
         fi
+        
     done
 
 }
