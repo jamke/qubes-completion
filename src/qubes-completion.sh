@@ -1315,28 +1315,7 @@ function __complete_array() {
     # local full_comp=( $(compgen -W "${options}" -- "${QB_cur}") ) #TODO: use something like that?
     __debug_msg "$( __debug_print_array 'full_comp' full_comp )"
 
-    # result for completing for "${QB_orig_cur}"
-    local converted_comp=()
-
-    # We need to cut left QB_real_cur and insert left the QB_orig_cur,
-    # so that BASH will complete it properly even with separators like '':'' and '='
-    local i
-    local full_comp_count="${#full_comp[@]}"
-    for (( i=0; i < full_comp_count; i++ )); do
-
-        # __debug_msg "    => full_comp[${i}] = \"${full_comp[${i}]}\""
-
-        local without_beginning="${full_comp[${i}]:${#QB_real_cur}}"
-        # __debug_msg "    => without_beginning = \"${without_beginning}\""
-
-        local with_bash_beginning="${QB_orig_cur}${without_beginning}"
-        # __debug_msg "    => with_bash_beginning = \"${with_bash_beginning}\""
-
-        converted_comp+=( "${with_bash_beginning}" )
-    done
-
-    COMPREPLY+=( $(compgen -W "${converted_comp[*]}" -- "${QB_orig_cur}") )
-    __debug_msg "$( __debug_print_array 'COMPREPLY' COMPREPLY )"
+    __replace_cur_and_add_to_compreply full_comp
 }
 
 
@@ -1359,18 +1338,28 @@ function __complete_string() {
     # local full_comp=( $(compgen -W "${options}" -- "${QB_cur}") ) #TODO: use something like that?
     __debug_msg "$( __debug_print_array 'full_comp' full_comp )"
 
+    __replace_cur_and_add_to_compreply full_comp
+}
+
+
+function __replace_cur_and_add_to_compreply() {
+    
+    # passing arrays is tricky in Bash, we must use different name for variable (not full_comp)
+    local -n full_comp_arr="${1}"
+    
+    # We need to cut left QB_real_cur and insert left the QB_orig_cur,
+    # so that BASH will complete it properly even with separators like '':'' and '='
+
     # result for completing for "${QB_orig_cur}"
     local converted_comp=()
 
-    # We need to cut left QB_real_cur and insert left the QB_orig_cur,
-    # so that BASH will complete it properly even with separators like '':'' and '='
     local i
-    local full_comp_count="${#full_comp[@]}"
-    for (( i=0; i < full_comp_count; i++ )); do
+    local full_comp_arr_count="${#full_comp_arr[@]}"
+    for (( i=0; i < full_comp_arr_count; i++ )); do
 
-        # __debug_msg "    => full_comp[${i}] = \"${full_comp[${i}]}\""
+        # __debug_msg "    => full_comp_arr[${i}] = \"${full_comp_arr[${i}]}\""
 
-        local without_beginning="${full_comp[${i}]:${#QB_real_cur}}"
+        local without_beginning="${full_comp_arr[${i}]:${#QB_real_cur}}"
         # __debug_msg "    => without_beginning = \"${without_beginning}\""
 
         local with_bash_beginning="${QB_orig_cur}${without_beginning}"
@@ -1378,6 +1367,7 @@ function __complete_string() {
 
         converted_comp+=( "${with_bash_beginning}" )
     done
+    readonly converted_comp
 
     COMPREPLY+=( $(compgen -W "${converted_comp[*]}" -- "${QB_orig_cur}") )
     __debug_msg "$( __debug_print_array 'COMPREPLY' COMPREPLY )"
