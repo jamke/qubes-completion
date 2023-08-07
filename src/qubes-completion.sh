@@ -3524,8 +3524,9 @@ function _qubes_dom0_update() {
     # get action (command) to pass to dnf
     local -r action_flag_name='--action'
 
-    local -r max_arg_index="${#QB_full_line_args[@]}"
+    local max_arg_index="${#QB_full_line_args[@]}"
     (( max_arg_index-- ))   # because we want the next argument after the flag
+    readonly max_arg_index
 
     local action_for_dnf='install' # install by default if --action is omitted
     local i
