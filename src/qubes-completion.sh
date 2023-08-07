@@ -407,7 +407,7 @@ function __get_following_arg() {
             # break
         fi
     done
-    
+
     return 1
 }
 
@@ -1050,7 +1050,7 @@ function __complete_firewall_rule_numbers() {
     local rules_array=()
     readarray -t rules_array < <(printf '%s' "${raw_data}")
     readonly rules_array
-    
+
     __debug_msg "$( __debug_print_array 'rules_array' rules_array )"
 
     # short (only-numbers) and long (with description) versions:
@@ -1217,7 +1217,7 @@ function __complete_device_ids() {
     local count_completions
     count_completions="$( __count_completions_for_array result_device_ids_short_array )"
     readonly count_completions
-    
+
     __debug_msg "count_completions=\"${count_completions}\""
 
     if (( count_completions <= 1 )); then
@@ -1325,7 +1325,7 @@ function __complete_array() {
 
     # local full_comp=( $(compgen -W "${options}" -- "${QB_cur}") ) #TODO: use something like that?
     __debug_msg "$( __debug_print_array 'full_comp' full_comp )"
-    
+
     __replace_cur_and_add_to_compreply full_comp
 }
 
@@ -1354,10 +1354,10 @@ function __complete_string() {
 
 
 function __replace_cur_and_add_to_compreply() {
-    
+
     # passing arrays is tricky in Bash, we must use different name for variable (not full_comp)
     local -r -n full_comp_arr="${1}"
-    
+
     # We need to cut left QB_real_cur and insert left the QB_orig_cur,
     # so that BASH will complete it properly even with separators like '':'' and '='
 
@@ -2394,7 +2394,7 @@ function _qvm_backup() {
     __complete_all_starting_flags_if_needed "${flags_require_zero} ${flags_require_one}" && return 0
 
     if (( QB_alone_args_count == 0 )); then
-    
+
         # fist argument is meant to be an directory
         if __was_flag_used '--dest-vm' || __was_flag_used '-d'; then
             # no completion for directories in some dest-vm except dom0
@@ -2403,19 +2403,19 @@ function _qvm_backup() {
             if [[ "${dest_vm}" == '' ]]; then
                 dest_vm="$( __get_following_arg '-d' )"
             fi
-            
+
             if [[ "${dest_vm}" == 'dom0' ]]; then
                 __run_filedir
                 return 0
             fi
-            
+
             return 0
         else
             # provide directory completion if dest-vm was not provided
             __run_filedir
             return 0
         fi
-        
+
     elif (( QB_alone_args_count > 0 )); then
         # every other argument is meant to be a qube
         __complete_qubes_list 'all'
@@ -2427,7 +2427,7 @@ function _qvm_backup() {
 function _qvm_backup_restore() {
 
     local -r flags_require_one='--exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
-    local -r flags_require_zero='--verify-only --skip-broken --ignore-missing --skip-conflicting --rename-conflicting --skip-dom0-home 
+    local -r flags_require_zero='--verify-only --skip-broken --ignore-missing --skip-conflicting --rename-conflicting --skip-dom0-home
     --ignore-username-mismatch --ignore-size-limit --paranoid-mode --plan-b --location-is-service --auto-close'
     local -r backup_compression_filters='gzip bzip2 xz'
 
@@ -2461,7 +2461,7 @@ function _qvm_backup_restore() {
     __complete_all_starting_flags_if_needed "${flags_require_zero} ${flags_require_one}" && return 0
 
     if (( QB_alone_args_count == 0 )); then
-    
+
         # fist argument is meant to be an directory
         if __was_flag_used '--dest-vm' || __was_flag_used '-d'; then
             # no completion for directories in some dest-vm except dom0
@@ -2470,19 +2470,19 @@ function _qvm_backup_restore() {
             if [[ "${dest_vm}" == '' ]]; then
                 dest_vm="$( __get_following_arg '-d' )"
             fi
-            
+
             if [[ "${dest_vm}" == 'dom0' ]]; then
                 __run_filedir
                 return 0
             fi
-            
+
             return 0
         else
             # provide directory completion if dest-vm was not provided
             __run_filedir
             return 0
         fi
-        
+
     elif (( QB_alone_args_count > 0 )); then
         # every other argument is meant to be a qube
         # TODO: not clear if this completion should be provided here, because it shows existing qubes, not ones inside the backup
@@ -3523,7 +3523,7 @@ function _qubes_dom0_update() {
 
     # get action (command) to pass to dnf
     local -r action_flag_name='--action'
-    
+
     local -r max_arg_index="${#QB_full_line_args[@]}"
     (( max_arg_index-- ))   # because we want the next argument after the flag
 
@@ -3765,12 +3765,12 @@ function __qubes_dom0_update_run_dnf_completion() {
     # It also is more flexible as it allows user to use custom dnf completion.
 
     local -r dnf_cmd='dnf'
-    
+
     # Existing completion specifications in a way that allows them to be reused as input
     local cspec
     cspec="$( complete -p "${dnf_cmd}" 2>/dev/null )"
     __debug_msg "cspec 1 = \"${cspec}\""
-    
+
     # If we have no completion for dnf yet, try to load it
     if [[ "${cspec}" == '' ]]; then
         _completion_loader "${dnf_cmd}"
@@ -3782,12 +3782,12 @@ function __qubes_dom0_update_run_dnf_completion() {
     if [[ "${cspec}" == '' ]]; then
         return
     fi
-    
+
     if [[ "${cspec}" =~ [[:blank:]]-F[[:blank:]] ]]; then
-        
+
         # Completion uses `complete -F function dnf`
         __debug_msg "Completion uses complete -F function dnf"
-        
+
         # Crop out function name:
         local func_name="${cspec#*-F[[:blank:]]}"
         func_name="${func_name%%[[:blank:]]*}"
@@ -3803,12 +3803,12 @@ function __qubes_dom0_update_run_dnf_completion() {
 
         # NOTE: We have no need to restore initial compopt options
         # So, $cspec can have -o/+o options, we do not care,
-        # because we passed all control to dnf completion and 
+        # because we passed all control to dnf completion and
         # will not act nor process after.
     else
-        
+
         __debug_msg "Completion uses complete <anything> dnf"
-        
+
         # Crop out string between 'complete' and 'dnf' with any options
         # and eval it to get output from compgen for any possible args inside ${cspec}
         cspec="${cspec#complete[[:blank:]]}"
@@ -3838,17 +3838,17 @@ function main() {
 
     local supported_command
     for supported_command in "${SUPPORTED_COMMANDS_LIST[@]}"; do
-    
+
         if [[ -x /usr/bin/${supported_command} ]] || (( QB_DEBUG_MODE == 1 )) ; then
-            
+
             local command_processor
             command_processor="$(echo "_${supported_command}" | tr '-' '_')"
-            
+
             if [[ $( type -t "${command_processor}" ) == function ]]; then
                 complete -F "${command_processor}" "${supported_command}"
             fi
         fi
-        
+
     done
 
 }
