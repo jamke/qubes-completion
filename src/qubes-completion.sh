@@ -228,6 +228,7 @@ function __debug_init() {
 
     local script_dir
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)"
+    readonly script_dir
 
     QB_DEBUG_OVERRIDE_FILE="${script_dir}/debug_overrides.sh"
 
@@ -246,7 +247,7 @@ function __debug_msg() {
     fi
 
     # NOTE: file for "tail -f" monitoring
-    local filename="${QB_DEBUG_LOG_PATH}"
+    local -r filename="${QB_DEBUG_LOG_PATH}"
 
     echo "${1}" >> "${filename}"
 }
@@ -255,8 +256,8 @@ function __debug_msg() {
 # Log an array to the log file if debug mode is on (similar to declare -p but cleaner and works with refs)
 function __debug_print_array() {
 
-    local array_name="${1}"
-    local -n array_to_print="${2}"
+    local -r array_name="${1}"
+    local -r -n array_to_print="${2}"
     echo -n "${array_name}=("
 
     local i
@@ -288,8 +289,8 @@ function __debug_log_env() {
 
 function __debug_log_start_of_init_qubes_completion() {
 
-    local flags_require_one="${1}"
-    local flags_require_multiple="${2}"
+    local -r flags_require_one="${1}"
+    local -r flags_require_multiple="${2}"
 
     __debug_msg ''
     __debug_msg '========================================================'
@@ -311,7 +312,7 @@ function __debug_log_start_of_init_qubes_completion() {
 function __debug_log_after_modified_init_completion() {
 
     # shellcheck disable=SC2034 # Shellcheck does not understand usage of passing arrays
-    local -n arr_words="${1}"
+    local -r -n arr_words="${1}"
 
     __debug_msg '--------------------------------------------------------'
     __debug_msg "* After calling \"_init_completion -n ':='\":"
@@ -377,7 +378,7 @@ function __need_flags() {
 
 function __was_flag_used() {
 
-    local arg_to_find="${1}"
+    local -r arg_to_find="${1}"
 
     local i
     for (( i=0; i < "${#QB_flag_args[@]}"; i++ )); do
@@ -392,9 +393,9 @@ function __was_flag_used() {
 
 function __get_following_arg() {
 
-    local arg_to_find="${1}"
+    local -r arg_to_find="${1}"
 
-    local max_arg_index="${#QB_all_args[@]}"
+    local -r max_arg_index="${#QB_all_args[@]}"
     (( max_arg_index-- ))   # because we want the next argument after the arg_to_find
 
     local i
@@ -443,10 +444,10 @@ function __reset_result_variables() {
 
 function __parse_required_one() {
 
-    local cur_word="${1}"
+    local -r cur_word="${1}"
 
     # state
-    local before_cursor="${2}"
+    local -r before_cursor="${2}"
 
     QB_full_line_args+=( "${cur_word}" )
     if (( before_cursor == 1)); then
@@ -458,10 +459,10 @@ function __parse_required_one() {
 
 function __parse_require_multiple() {
 
-    local cur_word="${1}"
+    local -r cur_word="${1}"
 
     # state
-    local before_cursor="${2}"
+    local -r before_cursor="${2}"
 
     QB_full_line_args+=( "${cur_word}" )
     if (( before_cursor == 1)); then
@@ -472,10 +473,10 @@ function __parse_require_multiple() {
 
 function __parse_flags_stopper() {
 
-    local cur_word="${1}"
+    local -r cur_word="${1}"
 
     # state
-    local before_cursor="${2}"
+    local -r before_cursor="${2}"
 
     QB_full_line_args+=( "${cur_word}" )
     if (( before_cursor == 1)); then
@@ -488,19 +489,19 @@ function __parse_flags_stopper() {
 
 function __parse_flag() {
 
-    local cur_word="${1}"
+    local -r cur_word="${1}"
 
     # state
-    local flags_require_one="${2}"
-    local flags_require_multiple="${3}"
-    local before_cursor="${4}"
-    local is_current_cursor="${5}"
+    local -r flags_require_one="${2}"
+    local -r flags_require_multiple="${3}"
+    local -r before_cursor="${4}"
+    local -r is_current_cursor="${5}"
 
     # try to split it with '=', maybe it already has a value
     if [[ "${cur_word}" == *=* ]]; then
 
-        local flag_name="${cur_word%%=*}"
-        local flag_value="${cur_word#*=}"
+        local -r flag_name="${cur_word%%=*}"
+        local -r flag_value="${cur_word#*=}"
         # __debug_msg "flag_name=\"${flag_name}\""
         # __debug_msg "flag_value=\"${flag_value}\""
 
@@ -524,9 +525,9 @@ function __parse_flag() {
 
     else
         # remove trailing = if needed
-        # local flag_name="${cur_word%=}"
+        # local -r flag_name="${cur_word%=}"
 
-        local flag_name="${cur_word}"
+        local -r flag_name="${cur_word}"
 
         # __debug_msg "flag_name=\"${flag_name}\""
 
@@ -556,11 +557,11 @@ function __parse_flag() {
 
 function __parse_standalone() {
 
-    local cur_word="${1}"
+    local -r cur_word="${1}"
     # state
-    local flags_require_one="${2}"
-    local flags_require_multiple="${3}"
-    local before_cursor="${4}"
+    local -r flags_require_one="${2}"
+    local -r flags_require_multiple="${3}"
+    local -r before_cursor="${4}"
 
     QB_full_line_args+=( "${cur_word}" )
     if (( before_cursor == 1)); then
@@ -574,11 +575,11 @@ function __parse_standalone() {
 
 function __parse_and_fix_cur() {
 
-    local orig_cur="${1}"
+    local -r orig_cur="${1}"
     # state
-    local flags_require_one="${2}"
-    local flags_require_multiple="${3}"
-    local allow_flags_in_cur="${4}"
+    local -r flags_require_one="${2}"
+    local -r flags_require_multiple="${3}"
+    local -r allow_flags_in_cur="${4}"
 
     # __debug_msg '--------------------------------------------------------'
     # __debug_msg '* Fixing cur, getting QB_cur from cur:'
@@ -589,17 +590,15 @@ function __parse_and_fix_cur() {
     # or something complicated like: --flag=key=value=something=else
 
     # strip quotes at the beginning, let __complete_string() worry about it
-    orig_cur="$( __strip_quotes_on_left "${orig_cur}" )"
+    QB_cur="$( __strip_quotes_on_left "${orig_cur}" )"
 
-    QB_cur="${orig_cur}"
-
-    if (( allow_flags_in_cur == 1 )) && [[ "${orig_cur}" == -* ]]; then
+    if (( allow_flags_in_cur == 1 )) && [[ "${QB_cur}" == -* ]]; then
         # a flag argument
         # try to split it with = char, maybe it has a required value already
-        if [[ "${orig_cur}" == *=* ]]; then
+        if [[ "${QB_cur}" == *=* ]]; then
 
-            local flag_name="${orig_cur%%=*}"
-            local flag_value="${orig_cur#*=}"
+            local -r flag_name="${QB_cur%%=*}"
+            local -r flag_value="${QB_cur#*=}"
 
             QB_prev_flag="${flag_name}"
 
@@ -689,11 +688,11 @@ function __init_qubes_completion() {
 
     # List of arguments that require value after them
     # like --exclude=work or --exclude=work
-    local flags_require_one="${1}"
+    local -r flags_require_one="${1}"
 
     # List of arguments that require multiple values till some flag
     # like --tags tag1 tag2 tag3 --other-flag
-    local flags_require_multiple="${2}"
+    local -r flags_require_multiple="${2}"
 
     __debug_log_start_of_init_qubes_completion "${flags_require_one}" "${flags_require_multiple}"
 
@@ -854,8 +853,8 @@ function __find_original_really_completing() {
 
 function __is_argument_in_list_string() {
 
-    local needle="${1}"
-    local list_string="${2}"
+    local -r needle="${1}"
+    local -r list_string="${2}"
 
     if [[ " ${list_string} " == *" ${needle} "* ]]; then
         return 0
@@ -867,9 +866,9 @@ function __is_argument_in_list_string() {
 
 function __get_firewall_rules_raw_data() {
 
-    local qube="${1}"
+    local -r qube="${1}"
 
-    local command_to_run="${QVMTOOL_QVM_FIREWALL}"
+    local -r command_to_run="${QVMTOOL_QVM_FIREWALL}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
         __debug_msg "No command to run: ${command_to_run}"
@@ -886,9 +885,9 @@ function __get_firewall_rules_raw_data() {
 
 function __get_qube_tags() {
 
-    local qube="${1}"
+    local -r qube="${1}"
 
-    local command_to_run="${QVMTOOL_QVM_TAGS}"
+    local -r command_to_run="${QVMTOOL_QVM_TAGS}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
         __debug_msg "No command to run: ${command_to_run}"
@@ -901,10 +900,10 @@ function __get_qube_tags() {
 
 function __get_device_ids_raw_data() {
 
-    local device_class="${1}"
-    local qube="${2}"
+    local -r device_class="${1}"
+    local -r qube="${2}"
 
-    local command_to_run="${QVMTOOL_QVM_DEVICE}"
+    local -r command_to_run="${QVMTOOL_QVM_DEVICE}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
         __debug_msg "No command to run: ${command_to_run}"
@@ -921,10 +920,10 @@ function __get_device_ids_raw_data() {
 
 function __get_qubes_list_raw_data() {
 
-    local need_state_column="${1}"
-    local need_class_column="${2}"
+    local -r need_state_column="${1}"
+    local -r need_class_column="${2}"
 
-    local command_to_run="${QVMTOOL_QVM_LS}"
+    local -r command_to_run="${QVMTOOL_QVM_LS}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
         __debug_msg "No command to run: ${command_to_run}"
@@ -960,11 +959,11 @@ function __get_qubes_list() {
     # We only rely on the first column to be a qube name,
     # and optional second and third - its state and class (type)
 
-    local state="${1}"
-    local class="${2}"
-    local excluded_regexp="${3}"
+    local -r state="${1}"
+    local -r class="${2}"
+    local -r excluded_regexp="${3}"
 
-    local delim_char='|'
+    local -r delim_char='|'
 
     local state_regex=''
     local need_state_column='1'
@@ -1042,13 +1041,16 @@ function __format_firewall_rule_desc() {
 
 function __complete_firewall_rule_numbers() {
 
-    local qube="${1}"
+    local -r qube="${1}"
 
     local raw_data
     raw_data="$( __get_firewall_rules_raw_data "${qube}" )"
+    readonly raw_data
 
     local rules_array=()
     readarray -t rules_array < <(printf '%s' "${raw_data}")
+    readonly rules_array
+    
     __debug_msg "$( __debug_print_array 'rules_array' rules_array )"
 
     # short (only-numbers) and long (with description) versions:
@@ -1058,7 +1060,7 @@ function __complete_firewall_rule_numbers() {
     # NOTE: we can avoid creating $only_numbers_rules_array and use index of
     # $with_desc_rules_array, but for code consistency we better not
     local i
-    local rules_array_count="${#rules_array[@]}"
+    local -r rules_array_count="${#rules_array[@]}"
     local table_header=''
     local formatted_rule_desc=''
     for (( i=0; i < rules_array_count; i++ )); do
@@ -1092,7 +1094,7 @@ function __complete_firewall_rule_numbers() {
 
     local count_completions
     count_completions="$( __count_completions_for_array only_numbers_rules_array )"
-    # count_completions="$( __count_completions_for_string "${only_numbers_rules_array[*]}" )"
+    readonly count_completions
 
     __debug_msg "count_completions=\"${count_completions}\""
 
@@ -1116,7 +1118,7 @@ function __complete_firewall_rule_numbers() {
 
 function __get_pools_list_raw_data() {
 
-    local command_to_run="${QVMTOOL_QVM_POOL}"
+    local -r command_to_run="${QVMTOOL_QVM_POOL}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
         __debug_msg "No command to run: ${command_to_run}"
@@ -1134,6 +1136,7 @@ function __get_pools_list() {
     result_pools_list="$( __get_pools_list_raw_data \
         | tail --lines=+2 \
         | cut --fields=1 --delimiter=' ')"
+    readonly result_pools_list
 
     echo "${result_pools_list}"
 }
@@ -1143,6 +1146,7 @@ function __complete_pools_list() {
 
     local result_pools_list
     result_pools_list="$( __get_pools_list )"
+    readonly result_pools_list
 
     __complete_string "${result_pools_list}"
 }
@@ -1150,8 +1154,8 @@ function __complete_pools_list() {
 
 function __complete_device_ids() {
 
-    local device_class="${1}"
-    local qube="${2}"
+    local -r device_class="${1}"
+    local -r qube="${2}"
 
     # NOTE: we do not need to skip the header line of the qvm-device * list output
     # because is is not printed if the output is a pipe (not-obvious thing)
@@ -1187,27 +1191,33 @@ function __complete_device_ids() {
     if [[ "${qube}" != '' ]]; then
         raw_data="$( echo "${raw_data}" | grep --invert-match --basic-regexp "^${qube}:.*" )"
     fi
+    readonly raw_data
 
     local data_array=()
     readarray -t data_array < <(printf '%s' "${raw_data}")
     __debug_msg "$( __debug_print_array 'data_array' data_array )"
+    readonly data_array
 
     # short and long (with description) strings for completion:
     local result_device_ids_short_array=()
     local result_device_ids_long_array=()
 
     local i
-    local data_array_count="${#data_array[@]}"
+    local -r data_array_count="${#data_array[@]}"
     for (( i=0; i < data_array_count; i++ )); do
         result_device_ids_short_array+=( "$( echo "${data_array[${i}]}" | cut --fields=1 --delimiter=' ' )" )
         result_device_ids_long_array+=( "${data_array[${i}]}" )
     done
+    readonly result_device_ids_short_array
+    readonly result_device_ids_long_array
 
     __debug_msg "$( __debug_print_array 'result_device_ids_short_array' result_device_ids_short_array )"
     __debug_msg "$( __debug_print_array 'result_device_ids_long_array' result_device_ids_long_array )"
 
     local count_completions
     count_completions="$( __count_completions_for_array result_device_ids_short_array )"
+    readonly count_completions
+    
     __debug_msg "count_completions=\"${count_completions}\""
 
     if (( count_completions <= 1 )); then
@@ -1224,8 +1234,8 @@ function __complete_device_ids() {
 
 function __complete_qubes_list() {
 
-    local state="${1}"
-    local type="${2}"
+    local -r state="${1}"
+    local -r type="${2}"
 
     local qubes
     qubes="$( __get_qubes_list "${state}" "${type}" '^$' )"
@@ -1236,8 +1246,8 @@ function __complete_qubes_list() {
 
 function __complete_qubes_list_without_dom0() {
 
-    local state="${1}"
-    local type="${2}"
+    local -r state="${1}"
+    local -r type="${2}"
 
     local qubes
     qubes="$( __get_qubes_list "${state}" "${type}" '^dom0$' )"
@@ -1248,7 +1258,7 @@ function __complete_qubes_list_without_dom0() {
 
 function __complete_tags_of_qube() {
 
-    local qube="${1}"
+    local -r qube="${1}"
 
     local qube_tags
     qube_tags="$( __get_qube_tags "${qube}" )"
@@ -1311,17 +1321,18 @@ function __complete_array() {
             full_comp+=( "${comp_str}" )
         fi
     done
+    readonly full_comp
 
     # local full_comp=( $(compgen -W "${options}" -- "${QB_cur}") ) #TODO: use something like that?
     __debug_msg "$( __debug_print_array 'full_comp' full_comp )"
-
+    
     __replace_cur_and_add_to_compreply full_comp
 }
 
 
 function __complete_string() {
 
-    local options="${1}"
+    local -r options="${1}"
 
     __debug_msg '--------------------------------------------------------'
     __debug_msg '* Called __complete_string()'
@@ -1334,8 +1345,8 @@ function __complete_string() {
     # TODO: consider case with quotes at the beginning? Or it all will work by itself?
 
     # original completion based on "${QB_real_cur}"
-    local full_comp=( $(compgen -W "${options}" -- "${QB_real_cur}") )
-    # local full_comp=( $(compgen -W "${options}" -- "${QB_cur}") ) #TODO: use something like that?
+    local -r full_comp=( $(compgen -W "${options}" -- "${QB_real_cur}") )
+    # local -r full_comp=( $(compgen -W "${options}" -- "${QB_cur}") ) #TODO: use something like that?
     __debug_msg "$( __debug_print_array 'full_comp' full_comp )"
 
     __replace_cur_and_add_to_compreply full_comp
@@ -1345,7 +1356,7 @@ function __complete_string() {
 function __replace_cur_and_add_to_compreply() {
     
     # passing arrays is tricky in Bash, we must use different name for variable (not full_comp)
-    local -n full_comp_arr="${1}"
+    local -r -n full_comp_arr="${1}"
     
     # We need to cut left QB_real_cur and insert left the QB_orig_cur,
     # so that BASH will complete it properly even with separators like '':'' and '='
@@ -1354,7 +1365,7 @@ function __replace_cur_and_add_to_compreply() {
     local converted_comp=()
 
     local i
-    local full_comp_arr_count="${#full_comp_arr[@]}"
+    local -r full_comp_arr_count="${#full_comp_arr[@]}"
     for (( i=0; i < full_comp_arr_count; i++ )); do
 
         # __debug_msg "    => full_comp_arr[${i}] = \"${full_comp_arr[${i}]}\""
@@ -1390,6 +1401,7 @@ function __complete_general_firewall_rule() {
         option_name="$( __strip_quotes "${option_name}" )"
         # __debug_msg "option_name = ${option_name}"
         # option_value="${QB_cur#*=}"
+        readonly option_name
 
         case "${option_name}" in
             action)
@@ -1439,7 +1451,7 @@ function __complete_general_firewall_rule() {
 
 function __complete_all_flags_if_needed() {
 
-    local flags="${1}"
+    local -r flags="${1}"
 
     if __need_flags ; then
         __complete_string "${flags}"
@@ -1453,7 +1465,7 @@ function __complete_all_flags_if_needed() {
 
 function __complete_all_starting_flags_if_needed() {
 
-    local flags="${1}"
+    local -r flags="${1}"
 
     # flags should be used only before qubes names and other standalone args
     if (( QB_alone_args_count == 0 )); then
@@ -1472,7 +1484,7 @@ function _qvm_ls() {
 
     case "${QB_prev_flag}" in
         -o | --format)
-            local qvm_ls_formats='disk full kernel network simple'
+            local -r qvm_ls_formats='disk full kernel network simple'
             __complete_string "${qvm_ls_formats}"
             return 0
             ;;
@@ -1481,15 +1493,16 @@ function _qvm_ls() {
             local last_qube_name_typing="${QB_cur##*,}"
             # strip quotes at the beginning
             last_qube_name_typing="$( __strip_quotes_on_left "${last_qube_name_typing}" )"
+            readonly last_qube_name_typing
 
             __debug_msg "last_qube_name_typing = \"${last_qube_name_typing}\""
 
             # NOTE: qvm-ls has a bug that it does not provide NAME in a list --help-columns nor in --help!
             # cSpell:disable-next-line
-            local qvm_ls_columns='NAME CLASS DISK FLAGS GATEWAY MEMORY PRIV-CURR PRIV-MAX PRIV-USED ROOT-CURR ROOT-MAX ROOT-USED STATE'
+            local -r qvm_ls_columns='NAME CLASS DISK FLAGS GATEWAY MEMORY PRIV-CURR PRIV-MAX PRIV-USED ROOT-CURR ROOT-MAX ROOT-USED STATE'
 
             # NOTE: we save the original QB_real_cur value and return it back, should work even without it
-            local saved_QB_real_cur="${QB_real_cur}"     # save original QB_real_cur just in case
+            local -r saved_QB_real_cur="${QB_real_cur}"     # save original QB_real_cur just in case
             #
                 # We have to manually set QB_real_cur, because comma is non-standard separator
                 QB_real_cur="${last_qube_name_typing}"
@@ -1516,7 +1529,7 @@ function _qvm_ls() {
             ;;
     esac
 
-    local flags='--help-columns --help-formats --all \
+    local -r flags='--help-columns --help-formats --all \
         --exclude --format -o --fields -O --tags --running --paused --halted \
         --raw-data --raw-list --tree -t --disk -d --network -n --kernel -k \
         --spinner --no-spinner'
@@ -1576,7 +1589,7 @@ function _qvm_create() {
     esac
 
     # NOTE: skipping --prop (short version of --property)
-    local flags='--class -C --property -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R --standalone --disp --help-classes --force-root'
+    local -r flags='--class -C --property -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R --standalone --disp --help-classes --force-root'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     # List qubes
@@ -1622,7 +1635,7 @@ function _qvm_clone() {
     esac
 
 
-    local flags='--class -C --ignore-errors -p -P --pool'
+    local -r flags='--class -C --ignore-errors -p -P --pool'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     # List qubes (up to 2)
@@ -1666,7 +1679,7 @@ function _qvm_start() {
             ;;
     esac
 
-    local flags='--skip-if-running --all --exclude --drive --hddisk --cdrom --install-windows-tools'
+    local -r flags='--skip-if-running --all --exclude --drive --hddisk --cdrom --install-windows-tools'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
 
@@ -1697,7 +1710,7 @@ function _qvm_shutdown() {
             ;;
     esac
 
-    local flags='--all --exclude --wait --timeout --force --dry-run'
+    local -r flags='--all --exclude --wait --timeout --force --dry-run'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     # NOTE: provide qube names indefinitely as the qvm-shutdown --help says
@@ -1724,7 +1737,7 @@ function _qvm_kill() {
             ;;
     esac
 
-    local flags='--all --exclude'
+    local -r flags='--all --exclude'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list_without_dom0 'run_and_transient'
@@ -1748,7 +1761,7 @@ function _qvm_pause() {
             ;;
     esac
 
-    local flags='--all --exclude'
+    local -r flags='--all --exclude'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     # NOTE: provide qube names indefinitely as the qvm-pause --help says
@@ -1775,7 +1788,7 @@ function _qvm_unpause() {
             ;;
     esac
 
-    local flags='--all --exclude'
+    local -r flags='--all --exclude'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     # NOTE: provide qube names indefinitely as the qvm-unpause --help says
@@ -1825,7 +1838,7 @@ function _qvm_tags() {
         return 0
     fi
 
-    local flags=''
+    local -r flags=''
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     if (( QB_alone_args_count == 0 )); then
@@ -1851,7 +1864,7 @@ function _qvm_remove() {
             ;;
     esac
 
-    local flags='--all --exclude --force -f --force-root --just-db'
+    local -r flags='--all --exclude --force -f --force-root --just-db'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list 'halted'
@@ -1862,24 +1875,27 @@ function _qvm_remove() {
 
 function __prepare_device_completion() {
 
-    local device_class="${1}"
-    local shift_args="${2}"
+    local -r device_class="${1}"
+    local -r shift_args="${2}"
 
     local command=''
     if (( QB_alone_args_count >= 1 - shift_args )); then
         command="${QB_alone_args[ (( 1 - shift_args )) ]}"
     fi
+    readonly command
 
     local qube_name=''
     if (( QB_alone_args_count >= 2 - shift_args )); then
         qube_name="${QB_alone_args[ (( 2 - shift_args )) ]}"
     fi
+    readonly qube_name
 
     # BACKEND:DEVICE_ID or another qube name in case of list COMMAND
     local extra_argument=''
     if (( QB_alone_args_count >= 3 - shift_args )); then
         extra_argument="${QB_alone_args[ (( 3 - shift_args )) ]}"
     fi
+    readonly extra_argument
 
     __process_device_completion "${device_class}" "${command}" "${qube_name}" "${extra_argument}"
 
@@ -1889,10 +1905,10 @@ function __prepare_device_completion() {
 
 function __process_device_completion() {
 
-    local device_class="${1}"
-    local command="${2}"
-    local qube_name="${3}"
-    local extra_argument="${4}"
+    local -r device_class="${1}"
+    local -r command="${2}"
+    local -r qube_name="${3}"
+    local -r extra_argument="${4}"
 
     # Stop completion is --list-device-classes was used and device_class is known
     __was_flag_used '--list-device-classes' && return 0
@@ -1914,7 +1930,7 @@ function __process_device_completion() {
         # $ qvm-device usb list --list-device-classes)
         # Even `man qvm-device` and `qvm-device --help` provide these two ways.
 
-        local flags='--list-device-classes'
+        local -r flags='--list-device-classes'
         __complete_all_flags_if_needed "${flags}" && return 0
 
         # Short duplicate versions 'ls l at a dt d' are not provided
@@ -1939,7 +1955,7 @@ function __process_device_completion() {
                         ;;
                 esac
 
-                local flags='--all --exclude'
+                local -r flags='--all --exclude'
                 __complete_all_flags_if_needed "${flags}" && return 0
             fi
 
@@ -1970,8 +1986,9 @@ function __process_device_completion() {
 
                                     local option_name="${QB_cur%%=*}"
                                     option_name="$( __strip_quotes "${option_name}" )"
-                                    # __debug_msg "option_name = ${option_name}"
                                     # local option_value="${QB_cur#*=}"
+                                    readonly option_name
+                                    # __debug_msg "option_name = ${option_name}"
 
                                     case "${option_name}" in
                                         frontend-dev)
@@ -2004,8 +2021,9 @@ function __process_device_completion() {
 
                                     local option_name="${QB_cur%%=*}"
                                     option_name="$( __strip_quotes "${option_name}" )"
-                                    # __debug_msg "option_name = ${option_name}"
                                     # local option_value="${QB_cur#*=}"
+                                    readonly option_name
+                                    # __debug_msg "option_name = ${option_name}"
 
                                     case "${option_name}" in
                                         no-strict-reset)
@@ -2038,7 +2056,7 @@ function __process_device_completion() {
                         ;;
                 esac
 
-                local flags='--ro --persistent -p --option -o'
+                local -r flags='--ro --persistent -p --option -o'
                 __complete_all_flags_if_needed "${flags}" && return 0
 
                 if __was_flag_used '--persistent'; then
@@ -2100,14 +2118,14 @@ function _qvm_device() {
         # NOTE: qvm-device --list-device-classes is not working, at least in R4.1,
         # but something like "qvm-device --list-device-classes usb" works and
         # is allowed according to --help (but not man)
-        local flags='--list-device-classes'
+        local -r flags='--list-device-classes'
         __complete_all_flags_if_needed "${flags}" && return 0
 
         __complete_string "${QVM_DEVICE_CLASSES}"
         return 0
     fi
 
-    local device_class="${QB_alone_args[0]}"
+    local -r device_class="${QB_alone_args[0]}"
 
     __prepare_device_completion "${device_class}" '0'
     res="$?"
@@ -2149,20 +2167,20 @@ function _qvm_prefs() {
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
     # cSpell:disable
-    local vm_properties_bool='autostart debug template_for_dispvms include_in_backups provides_network installed_by_rpm updateable'
-    local vm_properties_qube='audiovm default_dispvm netvm template guivm management_dispvm'
-    local vm_properties_string='default_user ip kernel kernelopts mac maxmem memory name qrexec_timeout stubdom_mem stubdom_xid vcpus backup_timestamp dns gateway gateway6 icon ip6 keyboard_layout qid shutdown_timeout start_time uuid visible_gateway visible_gateway6 visible_ip visible_ip6 visible_netmask xid'
-    local vm_properties_custom='label virt_mode klass'
-    local vm_properties_all="${vm_properties_bool} ${vm_properties_qube} ${vm_properties_string} ${vm_properties_custom}"
-    local vm_properties_dom0='default_dispvm icon include_in_backups keyboard_layout klass label name qid updateable uuid'
+    local -r vm_properties_bool='autostart debug template_for_dispvms include_in_backups provides_network installed_by_rpm updateable'
+    local -r vm_properties_qube='audiovm default_dispvm netvm template guivm management_dispvm'
+    local -r vm_properties_string='default_user ip kernel kernelopts mac maxmem memory name qrexec_timeout stubdom_mem stubdom_xid vcpus backup_timestamp dns gateway gateway6 icon ip6 keyboard_layout qid shutdown_timeout start_time uuid visible_gateway visible_gateway6 visible_ip visible_ip6 visible_netmask xid'
+    local -r vm_properties_custom='label virt_mode klass'
+    local -r vm_properties_all="${vm_properties_bool} ${vm_properties_qube} ${vm_properties_string} ${vm_properties_custom}"
+    local -r vm_properties_dom0='default_dispvm icon include_in_backups keyboard_layout klass label name qid updateable uuid'
 
-    local vm_properties_values_generic_bool='True true on 1 False false off 0'
-    local vm_properties_values_for_virt_mode='hvm pv pvh'
-    local vm_properties_values_for_klass="${QVM_VM_CLASSES}"
+    local -r vm_properties_values_generic_bool='True true on 1 False false off 0'
+    local -r vm_properties_values_for_virt_mode='hvm pv pvh'
+    local -r vm_properties_values_for_klass="${QVM_VM_CLASSES}"
     # cSpell:enable
 
     # NOTE: --get --set -g -s are deprecated and ignored
-    local flags='--force-root --help-properties --hide-default'
+    local -r flags='--force-root --help-properties --hide-default'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     if (( QB_alone_args_count == 0 )); then
@@ -2176,7 +2194,7 @@ function _qvm_prefs() {
         __was_flag_used "--help-properties" && return 0
 
         # or provide full properties list otherwise
-        local qube="${QB_alone_args[0]}"
+        local -r qube="${QB_alone_args[0]}"
         if [[ "${qube}"  == 'dom0' ]]; then
             # for dom0
             __complete_string "${vm_properties_dom0}"
@@ -2194,7 +2212,7 @@ function _qvm_prefs() {
         __complete_string '--default'
 
         # we have a property that defines type
-        local property="${QB_alone_args[1]}"
+        local -r property="${QB_alone_args[1]}"
 
         case "${property}" in
             label)
@@ -2234,9 +2252,9 @@ function _qvm_features() {
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
     # cSpell:disable-next-line
-    local vm_common_features='gui gui-emulated gui-default-allow-utf8-titles input-dom0-proxy qrexec rpc-clipboard no-monitor-layout internal appmenus-legacy appmenus-dispvm qubes-firewall updates-available video-model net.fake-ip net.fake-gateway net.fake-netmask pci-e820-host linux-stubdom tag-created-vm-with set-created-guivm check-updates menu-items qubesmanager.maxmem_value servicevm service.clocksync service.qubes-update-check default-menu-items netvm-menu-items os vmexec template-name template-epoch template-version template-release template-reponame template-buildtime template-installtime template-license template-url template-summary template-description supported-service.guivm-gui-agent supported-service.qubes-update-check supported-service.qubes-updates-proxy supported-service.qubes-firewall supported-service.qubes-network supported-service.clocksync supported-service.updates-proxy-setup supported-service.meminfo-writer audio-model stubdom-qrexec timezone timer-period out.latency out.buffer-length'
+    local -r vm_common_features='gui gui-emulated gui-default-allow-utf8-titles input-dom0-proxy qrexec rpc-clipboard no-monitor-layout internal appmenus-legacy appmenus-dispvm qubes-firewall updates-available video-model net.fake-ip net.fake-gateway net.fake-netmask pci-e820-host linux-stubdom tag-created-vm-with set-created-guivm check-updates menu-items qubesmanager.maxmem_value servicevm service.clocksync service.qubes-update-check default-menu-items netvm-menu-items os vmexec template-name template-epoch template-version template-release template-reponame template-buildtime template-installtime template-license template-url template-summary template-description supported-service.guivm-gui-agent supported-service.qubes-update-check supported-service.qubes-updates-proxy supported-service.qubes-firewall supported-service.qubes-network supported-service.clocksync supported-service.updates-proxy-setup supported-service.meminfo-writer audio-model stubdom-qrexec timezone timer-period out.latency out.buffer-length'
 
-    local flags='--unset --default --delete --D'
+    local -r flags='--unset --default --delete --D'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     if (( QB_alone_args_count == 0 )); then
@@ -2265,7 +2283,6 @@ function _qvm_volume() {
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-
     if (( QB_alone_args_count == 0 )); then
         __complete_string 'list info config resize revert import'
         return 0
@@ -2273,8 +2290,7 @@ function _qvm_volume() {
 
     if (( QB_alone_args_count >= 1 )); then
 
-        local command="${QB_alone_args[0]}"
-
+        local -r command="${QB_alone_args[0]}"
         __debug_msg "command = \"${command}\""
 
         case "${command}" in
@@ -2315,7 +2331,7 @@ function _qvm_volume() {
 
         esac
 
-        # local flags='--force-root --force-rpc --regenerate-only'
+        # local -r flags='--force-root --force-rpc --regenerate-only'
         # __complete_all_starting_flags_if_needed "${flags}" && return 0
 
 
@@ -2336,9 +2352,9 @@ function _qvm_volume() {
 
 function _qvm_backup() {
 
-    local flags_require_one='--profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
-    local flags_require_zero='--yes -y --encrypt -e  --compress -z --no-compress'
-    local backup_compression_filters='gzip bzip2 xz'
+    local -r flags_require_one='--profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
+    local -r flags_require_zero='--yes -y --encrypt -e  --compress -z --no-compress'
+    local -r backup_compression_filters='gzip bzip2 xz'
 
     __init_qubes_completion "${flags_require_one}" || return 0
 
@@ -2410,10 +2426,10 @@ function _qvm_backup() {
 
 function _qvm_backup_restore() {
 
-    local flags_require_one='--exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
-    local flags_require_zero='--verify-only --skip-broken --ignore-missing --skip-conflicting --rename-conflicting --skip-dom0-home 
+    local -r flags_require_one='--exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
+    local -r flags_require_zero='--verify-only --skip-broken --ignore-missing --skip-conflicting --rename-conflicting --skip-dom0-home 
     --ignore-username-mismatch --ignore-size-limit --paranoid-mode --plan-b --location-is-service --auto-close'
-    local backup_compression_filters='gzip bzip2 xz'
+    local -r backup_compression_filters='gzip bzip2 xz'
 
     __init_qubes_completion "${flags_require_one}" || return 0
 
@@ -2486,7 +2502,7 @@ function _qvm_sync_appmenus() {
         return 0
     fi
 
-    local flags='--force-root --force-rpc --regenerate-only'
+    local -r flags='--force-root --force-rpc --regenerate-only'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list_without_dom0 'all'
@@ -2532,7 +2548,7 @@ function _qvm_appmenus() {
     esac
 
 
-    local flags='--force-root --init --create --remove --update --get-available --get-whitelist --set-whitelist --set-default-whitelist --get-default-whitelist --source --force --i-understand-format-is-unstable --file-field --template --all'
+    local -r flags='--force-root --init --create --remove --update --get-available --get-whitelist --set-whitelist --set-default-whitelist --get-default-whitelist --source --force --i-understand-format-is-unstable --file-field --template --all'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list 'all'
@@ -2546,7 +2562,7 @@ function _qvm_copy_to_vm() {
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    local flags='--without-progress'
+    local -r flags='--without-progress'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     if (( QB_alone_args_count == 0 )); then
@@ -2573,7 +2589,7 @@ function _qvm_copy() {
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    local flags='--without-progress'
+    local -r flags='--without-progress'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     # files completion for rest args
@@ -2610,7 +2626,7 @@ function _qvm_start_daemon() {
     esac
 
     # cSpell:disable-next-line
-    local flags='--all --exclude --watch --force-stubdomain --pidfile --notify-monitor-layout --kde --force'
+    local -r flags='--all --exclude --watch --force-stubdomain --pidfile --notify-monitor-layout --kde --force'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list 'all' # TODO: we can do better?
@@ -2715,7 +2731,7 @@ function _qvm_run() {
         __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
         # cSpell:disable-next-line
-        local flags='--all --exclude --dispvm --user -u --auto --autostart -a --no-auto --no-autostart -n --pass-io -p --localcmd --gui --no-gui --nogui --service --colour-output --color-output --colour-stderr --color-stderr --no-colour-output --no-color-output --no-colour-stderr --no-color-stderr --filter-escape-chars --no-filter-escape-chars --no-shell'
+        local -r flags='--all --exclude --dispvm --user -u --auto --autostart -a --no-auto --no-autostart -n --pass-io -p --localcmd --gui --no-gui --nogui --service --colour-output --color-output --colour-stderr --color-stderr --no-colour-output --no-color-output --no-colour-stderr --no-color-stderr --filter-escape-chars --no-filter-escape-chars --no-shell'
         __complete_all_flags_if_needed "${flags}" && return 0
 
         if (( QB_alone_args_count == 0 )); then
@@ -2745,7 +2761,7 @@ function _qvm_check() {
             ;;
     esac
 
-    local flags='--all --exclude --running --paused --template --networked'
+    local -r flags='--all --exclude --running --paused --template --networked'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
    # NOTE: here we can stop providing qube names if --all was used. Should we?
@@ -2765,7 +2781,7 @@ function _qvm_firewall() {
 
         __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-        local flags='--reload -r --raw'
+        local -r flags='--reload -r --raw'
         __complete_all_starting_flags_if_needed "${flags}" && return 0
 
         __complete_qubes_list_without_dom0 'all'
@@ -2789,8 +2805,8 @@ function _qvm_firewall() {
 
     if (( QB_alone_args_count == 2 )); then
 
-        local qube="${QB_alone_args[0]}" # can be used for del and add
-        local action="${QB_alone_args[1]}"
+        local -r qube="${QB_alone_args[0]}" # can be used for del and add
+        local -r action="${QB_alone_args[1]}"
 
         __debug_msg "qube = \"${qube}\""
         __debug_msg "action = \"${action}\""
@@ -2882,7 +2898,7 @@ function _qvm_service() {
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    local flags='--list -l --enable -e --disable -d --default -D --delete --unset'
+    local -r flags='--list -l --enable -e --disable -d --default -D --delete --unset'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     if (( QB_alone_args_count == 0 )); then
@@ -2949,8 +2965,8 @@ function _qubesctl() {
             # complete comma separated list of qubes
 
             local last_qube_name_typing="${QB_cur##*,}"
-            # strip quotes at the beginning
             last_qube_name_typing="$( __strip_quotes_on_left "${last_qube_name_typing}" )"
+            readonly last_qube_name_typing
             __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
 
             # NOTE: we save the original QB_real_cur value and return it back, should work even without it
@@ -3271,7 +3287,7 @@ function _qubes_guid() {
     esac
 
     # cSpell:disable-next-line
-    local flags='--config -C --domid -d --target-domid -t --name -N --color -c --label -l --icon -i --kill-on-connect -K --prop -p --trayicon-mode --screensaver-name --override-redirect --qrexec-for-clipboard -Q --background -n --foreground -f --invisible -I --title-name -T'
+    local -r flags='--config -C --domid -d --target-domid -t --name -N --color -c --label -l --icon -i --kill-on-connect -K --prop -p --trayicon-mode --screensaver-name --override-redirect --qrexec-for-clipboard -Q --background -n --foreground -f --invisible -I --title-name -T'
     __complete_all_flags_if_needed "${flags}" && return 0
 
     return 0
@@ -3323,7 +3339,7 @@ function _qubes_vm_settings() {
             ;;
     esac
 
-    local flags='--tab'
+    local -r flags='--tab'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list_without_dom0 'all'
@@ -3398,7 +3414,7 @@ function _qubes_input_trigger() {
             ;;
         --event)
             # NOTE: probably only event* file names should be allowed but I am not sure
-            local event_files=("/dev/input/event"*)
+            local -r event_files=("/dev/input/event"*)
             if (( "${#event_files[@]}" > 0 )); then
                 __complete_string "${event_files[*]##*/}"
             fi
@@ -3411,7 +3427,7 @@ function _qubes_input_trigger() {
     esac
 
     # no --verbose and --quiet flags
-    local flags='-h --help --all --action --event --dom0'
+    local -r flags='-h --help --all --action --event --dom0'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list 'all'
@@ -3425,18 +3441,18 @@ function _qubes_prefs() {
     __init_qubes_completion '' || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    local sys_properties_bool='check_updates_vm'
+    local -r sys_properties_bool='check_updates_vm'
     # cSpell:disable-next-line
-    local sys_properties_qube='clockvm default_audiovm default_dispvm default_guivm default_netvm default_template management_dispvm updatevm'
+    local -r sys_properties_qube='clockvm default_audiovm default_dispvm default_guivm default_netvm default_template management_dispvm updatevm'
     # TODO: add completion of pools?
-    local sys_properties_pools='default_pool default_pool_kernel default_pool_private default_pool_root default_pool_volatile'
-    local sys_properties_string="${sys_properties_pools} default_kernel default_qrexec_timeout default_shutdown_timeout stats_interval"
-    local sys_properties_all="${sys_properties_bool} ${sys_properties_qube} ${sys_properties_string}"
+    local -r sys_properties_pools='default_pool default_pool_kernel default_pool_private default_pool_root default_pool_volatile'
+    local -r sys_properties_string="${sys_properties_pools} default_kernel default_qrexec_timeout default_shutdown_timeout stats_interval"
+    local -r sys_properties_all="${sys_properties_bool} ${sys_properties_qube} ${sys_properties_string}"
 
-    local sys_properties_values_generic_bool='True False'
+    local -r sys_properties_values_generic_bool='True False'
 
     # NOTE: --get --set -g -s are deprecated and ignored
-    local flags='--force-root --help-properties --hide-default'
+    local -r flags='--force-root --help-properties --hide-default'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     if (( QB_alone_args_count == 0 )); then
@@ -3455,7 +3471,7 @@ function _qubes_prefs() {
         __complete_string '--default'
 
         # we have a property that defines type
-        local property="${QB_alone_args[0]}"
+        local -r property="${QB_alone_args[0]}"
 
         if __is_argument_in_list_string "${property}" "${sys_properties_bool}" ; then
             __complete_string "${sys_properties_values_generic_bool}"
@@ -3493,7 +3509,7 @@ function _qubes_dom0_update() {
     # I do not know that the recommended action list should be.
     # local dnf_recommended_actions='install reinstall erase remove upgrade upgrade-to downgrade list search'
     # cSpell:disable-next-line
-    local dnf_all_actions='alias autoremove check check-update clean deplist distro-sync downgrade group help history info install list makecache mark module provides reinstall remove repoinfo repolist repoquery repository-packages search shell swap updateinfo upgrade upgrade-minimal'
+    local -r dnf_all_actions='alias autoremove check check-update clean deplist distro-sync downgrade group help history info install list makecache mark module provides reinstall remove repoinfo repolist repoquery repository-packages search shell swap updateinfo upgrade upgrade-minimal'
 
     if (( QB_alone_args_count == 0 )); then
 
@@ -3506,11 +3522,12 @@ function _qubes_dom0_update() {
     fi
 
     # get action (command) to pass to dnf
-    local action_for_dnf='install' # install by default if --action is omitted
-    local action_flag_name='--action'
-    local max_arg_index="${#QB_full_line_args[@]}"
+    local -r action_flag_name='--action'
+    
+    local -r max_arg_index="${#QB_full_line_args[@]}"
     (( max_arg_index-- ))   # because we want the next argument after the flag
 
+    local action_for_dnf='install' # install by default if --action is omitted
     local i
     for (( i=0; i < "${max_arg_index}"; i++ )); do
         if [[ "${QB_full_line_args[${i}]}" == "${action_flag_name}" ]]; then
@@ -3519,6 +3536,7 @@ function _qubes_dom0_update() {
             break
         fi
     done
+    readonly action_for_dnf
 
     __debug_msg "action_for_dnf = \"${action_for_dnf}\""
 
@@ -3557,12 +3575,12 @@ function __qubes_dom0_update_remove_action_from_compline() {
     # but it works even without it, because dnf breaks this substring and
     # already uses command as a first standalone argument.
 
-    local command="${1}"
+    local -r command="${1}"
 
-    local action_arg_name='--action'
-    local action_arg_sep='='
-    local action_arg_value="${command}"
-    local action_arg_full_substring="${action_arg_name}${action_arg_sep}${action_arg_value}"
+    local -r action_arg_name='--action'
+    local -r action_arg_sep='='
+    local -r action_arg_value="${command}"
+    local -r action_arg_full_substring="${action_arg_name}${action_arg_sep}${action_arg_value}"
 
     # If we have a '--action=command' substring
     if [[ "${COMP_LINE}" == *"${action_arg_full_substring}"* ]]; then
@@ -3650,13 +3668,13 @@ function __qubes_dom0_update_remove_action_from_compline() {
 # Replace starting 'qubes-dom0-update' with 'dnf command' (e.g. 'dnf install')
 function __qubes_dom0_update_replace_beginning_of_compline() {
 
-    local original_start="${COMP_WORDS[0]}" # 'qubes-dom0-update'
-    local rewritten_word0_dnf='dnf'
-    local rewritten_word1_command="${command}"
-    local rewritten_start="${rewritten_word0_dnf} ${rewritten_word1_command}" # e.g. "dnf install"
+    local -r original_start="${COMP_WORDS[0]}" # 'qubes-dom0-update'
+    local -r rewritten_word0_dnf='dnf'
+    local -r rewritten_word1_command="${command}"
+    local -r rewritten_start="${rewritten_word0_dnf} ${rewritten_word1_command}" # e.g. "dnf install"
 
     # Replace the beginning of the line COMP_LINE
-    local original_length_of_COMP_LINE="${#COMP_LINE}"
+    local -r original_length_of_COMP_LINE="${#COMP_LINE}"
 
     # remove leading whitespace characters
     COMP_LINE="${COMP_LINE#"${COMP_LINE%%[![:space:]]*}"}"
@@ -3680,7 +3698,7 @@ function __qubes_dom0_update_replace_beginning_of_compline() {
 # rewrite current completion context and invoke dnf completion
 function __qubes_dom0_update_pass_completion_to_dnf() {
 
-    local command="${1}"
+    local -r command="${1}"
 
     # NOTE: a trick to avoid huge duplication of dnf completion code
     # We ask dnf itself for completion similar to what sudo does
@@ -3693,10 +3711,10 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
     # Everything hopefully works like miracle.
 
     # Save original values
-    local original_COMP_LINE="${COMP_LINE}"
-    local original_COMP_POINT="${COMP_POINT}"
-    local original_COMP_WORDS=( "${COMP_WORDS[@]}" )
-    local original_COMP_CWORD="${COMP_CWORD}"
+    local -r original_COMP_LINE="${COMP_LINE}"
+    local -r original_COMP_POINT="${COMP_POINT}"
+    local -r original_COMP_WORDS=( "${COMP_WORDS[@]}" )
+    local -r original_COMP_CWORD="${COMP_CWORD}"
 
     __debug_msg '--------------------------------------------------------'
     __debug_msg '1. Before passing completion to dnf'
@@ -3746,7 +3764,7 @@ function __qubes_dom0_update_run_dnf_completion() {
     # prevents things from breaking in case _dnf is renamed or something.
     # It also is more flexible as it allows user to use custom dnf completion.
 
-    local dnf_cmd='dnf'
+    local -r dnf_cmd='dnf'
     
     # Existing completion specifications in a way that allows them to be reused as input
     local cspec
@@ -3773,9 +3791,10 @@ function __qubes_dom0_update_run_dnf_completion() {
         # Crop out function name:
         local func_name="${cspec#*-F[[:blank:]]}"
         func_name="${func_name%%[[:blank:]]*}"
+        readonly func_name
 
         # Call function with dnf as $1 arg, and last and one before last as $2 and optional $3 (more in `man complete`)
-        local comp_words_count="${#COMP_WORDS[@]}"
+        local -r comp_words_count="${#COMP_WORDS[@]}"
         if (( comp_words_count >= 2 )); then
             "${func_name}" "${dnf_cmd}" "${COMP_WORDS[${comp_words_count}-1]}" "${COMP_WORDS[${comp_words_count}-2]}"
         else
@@ -3802,7 +3821,7 @@ function __qubes_dom0_update_run_dnf_completion() {
 __completion_add_padding_for_completion_to_make_new_lines() {
 
     local padded_str=''
-    local padding_size="${COLUMNS}"
+    local -r padding_size="${COLUMNS}"
 
     for (( i=0; i < "${#COMPREPLY[@]}"; i++ )); do
 
@@ -3817,10 +3836,12 @@ function main() {
 
     __debug_init
 
+    local supported_command
     for supported_command in "${SUPPORTED_COMMANDS_LIST[@]}"; do
     
         if [[ -x /usr/bin/${supported_command} ]] || (( QB_DEBUG_MODE == 1 )) ; then
             
+            local command_processor
             command_processor="$(echo "_${supported_command}" | tr '-' '_')"
             
             if [[ $( type -t "${command_processor}" ) == function ]]; then
