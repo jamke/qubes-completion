@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Run BATS tests",
+      "label": "Run BATS tests (All tests)",
       "type": "shell",
       // "command": "cd ${workspaceFolder}/test && bats tests/", // Global version of calling BATS
       "command": "cd ${workspaceFolder}/test && ./bats/bin/bats tests/",
@@ -15,7 +15,18 @@
       }
     },
     {
-      "label": "Run BATS tests (Global BATS)",
+      "label": "Run BATS tests (Basic tests only)",
+      "type": "shell",
+      // "command": "cd ${workspaceFolder}/test && bats tests/", // Global version of calling BATS
+      "command": "cd ${workspaceFolder}/test && ./bats/bin/bats tests/tests_basic_*",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Run BATS tests (All tests) - Use Global BATS",
       "type": "shell",
       // "command": "cd ${workspaceFolder}/test && bats tests/", // Global version of calling BATS
       "command": "cd ${workspaceFolder}/test && bats tests/",
