@@ -2945,61 +2945,72 @@ function _qubesctl() {
 
     __init_qubes_completion '--max-concurrency --targets' || return 0
 
-    if (( QB_alone_args_count > 0 )); then
+    local -r salt_states="top.enable top.disable top.enabled state.highstate state.apply"
+
+    if (( QB_alone_args_count == 0 )); then
+
         # all options should be only before first standalone argument
+        case "${QB_prev_flag}" in
+            --max-concurrency)
+                # Number here, no completion
+                return 0
+                ;;
+            --targets)
+                # complete comma separated list of qubes
 
-        # TODO: we can provide suggestions for states and stuff,
-        # but I am not sure what should I list here.
-        # This may have sense:
-        # https://www.qubes-os.org/doc/salt/#all-qubes-specific-states
+                local last_qube_name_typing="${QB_cur##*,}"
+                last_qube_name_typing="$( __strip_quotes_on_left "${last_qube_name_typing}" )"
+                readonly last_qube_name_typing
+                __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
 
-        return 0;
-    fi
+                # NOTE: we save the original QB_real_cur value and return it back, should work even without it
+                local saved_QB_real_cur="${QB_real_cur}"     # save original QB_real_cur just in case
+                #
+                    # We have to manually set QB_real_cur, because comma is non-standard separator
+                    QB_real_cur="${last_qube_name_typing}"
+                    __complete_qubes_list 'all'
+                #
+                QB_real_cur="${saved_QB_real_cur}"           # return the original value of QB_real_cur back
 
-    case "${QB_prev_flag}" in
-        --max-concurrency)
-            # Number here, no completion
+                # Nospace because it is comma separated list of qubes
+                compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
+
+                return 0
+                ;;
+            ?*)
+                # unknown prev flag expects sub-argument
+                return 0
+                ;;
+        esac
+
+        if __need_flags ; then
+
+            # cSpell:disable-next-line
+            local flags='--help -h --show-output --force-color --skip-dom0 --max-concurrency --templates --standalones --app'
+
+            if ! __was_flag_used '--all' && ! __was_flag_used '--targets'; then
+                flags+=' --targets --all'
+            fi
+
+            __complete_string "${flags}"
             return 0
-            ;;
-        --targets)
-            # complete comma separated list of qubes
+        else
 
-            local last_qube_name_typing="${QB_cur##*,}"
-            last_qube_name_typing="$( __strip_quotes_on_left "${last_qube_name_typing}" )"
-            readonly last_qube_name_typing
-            __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
-
-            # NOTE: we save the original QB_real_cur value and return it back, should work even without it
-            local saved_QB_real_cur="${QB_real_cur}"     # save original QB_real_cur just in case
-            #
-                # We have to manually set QB_real_cur, because comma is non-standard separator
-                QB_real_cur="${last_qube_name_typing}"
-                __complete_qubes_list 'all'
-            #
-            QB_real_cur="${saved_QB_real_cur}"           # return the original value of QB_real_cur back
-
-            # Nospace because it is comma separated list of qubes
-            compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
-
-            return 0
-            ;;
-        ?*)
-            # unknown prev flag expects sub-argument
-            return 0
-            ;;
-    esac
-
-    if __need_flags ; then
-
-        # cSpell:disable-next-line
-        local flags='--help -h --show-output --force-color --skip-dom0 --max-concurrency --templates --standalones --app'
-
-        if ! __was_flag_used '--all' && ! __was_flag_used '--targets'; then
-            flags+=' --targets --all'
+            # TODO: we can provide suggestions for states and stuff,
+            # but I am not sure what should I list here.
+            # This may have sense:
+            # https://www.qubes-os.org/doc/salt/#all-qubes-specific-states
+            __complete_string "${salt_states}"
+            return 0;
         fi
+    else
 
-        __complete_string "${flags}"
-        return 0
+        # TODO: Depending on previous salt sate suggestions can be provided
+        # Unfortunately the /srv/salt is only readable for the root user.
+        # Therefore, completion base on its file structure could be provided but it would
+        # only work for the root user or if the user had changed permissions for
+        # the /srv/salt directory.
+        return 0;
     fi
 }
 
