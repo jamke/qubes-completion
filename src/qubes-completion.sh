@@ -3002,9 +3002,9 @@ function _qubesctl() {
         fi
     else
 
-        # TODO: Depending on previous salt sate suggestions can be provided
+        # TODO: Depending on previous salt state suggestions can be provided
         # Unfortunately the /srv/salt is only readable for the root user.
-        # Therefore, completion base on its file structure could be provided but it would
+        # Therefore, completion based on its file structure could be provided but it would
         # only work for the root user or if the user had changed permissions for
         # the /srv/salt directory.
         return 0;
