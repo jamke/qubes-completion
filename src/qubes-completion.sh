@@ -2945,8 +2945,6 @@ function _qubesctl() {
 
     __init_qubes_completion '--max-concurrency --targets' || return 0
 
-    local -r salt_states='top.enable top.disable top.enabled state.highstate state.apply'
-
     if (( QB_alone_args_count == 0 )); then
 
         # all options should be only before first standalone argument
@@ -2995,11 +2993,10 @@ function _qubesctl() {
             __complete_string "${flags}"
             return 0
         else
-
-            # TODO: we can provide suggestions for states and stuff,
-            # but I am not sure what should I list here.
-            # This may have sense:
-            # https://www.qubes-os.org/doc/salt/#all-qubes-specific-states
+        
+            # cSpell:disable-next-line
+            local -r salt_states='top.enable top.disable top.enabled state.highstate state.apply'
+            
             __complete_string "${salt_states}"
             return 0;
         fi
