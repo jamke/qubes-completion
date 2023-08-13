@@ -42,7 +42,20 @@ COMPLETION_ALL_BASIC="--verbose -v --quiet -q --help -h"
 # cSpell:disable
 QVM_COMMON_TAGS='audiovm-dom0 created-by-dom0 guivm-dom0 anon-vm anon-gateway whonix-updatevm debian'
 QVM_VM_CLASSES='AdminVM AppVM DispVM StandaloneVM TemplateVM'
-VM_PROPS_VALUES_FOR_LABEL='red orange yellow green gray blue purple black'
+
+# Prefs are defined here to avoid duplication, because they are used by qvm-prefs and qvm-ls
+QVM_VM_PROPERTIES_BOOL='autostart debug template_for_dispvms include_in_backups provides_network installed_by_rpm updateable'
+QVM_VM_PROPERTIES_QUBE='audiovm default_dispvm netvm template guivm management_dispvm'
+QVM_VM_PROPERTIES_STRING='default_user ip kernel kernelopts mac maxmem memory name qrexec_timeout stubdom_mem stubdom_xid vcpus backup_timestamp dns gateway gateway6 icon ip6 keyboard_layout qid shutdown_timeout start_time uuid visible_gateway visible_gateway6 visible_ip visible_ip6 visible_netmask xid'
+QVM_VM_PROPERTIES_CUSTOM='label virt_mode klass'
+QVM_VM_PROPERTIES_ALL="${QVM_VM_PROPERTIES_BOOL} ${QVM_VM_PROPERTIES_QUBE} ${QVM_VM_PROPERTIES_STRING} ${QVM_VM_PROPERTIES_CUSTOM}"
+QVM_VM_PROPERTIES_DOM0='default_dispvm icon include_in_backups keyboard_layout klass label name qid updateable uuid'
+
+QVM_VM_PROPERTY_VALUES_GENERIC_BOOL='True true on 1 False false off 0'
+QVM_VM_PROPERTY_VALUES_FOR_VIRTMODE='hvm pv pvh'
+QVM_VM_PROPERTY_VALUES_FOR_KLASS="${QVM_VM_CLASSES}"
+QVM_VM_PROPERTY_VALUES_FOR_LABEL='red orange yellow green gray blue purple black'
+
 
 # NOTE: class `testclass` is not on the list as it is not documenteted at all
 QVM_DEVICE_CLASSES='block mic pci usb'
@@ -1497,9 +1510,9 @@ function _qvm_ls() {
 
             __debug_msg "last_qube_name_typing = \"${last_qube_name_typing}\""
 
-            # NOTE: qvm-ls has a bug that it does not provide NAME in a list --help-columns nor in --help!
+            # NOTE: Additionally any VM property may be used as a column, see qvm-prefs --help-properties for available values
             # cSpell:disable-next-line
-            local -r qvm_ls_columns='NAME CLASS DISK FLAGS GATEWAY MEMORY PRIV-CURR PRIV-MAX PRIV-USED ROOT-CURR ROOT-MAX ROOT-USED STATE'
+            local -r qvm_ls_columns="${QVM_VM_PROPERTIES_ALL} CLASS DISK FLAGS GATEWAY MEMORY PRIV-CURR PRIV-MAX PRIV-USED ROOT-CURR ROOT-MAX ROOT-USED STATE"
 
             # NOTE: we save the original QB_real_cur value and return it back, should work even without it
             local -r saved_QB_real_cur="${QB_real_cur}"     # save original QB_real_cur just in case
@@ -1575,7 +1588,7 @@ function _qvm_create() {
             return 0
             ;;
         -l | --label)
-            __complete_string "${VM_PROPS_VALUES_FOR_LABEL}"
+            __complete_string "${QVM_VM_PROPERTY_VALUES_FOR_LABEL}"
             return 0
             ;;
         --root-copy-from | -r | --root-move-from | -R)
@@ -2166,19 +2179,6 @@ function _qvm_prefs() {
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # cSpell:disable
-    local -r vm_properties_bool='autostart debug template_for_dispvms include_in_backups provides_network installed_by_rpm updateable'
-    local -r vm_properties_qube='audiovm default_dispvm netvm template guivm management_dispvm'
-    local -r vm_properties_string='default_user ip kernel kernelopts mac maxmem memory name qrexec_timeout stubdom_mem stubdom_xid vcpus backup_timestamp dns gateway gateway6 icon ip6 keyboard_layout qid shutdown_timeout start_time uuid visible_gateway visible_gateway6 visible_ip visible_ip6 visible_netmask xid'
-    local -r vm_properties_custom='label virt_mode klass'
-    local -r vm_properties_all="${vm_properties_bool} ${vm_properties_qube} ${vm_properties_string} ${vm_properties_custom}"
-    local -r vm_properties_dom0='default_dispvm icon include_in_backups keyboard_layout klass label name qid updateable uuid'
-
-    local -r vm_properties_values_generic_bool='True true on 1 False false off 0'
-    local -r vm_properties_values_for_virt_mode='hvm pv pvh'
-    local -r vm_properties_values_for_klass="${QVM_VM_CLASSES}"
-    # cSpell:enable
-
     # NOTE: --get --set -g -s are deprecated and ignored
     local -r flags='--force-root --help-properties --hide-default'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
@@ -2197,11 +2197,11 @@ function _qvm_prefs() {
         local -r qube="${QB_alone_args[0]}"
         if [[ "${qube}"  == 'dom0' ]]; then
             # for dom0
-            __complete_string "${vm_properties_dom0}"
+            __complete_string "${QVM_VM_PROPERTIES_DOM0}"
             return 0
         else
             # for any other qube
-            __complete_string "${vm_properties_all}"
+            __complete_string "${QVM_VM_PROPERTIES_ALL}"
             return 0
         fi
     fi
@@ -2216,26 +2216,26 @@ function _qvm_prefs() {
 
         case "${property}" in
             label)
-                __complete_string "${VM_PROPS_VALUES_FOR_LABEL}"
+                __complete_string "${QVM_VM_PROPERTY_VALUES_FOR_LABEL}"
                 return 0
                 ;;
             virt_mode)
-                __complete_string "${vm_properties_values_for_virt_mode}"
+                __complete_string "${QVM_VM_PROPERTY_VALUES_FOR_VIRTMODE}"
                 return 0
                 ;;
             klass)
-                __complete_string "${vm_properties_values_for_klass}"
+                __complete_string "${QVM_VM_PROPERTY_VALUES_FOR_KLASS}"
                 return 0
                 ;;
         esac
 
-        if __is_argument_in_list_string "${property}" "${vm_properties_bool}" ; then
-            __complete_string "${vm_properties_values_generic_bool}"
+        if __is_argument_in_list_string "${property}" "${QVM_VM_PROPERTIES_BOOL}" ; then
+            __complete_string "${QVM_VM_PROPERTY_VALUES_GENERIC_BOOL}"
             return 0
-        elif __is_argument_in_list_string "${property}" "${vm_properties_qube}" ; then
+        elif __is_argument_in_list_string "${property}" "${QVM_VM_PROPERTIES_QUBE}" ; then
             __complete_qubes_list 'all' # TODO: we can change the list of VMs based on property, will be even better
             return 0
-        elif __is_argument_in_list_string "${property}" "${vm_properties_string}" ; then
+        elif __is_argument_in_list_string "${property}" "${QVM_VM_PROPERTIES_STRING}" ; then
             # Can be anything
             return 0
         fi
