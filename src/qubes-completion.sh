@@ -2993,10 +2993,10 @@ function _qubesctl() {
             __complete_string "${flags}"
             return 0
         else
-        
+
             # cSpell:disable-next-line
             local -r salt_states='top.enable top.disable top.enabled state.highstate state.apply'
-            
+
             __complete_string "${salt_states}"
             return 0;
         fi
