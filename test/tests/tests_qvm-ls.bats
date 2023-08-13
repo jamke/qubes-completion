@@ -78,7 +78,7 @@ function test_wrapper() {
 }
 
 @test "Test 012. qvm-ls: qvm-ls --fields " {
-    EXPECTED_COMPREPLY=([0]="NAME" [1]="CLASS" [2]="DISK" [3]="FLAGS" [4]="GATEWAY" [5]="MEMORY" [6]="PRIV-CURR" [7]="PRIV-MAX" [8]="PRIV-USED" [9]="ROOT-CURR" [10]="ROOT-MAX" [11]="ROOT-USED" [12]="STATE")
+    EXPECTED_COMPREPLY=([0]="autostart" [1]="debug" [2]="template_for_dispvms" [3]="include_in_backups" [4]="provides_network" [5]="installed_by_rpm" [6]="updateable" [7]="audiovm" [8]="default_dispvm" [9]="netvm" [10]="template" [11]="guivm" [12]="management_dispvm" [13]="default_user" [14]="ip" [15]="kernel" [16]="kernelopts" [17]="mac" [18]="maxmem" [19]="memory" [20]="name" [21]="qrexec_timeout" [22]="stubdom_mem" [23]="stubdom_xid" [24]="vcpus" [25]="backup_timestamp" [26]="dns" [27]="gateway" [28]="gateway6" [29]="icon" [30]="ip6" [31]="keyboard_layout" [32]="qid" [33]="shutdown_timeout" [34]="start_time" [35]="uuid" [36]="visible_gateway" [37]="visible_gateway6" [38]="visible_ip" [39]="visible_ip6" [40]="visible_netmask" [41]="xid" [42]="label" [43]="virt_mode" [44]="klass" [45]="CLASS" [46]="DISK" [47]="FLAGS" [48]="GATEWAY" [49]="MEMORY" [50]="PRIV-CURR" [51]="PRIV-MAX" [52]="PRIV-USED" [53]="ROOT-CURR" [54]="ROOT-MAX" [55]="ROOT-USED" [56]="STATE")
     test_wrapper 'qvm-ls --fields '
 }
 
@@ -93,7 +93,7 @@ function test_wrapper() {
 }
 
 @test "Test 015. qvm-ls: qvm-ls -O " {
-    EXPECTED_COMPREPLY=([0]="NAME" [1]="CLASS" [2]="DISK" [3]="FLAGS" [4]="GATEWAY" [5]="MEMORY" [6]="PRIV-CURR" [7]="PRIV-MAX" [8]="PRIV-USED" [9]="ROOT-CURR" [10]="ROOT-MAX" [11]="ROOT-USED" [12]="STATE")
+    EXPECTED_COMPREPLY=([0]="autostart" [1]="debug" [2]="template_for_dispvms" [3]="include_in_backups" [4]="provides_network" [5]="installed_by_rpm" [6]="updateable" [7]="audiovm" [8]="default_dispvm" [9]="netvm" [10]="template" [11]="guivm" [12]="management_dispvm" [13]="default_user" [14]="ip" [15]="kernel" [16]="kernelopts" [17]="mac" [18]="maxmem" [19]="memory" [20]="name" [21]="qrexec_timeout" [22]="stubdom_mem" [23]="stubdom_xid" [24]="vcpus" [25]="backup_timestamp" [26]="dns" [27]="gateway" [28]="gateway6" [29]="icon" [30]="ip6" [31]="keyboard_layout" [32]="qid" [33]="shutdown_timeout" [34]="start_time" [35]="uuid" [36]="visible_gateway" [37]="visible_gateway6" [38]="visible_ip" [39]="visible_ip6" [40]="visible_netmask" [41]="xid" [42]="label" [43]="virt_mode" [44]="klass" [45]="CLASS" [46]="DISK" [47]="FLAGS" [48]="GATEWAY" [49]="MEMORY" [50]="PRIV-CURR" [51]="PRIV-MAX" [52]="PRIV-USED" [53]="ROOT-CURR" [54]="ROOT-MAX" [55]="ROOT-USED" [56]="STATE")
     test_wrapper 'qvm-ls -O '
 }
 
@@ -123,7 +123,7 @@ function test_wrapper() {
 }
 
 @test "Test 021. qvm-ls: qvm-ls --fields=" {
-    EXPECTED_COMPREPLY=([0]="NAME" [1]="CLASS" [2]="DISK" [3]="FLAGS" [4]="GATEWAY" [5]="MEMORY" [6]="PRIV-CURR" [7]="PRIV-MAX" [8]="PRIV-USED" [9]="ROOT-CURR" [10]="ROOT-MAX" [11]="ROOT-USED" [12]="STATE")
+    EXPECTED_COMPREPLY=([0]="autostart" [1]="debug" [2]="template_for_dispvms" [3]="include_in_backups" [4]="provides_network" [5]="installed_by_rpm" [6]="updateable" [7]="audiovm" [8]="default_dispvm" [9]="netvm" [10]="template" [11]="guivm" [12]="management_dispvm" [13]="default_user" [14]="ip" [15]="kernel" [16]="kernelopts" [17]="mac" [18]="maxmem" [19]="memory" [20]="name" [21]="qrexec_timeout" [22]="stubdom_mem" [23]="stubdom_xid" [24]="vcpus" [25]="backup_timestamp" [26]="dns" [27]="gateway" [28]="gateway6" [29]="icon" [30]="ip6" [31]="keyboard_layout" [32]="qid" [33]="shutdown_timeout" [34]="start_time" [35]="uuid" [36]="visible_gateway" [37]="visible_gateway6" [38]="visible_ip" [39]="visible_ip6" [40]="visible_netmask" [41]="xid" [42]="label" [43]="virt_mode" [44]="klass" [45]="CLASS" [46]="DISK" [47]="FLAGS" [48]="GATEWAY" [49]="MEMORY" [50]="PRIV-CURR" [51]="PRIV-MAX" [52]="PRIV-USED" [53]="ROOT-CURR" [54]="ROOT-MAX" [55]="ROOT-USED" [56]="STATE")
     test_wrapper 'qvm-ls --fields='
 }
 
