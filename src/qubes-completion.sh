@@ -2945,7 +2945,7 @@ function _qubesctl() {
 
     __init_qubes_completion '--max-concurrency --targets' || return 0
 
-    local -r salt_states="top.enable top.disable top.enabled state.highstate state.apply"
+    local -r salt_states='top.enable top.disable top.enabled state.highstate state.apply'
 
     if (( QB_alone_args_count == 0 )); then
 
