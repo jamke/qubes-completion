@@ -18,7 +18,7 @@ function test_wrapper() {
 }
 
 @test "Test 000. qubesctl: qubesctl " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="top.enable" [1]="top.disable" [2]="top.enabled" [3]="state.highstate" [4]="state.apply")
     test_wrapper 'qubesctl '
 }
 
@@ -33,7 +33,7 @@ function test_wrapper() {
 }
 
 @test "Test 003. qubesctl: qubesctl -- " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="top.enable" [1]="top.disable" [2]="top.enabled" [3]="state.highstate" [4]="state.apply")
     test_wrapper 'qubesctl -- '
 }
 
@@ -153,7 +153,7 @@ function test_wrapper() {
 }
 
 @test "Test 027. qubesctl: qubesctl --something_unknown " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="top.enable" [1]="top.disable" [2]="top.enabled" [3]="state.highstate" [4]="state.apply")
     test_wrapper 'qubesctl --something_unknown '
 }
 
@@ -173,7 +173,7 @@ function test_wrapper() {
 }
 
 @test "Test 031. qubesctl: qubesctl --something_unknown -- " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="top.enable" [1]="top.disable" [2]="top.enabled" [3]="state.highstate" [4]="state.apply")
     test_wrapper 'qubesctl --something_unknown -- '
 }
 
