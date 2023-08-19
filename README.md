@@ -351,7 +351,7 @@ Where:
 * `qubename` is a name of the qube used to download `qubes-completion.sh` script (e.g. `personal`).
 * `/home/user/Downloads/qubes-completion.sh` is an example of full path to the downloaded file inside `qubename` qube.
 
-As the output user should see a number of lines that where copied and it should not be zero.
+As the output user should see a number of lines that were copied and it should be more than zero.
 
 ### All done
 Completions should start working in all new instances of `bash` terminals.
