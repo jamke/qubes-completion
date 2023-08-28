@@ -1695,11 +1695,7 @@ function _qvm_start() {
     local -r flags='--skip-if-running --all --exclude --drive --hddisk --cdrom --install-windows-tools'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
-
-    if (( QB_alone_args_count == 0 )); then
-        __complete_qubes_list 'halted'
-        return 0
-    fi
+    __complete_qubes_list 'halted'
 
     return 0
 }
