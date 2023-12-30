@@ -1452,7 +1452,7 @@ function __complete_general_firewall_rule() {
         esac
     else
         __complete_string 'tcp udp icmp' # accept and drop are not here, because they must be first, not general
-        __complete_string 'action= dsthost= dst4= dst6= dstports= icmptype= proto= specialtarget= expire='
+        __complete_string 'action= dsthost= dst4= dst6= dstports= icmptype= proto= specialtarget= expire= comment='
 
         if (( "${#COMPREPLY[@]}" == 1 )) && [[ "${COMPREPLY[0]}" == *= ]]; then
             compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
