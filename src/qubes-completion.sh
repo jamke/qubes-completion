@@ -2980,7 +2980,7 @@ function _qubesctl() {
         if __need_flags ; then
 
             # cSpell:disable-next-line
-            local flags='--help -h --show-output --force-color --skip-dom0 --max-concurrency --templates --standalones --app'
+            local flags='--help -h --show-output --force-color --skip-dom0 --max-concurrency --templates --standalones --app --skip-top-check --sync-extmods'
 
             if ! __was_flag_used '--all' && ! __was_flag_used '--targets'; then
                 flags+=' --targets --all'
