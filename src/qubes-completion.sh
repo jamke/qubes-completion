@@ -127,6 +127,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qubes-prefs'               # Tests: Basic # Features: 100% # but can be better
     'qubes-guid'                # Tests: Basic # Features: 100% # can be better, but no need
+    'qubes-vm-update'           # Tests: Basic # Features: 100%
 
      # Commands that have no --quiet/verbose
     'qubesctl'                  # Tests: Basic # Features: #TODOs
@@ -3826,6 +3827,72 @@ function __qubes_dom0_update_run_dnf_completion() {
 }
 
 
+function _qubes_vm_update() {
+
+    # NOTE: this command supports --verbose arg
+    # So, we have to do things manually
+    local -r log_types='DEBUG INFO WARNING ERROR CRITICAL'
+
+    __init_qubes_completion '--max-concurrency --update-if-stale --skip --targets --log' || return 0
+
+    if (( QB_alone_args_count == 0 )); then
+
+        # all options should be only before first standalone argument
+        case "${QB_prev_flag}" in
+            --max-concurrency|--update-if-stale)
+                # Number here, no completion
+                return 0
+                ;;
+            --targets|--skip)
+                # complete comma separated list of qubes
+
+                local last_qube_name_typing="${QB_cur##*,}"
+                last_qube_name_typing="$( __strip_quotes_on_left "${last_qube_name_typing}" )"
+                readonly last_qube_name_typing
+                __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
+
+                # NOTE: we save the original QB_real_cur value and return it back, should work even without it
+                local saved_QB_real_cur="${QB_real_cur}"     # save original QB_real_cur just in case
+                #
+                    # We have to manually set QB_real_cur, because comma is non-standard separator
+                    QB_real_cur="${last_qube_name_typing}"
+                    __complete_qubes_list 'all'
+                #
+                QB_real_cur="${saved_QB_real_cur}"           # return the original value of QB_real_cur back
+
+                # Nospace because it is comma separated list of qubes
+                compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
+
+                return 0
+                ;;
+            --log)
+                __complete_string "${log_types}"
+                return 0
+                ;;
+            ?*)
+                # unknown prev flag expects sub-argument
+                return 0
+                ;;
+        esac
+
+        if __need_flags ; then
+
+            # cSpell:disable-next-line
+            local flags='-h --help --max-concurrency --restart --no-cleanup --targets --all --update-if-stale --skip --templates --standalones --app --dry-run --log --no-refresh --force-upgrade --leave-obsolete --show-output --quiet --no-progress'
+
+            __complete_string "${flags}"
+            return 0
+        else
+
+            # cSpell:disable-next-line
+            return 0;
+        fi
+    else
+
+        # cSpell:disable-next-line
+        return 0;
+    fi
+}
 __completion_add_padding_for_completion_to_make_new_lines() {
 
     local padded_str=''
