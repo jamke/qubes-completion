@@ -3067,7 +3067,7 @@ function _qubes_hcl_report() {
     if (( QB_alone_args_count == 0 )); then
 
         if __need_flags ; then
-            __complete_string '--help -h --support -s'
+            __complete_string '--help -h --support -s --yaml -y'
             return 0
         fi
 
