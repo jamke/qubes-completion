@@ -33,7 +33,7 @@
 #
 
 # Common completion flags that are used for almost all commands
-COMPLETION_ALL_BASIC="--verbose -v --quiet -q --help -h"
+COMPLETION_ALL_BASIC='--verbose -v --quiet -q --help -h'
 
 # NOTE: We do not use qvm-ls --help-formats or --help-columns because the
 # output is human-readable (includes comments), it is not reliable in future.
