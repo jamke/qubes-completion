@@ -2,7 +2,7 @@
 #
 #   qubes-completion - BASH completion for Qubes OS
 #
-#   Copyright © 2022-2023, @jamke (https://github.com/jamke)
+#   Copyright © 2022-2024, @jamke (https://github.com/jamke)
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
