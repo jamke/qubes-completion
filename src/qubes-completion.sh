@@ -127,7 +127,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qubes-prefs'               # Tests: Basic # Features: 100% # but can be better
     'qubes-guid'                # Tests: Basic # Features: 100% # can be better, but no need
-    'qubes-vm-update'           # Tests: None # Features: 100%
+    'qubes-vm-update'           # Tests: None  # Features: 100%
 
      # Commands that have no --quiet/verbose
     'qubesctl'                  # Tests: Basic # Features: #TODOs
@@ -3830,19 +3830,17 @@ function __qubes_dom0_update_run_dnf_completion() {
 function _qubes_vm_update() {
 
     # NOTE: this command does not support --verbose arg
-    local -r log_types='DEBUG INFO WARNING ERROR CRITICAL'
-
     __init_qubes_completion '--max-concurrency --update-if-stale --skip --targets --log' || return 0
 
     if (( QB_alone_args_count == 0 )); then
 
         # all options should be only before first standalone argument
         case "${QB_prev_flag}" in
-            --max-concurrency|--update-if-stale)
+            --max-concurrency | --update-if-stale)
                 # Number here, no completion
                 return 0
                 ;;
-            --targets|--skip)
+            --targets | --skip)
                 # complete comma separated list of qubes
 
                 local last_qube_name_typing="${QB_cur##*,}"
@@ -3865,6 +3863,10 @@ function _qubes_vm_update() {
                 return 0
                 ;;
             --log)
+                
+                # cSpell:disable-next-line
+                local -r log_types='DEBUG INFO WARNING ERROR CRITICAL'
+                
                 __complete_string "${log_types}"
                 return 0
                 ;;
@@ -3876,7 +3878,8 @@ function _qubes_vm_update() {
 
         if __need_flags ; then
 
-            local flags='-h --help --max-concurrency --restart --no-cleanup --targets --all --update-if-stale --skip --templates --standalones --app --dry-run --log --no-refresh --force-upgrade --leave-obsolete --show-output --quiet --no-progress'
+            # cSpell:disable-next-line
+            local -r flags='-h --help --max-concurrency --restart --no-cleanup --targets --all --update-if-stale --skip --templates --standalones --app --dry-run --log --no-refresh --force-upgrade --leave-obsolete --show-output --quiet --no-progress'
 
             __complete_string "${flags}"
             return 0
@@ -3889,6 +3892,8 @@ function _qubes_vm_update() {
         return 0;
     fi
 }
+
+
 __completion_add_padding_for_completion_to_make_new_lines() {
 
     local padded_str=''
