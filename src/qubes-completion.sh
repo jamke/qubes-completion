@@ -3863,10 +3863,10 @@ function _qubes_vm_update() {
                 return 0
                 ;;
             --log)
-                
+
                 # cSpell:disable-next-line
                 local -r log_types='DEBUG INFO WARNING ERROR CRITICAL'
-                
+
                 __complete_string "${log_types}"
                 return 0
                 ;;
@@ -3879,7 +3879,7 @@ function _qubes_vm_update() {
         if __need_flags ; then
 
             # cSpell:disable-next-line
-            local -r flags='-h --help --max-concurrency --restart --no-cleanup --targets --all --update-if-stale --skip --templates --standalones --app --dry-run --log --no-refresh --force-upgrade --leave-obsolete --show-output --quiet --no-progress'
+            local -r flags='-h --help --max-concurrency --restart --no-cleanup --targets --all --update-if-stale --skip --templates --standalones --app --dry-run --log --no-refresh --force-upgrade --force-update --leave-obsolete --show-output --quiet --no-progress'
 
             __complete_string "${flags}"
             return 0
