@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 #                                                          -*- shell-script -*-
 #
 #   qubes-completion - BASH completion for Qubes OS
