@@ -3129,7 +3129,7 @@ function _qvm_console_dispvm() {
     if (( QB_alone_args_count == 0 )); then
 
         if __need_flags ; then
-            __complete_string '--autostart'
+            __complete_string '--autostart -h --help'
             return 0
         fi
 
