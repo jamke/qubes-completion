@@ -66,6 +66,7 @@ QVMTOOL_QVM_LS='qvm-ls'
 QVMTOOL_QVM_TAGS='qvm-tags'
 QVMTOOL_QVM_DEVICE='qvm-device'
 QVMTOOL_QVM_POOL='qvm-pools'
+QVMTOOL_QVM_TEMPLATE='qvm-template'
 # cSpell:enable
 
 QVM_FIREWALL_USE_TABLE_OUTPUT='1'
@@ -100,7 +101,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qvm-volume'                # Tests: Basic # Features: #TODO
 
-    'qvm-template'              #TODO: Not implemented yet
+    'qvm-template'              # Tests: None  # Features: 100%
     'qvm-template-postprocess'  #TODO: Not implemented yet
     'qvm-backup'                # Tests: Basic # Features: 100%
     'qvm-backup-restore'        # Tests: Basic # Features: 100%
@@ -3890,6 +3891,172 @@ function _qubes_vm_update() {
     else
 
         return 0;
+    fi
+}
+
+
+function __complete_repo() {
+    local repos
+    repos="$(qvm-template repolist | cut -d ' ' -f 1)"
+
+    __complete_string "${repos}"
+    return 0
+}
+
+
+function __complete_repos() {
+    local last_repo_name_typing="${QB_cur##*,}"
+    last_repo_name_typing="$( __strip_quotes_on_left "${last_repo_name_typing}" )"
+    readonly last_repo_name_typing
+    __debug_msg "last_repo_name_typing=\"${last_repo_name_typing}\""
+
+    # NOTE: we save the original QB_real_cur value and return it back, should work even without it
+    local saved_QB_real_cur="${QB_real_cur}"     # save original QB_real_cur just in case
+    #
+        # We have to manually set QB_real_cur, because comma is non-standard separator
+        QB_real_cur="${last_repo_name_typing}"
+        __complete_repo
+    #
+    QB_real_cur="${saved_QB_real_cur}"           # return the original value of QB_real_cur back
+
+    # Nospace because it is comma separated list of repos
+    compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
+}
+
+
+function __complete_templatespec() {
+    local -r specifier="${1}"
+    local template filter
+
+    case "${specifier}" in
+        'installed')
+            filter='--installed'
+            ;;
+        'all' | '')
+            filter='--available'
+            ;;
+        ?*)
+            # Specifier is unknown
+            return 1
+            ;;
+    esac
+
+    # NOTE: machine readable format is faster
+    template="$(${QVMTOOL_QVM_TEMPLATE} list --machine-readable ${filter} | cut -d '|' -f 2)"
+
+    # TODO: This could in principle also complete the templates available version
+    __complete_string "${template}"
+    return 0
+
+}
+
+
+function _qvm_template() {
+    local -r arguments='install reinstall downgrade upgrade download list info search remove purge clean repolist migrate-from-rpmdb'
+    local -r flags_require_one=' --repo-files --keyring  --updatevm  --enablerepo --disablerepo --repoid --releasever --cachedir'
+    local -r flags_require_zero='--refresh --keep-cache --yes'
+    local -r subflags='--allow-pv --retries --downloaddir --nogpgcheck'
+    local -r subflags_install="${subflags} --pool"
+    local -r releasever='4.2 4.3'
+
+    __init_qubes_completion "${flags_require_zero} ${flags_require_one} ${subflags_install}" || return 0
+
+    if (( QB_alone_args_count == 0 )); then
+        case "${QB_prev_flag}" in
+            --releasever)
+                __complete_string "${releasever}"
+                return 0
+                ;;
+            --enablerepo | --disablerepo | --repoid)
+                __complete_repos
+                return 0
+                ;;
+            --updatevm)
+                __complete_qubes_list 'running'
+                return 0
+                ;;
+            --repo-files | --keyring | --cachedir)
+                __run_filedir
+                return 0
+                ;;
+            ?*)
+                # unknown prev flag expects sub-argument
+                return 0
+                ;;
+        esac
+
+        __complete_all_flags_if_needed "${flags_require_zero} ${flags_require_one}" && return 0
+
+        __complete_string "${arguments}"
+        return 0
+    else
+
+        # Complete subflag argument if needed
+        case "${QB_prev_flag}" in
+            --pool)
+                __complete_pools_list
+                return 0
+                ;;
+            --downloaddir)
+                __run_filedir
+                return 0
+                ;;
+            --retries)
+                # Do not suggest a retry number
+                return 0
+                ;;
+        esac
+
+        case ${QB_alone_args[0]} in
+            install)
+                __complete_all_flags_if_needed "${subflags} --pool" && return 0
+                __complete_templatespec 'all'
+                return 0
+                ;;
+            reinstall | downgrade | upgrade)
+                __complete_all_flags_if_needed "${subflags}" && return 0
+                __complete_templatespec 'installed'
+                return 0
+                ;;
+            download)
+                __complete_all_flags_if_needed "${subflags}" && return 0
+                __complete_templatespec 'all'
+                return 0
+                ;;
+            info | list)
+                __complete_all_flags_if_needed "--all --installed --available --extras --upgrades --all-versions --machine-readable --machine-readable-json" && return 0
+                __complete_templatespec 'all'
+                return 0
+                ;;
+            search)
+                __complete_all_flags_if_needed "--all" && return 0
+                # Do not complete search query
+                return 0
+                ;;
+            remove)
+                __complete_all_flags_if_needed "--disassoc" && return 0
+                __complete_templatespec 'installed'
+                return 0
+                ;;
+            purge)
+                __complete_all_flags_if_needed "" && return 0
+                __complete_templatespec 'installed'
+                return 0
+                ;;
+            repolist)
+                __complete_all_flags_if_needed "--all --enabled --disabled" && return 0
+                # Do not complete repos
+                return 0
+                ;;
+            clean | migrate-from-rpmdb)
+                __complete_all_flags_if_needed ""
+                return 0
+                ;;
+            ?*)
+                # unknown prev flag expects sub-argument
+                return 0
+                ;;
+        esac
     fi
 }
 
