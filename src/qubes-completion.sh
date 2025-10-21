@@ -3897,7 +3897,7 @@ function _qubes_vm_update() {
 
 function __complete_repo() {
     local repos
-    repos="$(qvm-template repolist | cut -d ' ' -f 1)"
+    repos="$( qvm-template repolist | cut --fields=1 --delimiter=' ' )"
 
     __complete_string "${repos}"
     return 0
@@ -3911,7 +3911,7 @@ function __complete_repos() {
     __debug_msg "last_repo_name_typing=\"${last_repo_name_typing}\""
 
     # NOTE: we save the original QB_real_cur value and return it back, should work even without it
-    local saved_QB_real_cur="${QB_real_cur}"     # save original QB_real_cur just in case
+    local -r saved_QB_real_cur="${QB_real_cur}"  # save original QB_real_cur just in case
     #
         # We have to manually set QB_real_cur, because comma is non-standard separator
         QB_real_cur="${last_repo_name_typing}"
@@ -3926,8 +3926,8 @@ function __complete_repos() {
 
 function __complete_templatespec() {
     local -r specifier="${1}"
-    local template filter
 
+    local filter
     case "${specifier}" in
         'installed')
             filter='--installed'
@@ -3941,25 +3941,34 @@ function __complete_templatespec() {
             ;;
     esac
 
+    
+    local -r command_to_run="${QVMTOOL_QVM_TEMPLATE}"
+    if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
+        __debug_msg "No command to run: ${command_to_run}"
+        return 1
+    fi
+
     # NOTE: machine readable format is faster
-    template="$(${QVMTOOL_QVM_TEMPLATE} list --machine-readable ${filter} | cut -d '|' -f 2)"
+    local template
+    template="$(${command_to_run} list --machine-readable ${filter} | cut --fields=2 --delimiter='|')"
 
     # TODO: This could in principle also complete the templates available version
     __complete_string "${template}"
     return 0
-
 }
 
 
 function _qvm_template() {
+    # cSpell:disable
     local -r arguments='install reinstall downgrade upgrade download list info search remove purge clean repolist migrate-from-rpmdb'
-    local -r flags_require_one=' --repo-files --keyring  --updatevm  --enablerepo --disablerepo --repoid --releasever --cachedir'
+    local -r flags_require_one=' --repo-files --keyring --updatevm --enablerepo --disablerepo --repoid --releasever --cachedir'
     local -r flags_require_zero='--refresh --keep-cache --yes'
-    local -r subflags='--allow-pv --retries --downloaddir --nogpgcheck'
-    local -r subflags_install="${subflags} --pool"
+    local -r sub_flags='--allow-pv --retries --downloaddir --nogpgcheck'
+    local -r sub_flags_install="${sub_flags} --pool"
     local -r releasever='4.2 4.3'
+    # cSpell:enable
 
-    __init_qubes_completion "${flags_require_zero} ${flags_require_one} ${subflags_install}" || return 0
+    __init_qubes_completion "${flags_require_zero} ${flags_require_one} ${sub_flags_install}" || return 0
 
     if (( QB_alone_args_count == 0 )); then
         case "${QB_prev_flag}" in
@@ -3991,7 +4000,7 @@ function _qvm_template() {
         return 0
     else
 
-        # Complete subflag argument if needed
+        # Complete sub_flag argument if needed
         case "${QB_prev_flag}" in
             --pool)
                 __complete_pools_list
@@ -4007,19 +4016,19 @@ function _qvm_template() {
                 ;;
         esac
 
-        case ${QB_alone_args[0]} in
+        case "${QB_alone_args[0]}" in
             install)
-                __complete_all_flags_if_needed "${subflags} --pool" && return 0
+                __complete_all_flags_if_needed "${sub_flags_install}" && return 0
                 __complete_templatespec 'all'
                 return 0
                 ;;
             reinstall | downgrade | upgrade)
-                __complete_all_flags_if_needed "${subflags}" && return 0
+                __complete_all_flags_if_needed "${sub_flags}" && return 0
                 __complete_templatespec 'installed'
                 return 0
                 ;;
             download)
-                __complete_all_flags_if_needed "${subflags}" && return 0
+                __complete_all_flags_if_needed "${sub_flags}" && return 0
                 __complete_templatespec 'all'
                 return 0
                 ;;
