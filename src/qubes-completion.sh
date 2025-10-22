@@ -847,11 +847,26 @@ function __init_qubes_completion() {
 
 
 function __find_original_really_completing() {
+    
+    # First task is to find the command to use,
+    # in Fedora 39 it was: __get_cword_at_cursor_by_ref
+    # in Fedora 42 it is: _comp__get_cword_at_cursor
+    # Because dom0 has old Fedora and development and testing 
+    # uses newer one, we have to support both
+    local command_to_run='__get_cword_at_cursor_by_ref'
+    if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
+        command_to_run='_comp__get_cword_at_cursor'
+    fi    
+    
+    if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
+        __debug_msg "No command to run: ${command_to_run}"
+        return
+    fi
 
     # Now recompute once again buy using default shell settings,
     # this way we get what terminal is actually being completing:
     local cur cword words=()
-    __get_cword_at_cursor_by_ref '' words cword cur
+    "${command_to_run}" '' words cword cur
     QB_orig_cur="${cur}"
     if [[ "${QB_orig_cur}" == '=' ]]; then
         # Provide completion after = with no space before it as it's a new word already
