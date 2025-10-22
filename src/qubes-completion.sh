@@ -132,7 +132,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
      # Commands that have no --quiet/verbose
     'qubesctl'                  # R4.2. Tests: Basic # Features: #TODOs
     'qubesd-query'              # R4.2. Tests: Basic # Features: #TODOs
-    'qubes-hcl-report'          # TODO:R4.2. Tests: Basic # Features: 100%
+    'qubes-hcl-report'          # R4.2. Tests: Basic # Features: 100%
     'qubes-bug-report'          # R4.2. Tests: Basic # Features: 100%
     'qvm-get-image'             # TODO:R4.2. Tests: Basic # Features: 100%
     'qvm-get-tinted-image'      # TODO:R4.2. Tests: Basic # Features: 100%
@@ -3123,7 +3123,7 @@ function _qubes_hcl_report() {
     if (( QB_alone_args_count == 0 )); then
 
         if __need_flags ; then
-            __complete_string '--help -h --support -s --yaml -y'
+            __complete_string '--help -h --support -s --yaml-only -y'
             return 0
         fi
 
