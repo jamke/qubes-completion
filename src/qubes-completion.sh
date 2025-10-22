@@ -2428,7 +2428,10 @@ function _qvm_backup() {
 
             return 0
         else
-            # provide directory completion if dest-vm was not provided
+            # The first positional parameter is the backup location 
+            # (absolute directory path, or command to pipe backup to)
+
+            # so, we provide directory completion if --dest-vm was not provided
             __run_filedir
             return 0
         fi
