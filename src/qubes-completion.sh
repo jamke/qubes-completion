@@ -141,7 +141,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-policy'              # R4.2. Tests: Basic # Features: 100%
     'qubes-vm-settings'         # TODO:R4.2. Tests: Basic # Features: 100%
     'qubes-vm-clone'            # TODO:R4.2. Tests: Basic # Features: 100%
-    'qubes-vm-boot-from-device' # TODO:R4.2. Tests: Basic # Features: 100%
+    'qubes-vm-boot-from-device' # R4.2. Tests: Basic # Features: 100%
     'qubes-input-trigger'       # R4.2. Tests: Basic # Features: 100%
 
     # No man, no --help:
