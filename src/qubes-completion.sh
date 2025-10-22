@@ -304,11 +304,20 @@ function __debug_msg() {
     fi
 
     # NOTE: file for "tail -f" monitoring
-    local -r filename="${QB_DEBUG_LOG_PATH}"
-
-    echo "${1}" >> "${filename}"
+    echo "${1}" >> "${QB_DEBUG_LOG_PATH}"
 }
 
+# Log a message to the log file and echo to stdout if debug mode is on
+function __debug_msg_and_echo() {
+
+    if (( QB_DEBUG_MODE == 0 )) || (( QB_DEBUG_LOG == 0 )); then
+        return
+    fi
+
+    # NOTE: file for "tail -f" monitoring
+    echo "${1}" >> "${QB_DEBUG_LOG_PATH}"
+    echo "${1}"
+}
 
 # Log an array to the log file if debug mode is on (similar to declare -p but cleaner and works with refs)
 function __debug_print_array() {
