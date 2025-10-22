@@ -125,7 +125,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-xkill'                 # TODO:R4.2. Tests: Basic # Features: 100% # Supports no arguments
     'qvm-sync-clock'            # TODO:R4.2. Tests: Basic # Features: 100% # Supports no arguments
 
-    'qubes-prefs'               # TODO:R4.2. Tests: Basic # Features: 100% # but can be better
+    'qubes-prefs'               # R4.2. Tests: Basic # Features: 100% # but can be better
     'qubes-guid'                # R4.2. Tests: Basic # Features: 100% # can be better, but no need
     'qubes-vm-update'           # TODO:R4.2. Tests: None  # Features: 100%
 
@@ -3503,15 +3503,15 @@ function _qubes_prefs() {
     __init_qubes_completion '' || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
+    # cSpell:disable
     local -r sys_properties_bool='check_updates_vm'
-    # cSpell:disable-next-line
     local -r sys_properties_qube='clockvm default_audiovm default_dispvm default_guivm default_netvm default_template management_dispvm updatevm'
     # TODO: add completion of pools?
     local -r sys_properties_pools='default_pool default_pool_kernel default_pool_private default_pool_root default_pool_volatile'
     local -r sys_properties_string="${sys_properties_pools} default_kernel default_qrexec_timeout default_shutdown_timeout stats_interval"
     local -r sys_properties_all="${sys_properties_bool} ${sys_properties_qube} ${sys_properties_string}"
-
     local -r sys_properties_values_generic_bool='True False'
+    # cSpell:enable
 
     # NOTE: --get --set -g -s are deprecated and ignored
     local -r flags='--force-root --help-properties --hide-default'
@@ -3529,7 +3529,8 @@ function _qubes_prefs() {
 
     if (( QB_alone_args_count == 1 )); then
 
-        # default is always a valid option for value
+        # --default is always a valid option for value
+        # We ignore -D option as --default is a better options and means the same
         __complete_string '--default'
 
         # we have a property that defines type
