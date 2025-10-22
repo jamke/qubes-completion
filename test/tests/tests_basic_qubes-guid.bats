@@ -23,12 +23,12 @@ function test_wrapper() {
 }
 
 @test "Test 001. qubes-guid: qubes-guid -" {
-    EXPECTED_COMPREPLY=([0]="--config" [1]="-C" [2]="--domid" [3]="-d" [4]="--target-domid" [5]="-t" [6]="--name" [7]="-N" [8]="--color" [9]="-c" [10]="--label" [11]="-l" [12]="--icon" [13]="-i" [14]="--kill-on-connect" [15]="-K" [16]="--prop" [17]="-p" [18]="--trayicon-mode" [19]="--screensaver-name" [20]="--override-redirect" [21]="--qrexec-for-clipboard" [22]="-Q" [23]="--background" [24]="-n" [25]="--foreground" [26]="-f" [27]="--invisible" [28]="-I" [29]="--title-name" [30]="-T" [31]="--verbose" [32]="-v" [33]="--quiet" [34]="-q" [35]="--help" [36]="-h")
+    EXPECTED_COMPREPLY=([0]="--config" [1]="-C" [2]="--domid" [3]="-d" [4]="--target-domid" [5]="-t" [6]="--name" [7]="-N" [8]="--color" [9]="-c" [10]="--label" [11]="-l" [12]="--icon" [13]="-i" [14]="--qrexec-for-clipboard" [15]="-Q" [16]="--background" [17]="-n" [18]="--foreground" [19]="-f" [20]="--invisible" [21]="-I" [22]="--kill-on-connect" [23]="-K" [24]="--prop" [25]="-p" [26]="--title-name" [27]="-T" [28]="--trayicon-mode" [29]="--screensaver-name" [30]="--override-redirect" [31]="--verbose" [32]="-v" [33]="--quiet" [34]="-q" [35]="--help" [36]="-h")
     test_wrapper 'qubes-guid -'
 }
 
 @test "Test 002. qubes-guid: qubes-guid --" {
-    EXPECTED_COMPREPLY=([0]="--config" [1]="--domid" [2]="--target-domid" [3]="--name" [4]="--color" [5]="--label" [6]="--icon" [7]="--kill-on-connect" [8]="--prop" [9]="--trayicon-mode" [10]="--screensaver-name" [11]="--override-redirect" [12]="--qrexec-for-clipboard" [13]="--background" [14]="--foreground" [15]="--invisible" [16]="--title-name" [17]="--verbose" [18]="--quiet" [19]="--help")
+    EXPECTED_COMPREPLY=([0]="--config" [1]="--domid" [2]="--target-domid" [3]="--name" [4]="--color" [5]="--label" [6]="--icon" [7]="--qrexec-for-clipboard" [8]="--background" [9]="--foreground" [10]="--invisible" [11]="--kill-on-connect" [12]="--prop" [13]="--title-name" [14]="--trayicon-mode" [15]="--screensaver-name" [16]="--override-redirect" [17]="--verbose" [18]="--quiet" [19]="--help")
     test_wrapper 'qubes-guid --'
 }
 
@@ -123,12 +123,12 @@ function test_wrapper() {
 }
 
 @test "Test 021. qubes-guid: qubes-guid nonexistent -" {
-    EXPECTED_COMPREPLY=([0]="--config" [1]="-C" [2]="--domid" [3]="-d" [4]="--target-domid" [5]="-t" [6]="--name" [7]="-N" [8]="--color" [9]="-c" [10]="--label" [11]="-l" [12]="--icon" [13]="-i" [14]="--kill-on-connect" [15]="-K" [16]="--prop" [17]="-p" [18]="--trayicon-mode" [19]="--screensaver-name" [20]="--override-redirect" [21]="--qrexec-for-clipboard" [22]="-Q" [23]="--background" [24]="-n" [25]="--foreground" [26]="-f" [27]="--invisible" [28]="-I" [29]="--title-name" [30]="-T" [31]="--verbose" [32]="-v" [33]="--quiet" [34]="-q" [35]="--help" [36]="-h")
+    EXPECTED_COMPREPLY=([0]="--config" [1]="-C" [2]="--domid" [3]="-d" [4]="--target-domid" [5]="-t" [6]="--name" [7]="-N" [8]="--color" [9]="-c" [10]="--label" [11]="-l" [12]="--icon" [13]="-i" [14]="--qrexec-for-clipboard" [15]="-Q" [16]="--background" [17]="-n" [18]="--foreground" [19]="-f" [20]="--invisible" [21]="-I" [22]="--kill-on-connect" [23]="-K" [24]="--prop" [25]="-p" [26]="--title-name" [27]="-T" [28]="--trayicon-mode" [29]="--screensaver-name" [30]="--override-redirect" [31]="--verbose" [32]="-v" [33]="--quiet" [34]="-q" [35]="--help" [36]="-h")
     test_wrapper 'qubes-guid nonexistent -'
 }
 
 @test "Test 022. qubes-guid: qubes-guid nonexistent --" {
-    EXPECTED_COMPREPLY=([0]="--config" [1]="--domid" [2]="--target-domid" [3]="--name" [4]="--color" [5]="--label" [6]="--icon" [7]="--kill-on-connect" [8]="--prop" [9]="--trayicon-mode" [10]="--screensaver-name" [11]="--override-redirect" [12]="--qrexec-for-clipboard" [13]="--background" [14]="--foreground" [15]="--invisible" [16]="--title-name" [17]="--verbose" [18]="--quiet" [19]="--help")
+    EXPECTED_COMPREPLY=([0]="--config" [1]="--domid" [2]="--target-domid" [3]="--name" [4]="--color" [5]="--label" [6]="--icon" [7]="--qrexec-for-clipboard" [8]="--background" [9]="--foreground" [10]="--invisible" [11]="--kill-on-connect" [12]="--prop" [13]="--title-name" [14]="--trayicon-mode" [15]="--screensaver-name" [16]="--override-redirect" [17]="--verbose" [18]="--quiet" [19]="--help")
     test_wrapper 'qubes-guid nonexistent --'
 }
 
@@ -163,12 +163,12 @@ function test_wrapper() {
 }
 
 @test "Test 029. qubes-guid: qubes-guid --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--config" [1]="-C" [2]="--domid" [3]="-d" [4]="--target-domid" [5]="-t" [6]="--name" [7]="-N" [8]="--color" [9]="-c" [10]="--label" [11]="-l" [12]="--icon" [13]="-i" [14]="--kill-on-connect" [15]="-K" [16]="--prop" [17]="-p" [18]="--trayicon-mode" [19]="--screensaver-name" [20]="--override-redirect" [21]="--qrexec-for-clipboard" [22]="-Q" [23]="--background" [24]="-n" [25]="--foreground" [26]="-f" [27]="--invisible" [28]="-I" [29]="--title-name" [30]="-T" [31]="--verbose" [32]="-v" [33]="--quiet" [34]="-q" [35]="--help" [36]="-h")
+    EXPECTED_COMPREPLY=([0]="--config" [1]="-C" [2]="--domid" [3]="-d" [4]="--target-domid" [5]="-t" [6]="--name" [7]="-N" [8]="--color" [9]="-c" [10]="--label" [11]="-l" [12]="--icon" [13]="-i" [14]="--qrexec-for-clipboard" [15]="-Q" [16]="--background" [17]="-n" [18]="--foreground" [19]="-f" [20]="--invisible" [21]="-I" [22]="--kill-on-connect" [23]="-K" [24]="--prop" [25]="-p" [26]="--title-name" [27]="-T" [28]="--trayicon-mode" [29]="--screensaver-name" [30]="--override-redirect" [31]="--verbose" [32]="-v" [33]="--quiet" [34]="-q" [35]="--help" [36]="-h")
     test_wrapper 'qubes-guid --something_unknown -'
 }
 
 @test "Test 030. qubes-guid: qubes-guid --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--config" [1]="--domid" [2]="--target-domid" [3]="--name" [4]="--color" [5]="--label" [6]="--icon" [7]="--kill-on-connect" [8]="--prop" [9]="--trayicon-mode" [10]="--screensaver-name" [11]="--override-redirect" [12]="--qrexec-for-clipboard" [13]="--background" [14]="--foreground" [15]="--invisible" [16]="--title-name" [17]="--verbose" [18]="--quiet" [19]="--help")
+    EXPECTED_COMPREPLY=([0]="--config" [1]="--domid" [2]="--target-domid" [3]="--name" [4]="--color" [5]="--label" [6]="--icon" [7]="--qrexec-for-clipboard" [8]="--background" [9]="--foreground" [10]="--invisible" [11]="--kill-on-connect" [12]="--prop" [13]="--title-name" [14]="--trayicon-mode" [15]="--screensaver-name" [16]="--override-redirect" [17]="--verbose" [18]="--quiet" [19]="--help")
     test_wrapper 'qubes-guid --something_unknown --'
 }
 
