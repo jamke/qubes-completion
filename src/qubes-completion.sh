@@ -142,7 +142,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-vm-settings'         # TODO:R4.2. Tests: Basic # Features: 100%
     'qubes-vm-clone'            # TODO:R4.2. Tests: Basic # Features: 100%
     'qubes-vm-boot-from-device' # TODO:R4.2. Tests: Basic # Features: 100%
-    'qubes-input-trigger'       # TODO:R4.2. Tests: Basic # Features: 100%
+    'qubes-input-trigger'       # R4.2. Tests: Basic # Features: 100%
 
     # No man, no --help:
     'qubes-guivm-session'       # R4.2. Tests: Basic # Features: 100%
@@ -3493,8 +3493,6 @@ function _qubes_input_trigger() {
     # no --verbose and --quiet flags
     local -r flags='-h --help --all --action --event --dom0'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
-
-    __complete_qubes_list 'all'
 
     return 0
 }
