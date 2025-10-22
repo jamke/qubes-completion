@@ -126,7 +126,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-sync-clock'            # TODO:R4.2. Tests: Basic # Features: 100% # Supports no arguments
 
     'qubes-prefs'               # TODO:R4.2. Tests: Basic # Features: 100% # but can be better
-    'qubes-guid'                # TODO:R4.2. Tests: Basic # Features: 100% # can be better, but no need
+    'qubes-guid'                # R4.2. Tests: Basic # Features: 100% # can be better, but no need
     'qubes-vm-update'           # TODO:R4.2. Tests: None  # Features: 100%
 
      # Commands that have no --quiet/verbose
@@ -3332,6 +3332,7 @@ function _qubes_guid() {
             return 0
             ;;
         --trayicon-mode)
+            # NOTE: currently does not support additional modifiers, like tint+saturation50 and etc
             __complete_string 'bg border1 border2 tint'
             return 0
             ;;
@@ -3350,7 +3351,7 @@ function _qubes_guid() {
     esac
 
     # cSpell:disable-next-line
-    local -r flags='--config -C --domid -d --target-domid -t --name -N --color -c --label -l --icon -i --kill-on-connect -K --prop -p --trayicon-mode --screensaver-name --override-redirect --qrexec-for-clipboard -Q --background -n --foreground -f --invisible -I --title-name -T'
+    local -r flags='--config -C --domid -d --target-domid -t --name -N --color -c --label -l --icon -i --qrexec-for-clipboard -Q --background -n --foreground -f --invisible -I --kill-on-connect -K --prop -p --title-name -T --trayicon-mode --screensaver-name --override-redirect'
     __complete_all_flags_if_needed "${flags}" && return 0
 
     return 0
