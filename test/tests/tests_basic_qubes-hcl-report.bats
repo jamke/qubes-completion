@@ -23,12 +23,12 @@ function test_wrapper() {
 }
 
 @test "Test 001. qubes-hcl-report: qubes-hcl-report -" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--support" [3]="-s")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--support" [3]="-s" [4]="--yaml-only" [5]="-y")
     test_wrapper 'qubes-hcl-report -'
 }
 
 @test "Test 002. qubes-hcl-report: qubes-hcl-report --" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="--support")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="--support" [2]="--yaml-only")
     test_wrapper 'qubes-hcl-report --'
 }
 
@@ -163,12 +163,12 @@ function test_wrapper() {
 }
 
 @test "Test 029. qubes-hcl-report: qubes-hcl-report --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--support" [3]="-s")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--support" [3]="-s" [4]="--yaml-only" [5]="-y")
     test_wrapper 'qubes-hcl-report --something_unknown -'
 }
 
 @test "Test 030. qubes-hcl-report: qubes-hcl-report --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="--support")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="--support" [2]="--yaml-only")
     test_wrapper 'qubes-hcl-report --something_unknown --'
 }
 
