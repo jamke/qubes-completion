@@ -74,81 +74,81 @@ QVM_FIREWALL_USE_TABLE_OUTPUT='1'
 # The list of supported commands for completion
 declare -a SUPPORTED_COMMANDS_LIST=(
 
-    'qubes-dom0-update'         # Tests: Good  # Features: 100%
+    'qubes-dom0-update'         # TODO:R4.2. Tests: Good  # Features: 100%
 
-    'qvm-ls'                    # Tests: FULL  # Features: 100%
-    'qvm-tags'                  # Tests: FULL  # Features: 100%
-    'qvm-start'                 # Tests: Basic # Features: #TODOs
-    'qvm-shutdown'              # Tests: FULL  # Features: 100%
-    'qvm-kill'                  # Tests: Basic # Features: 100%
-    'qvm-run'                   # Tests: Basic # Features: 100%
+    'qvm-ls'                    # TODO:R4.2. Tests: FULL  # Features: 100%
+    'qvm-tags'                  # TODO:R4.2. Tests: FULL  # Features: 100%
+    'qvm-start'                 # TODO:R4.2. Tests: Basic # Features: #TODOs
+    'qvm-shutdown'              # TODO:R4.2. Tests: FULL  # Features: 100%
+    'qvm-kill'                  # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-run'                   # TODO:R4.2. Tests: Basic # Features: 100%
 
-    'qvm-pause'                 # Tests: Basic # Features: 100%
-    'qvm-unpause'               # Tests: Basic # Features: 100%
+    'qvm-pause'                 # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-unpause'               # TODO:R4.2. Tests: Basic # Features: 100%
 
-    'qvm-create'                # Tests: Basic # Features: #TODOs
-    'qvm-clone'                 # Tests: Basic # Features: can be better and provide pool:volumes, but qvm-volume is too slow
-    'qvm-remove'                # Tests: Basic # Features: 100%
+    'qvm-create'                # TODO:R4.2. Tests: Basic # Features: #TODOs
+    'qvm-clone'                 # TODO:R4.2. Tests: Basic # Features: can be better and provide pool:volumes, but qvm-volume is too slow
+    'qvm-remove'                # TODO:R4.2. Tests: Basic # Features: 100%
 
-    'qvm-device'                # Tests: Basic # Features: 100%
-    'qvm-block'                 # Tests: Basic # Features: 100%
-    'qvm-usb'                   # Tests: Basic # Features: 100%
-    'qvm-pci'                   # Tests: Basic # Features: 100%
+    'qvm-device'                # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-block'                 # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-usb'                   # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-pci'                   # TODO:R4.2. Tests: Basic # Features: 100%
 
-    'qvm-prefs'                 # Tests: Basic # Features: 100%
-    'qvm-features'              # Tests: Basic # Features: 100%
+    'qvm-prefs'                 # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-features'              # TODO:R4.2. Tests: Basic # Features: 100%
 
-    'qvm-volume'                # Tests: Basic # Features: #TODO
+    'qvm-volume'                # TODO:R4.2. Tests: Basic # Features: #TODO
 
     'qvm-template'              #TODO: Not implemented yet
     'qvm-template-postprocess'  #TODO: Not implemented yet
-    'qvm-backup'                # Tests: Basic # Features: 100%
-    'qvm-backup-restore'        # Tests: Basic # Features: 100%
+    'qvm-backup'                # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-backup-restore'        # TODO:R4.2. Tests: Basic # Features: 100%
 
     'qvm-pool'                  #TODO: Not implemented yet
 
-    'qvm-check'                 # Tests: Basic # Features: 100%
-    'qvm-firewall'              # Tests: Basic # Features: 100%
-    'qvm-service'               # Tests: Basic # Features: 100%
+    'qvm-check'                 # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-firewall'              # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-service'               # TODO:R4.2. Tests: Basic # Features: 100%
 
-    'qvm-sync-appmenus'         # Tests: Basic # Features: 100%
-    'qvm-appmenus'              # Tests: Basic # Features: #TODOs (But all known is done)
+    'qvm-sync-appmenus'         # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-appmenus'              # TODO:R4.2. Tests: Basic # Features: #TODOs (But all known is done)
 
-    'qvm-copy-to-vm'            # Tests: Basic # Features: 100%
-    'qvm-move-to-vm'            # Tests: Basic # Features: 100%
-    'qvm-copy'                  # Tests: Basic # Features: 100%
-    'qvm-move'                  # Tests: Basic # Features: 100%
+    'qvm-copy-to-vm'            # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-move-to-vm'            # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-copy'                  # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-move'                  # TODO:R4.2. Tests: Basic # Features: 100%
 
-    'qvm-start-gui'             # Tests: Basic # Features: 100% # Symlink to start-daemon
-    'qvm-start-daemon'          # Tests: Basic # Features: 100%
+    'qvm-start-gui'             # TODO:R4.2. Tests: Basic # Features: 100% # Symlink to start-daemon
+    'qvm-start-daemon'          # TODO:R4.2. Tests: Basic # Features: 100%
 
-    'qvm-xkill'                 # Tests: Basic # Features: 100% # Supports no arguments
-    'qvm-sync-clock'            # Tests: Basic # Features: 100% # Supports no arguments
+    'qvm-xkill'                 # TODO:R4.2. Tests: Basic # Features: 100% # Supports no arguments
+    'qvm-sync-clock'            # TODO:R4.2. Tests: Basic # Features: 100% # Supports no arguments
 
-    'qubes-prefs'               # Tests: Basic # Features: 100% # but can be better
-    'qubes-guid'                # Tests: Basic # Features: 100% # can be better, but no need
-    'qubes-vm-update'           # Tests: None  # Features: 100%
+    'qubes-prefs'               # TODO:R4.2. Tests: Basic # Features: 100% # but can be better
+    'qubes-guid'                # TODO:R4.2. Tests: Basic # Features: 100% # can be better, but no need
+    'qubes-vm-update'           # TODO:R4.2. Tests: None  # Features: 100%
 
      # Commands that have no --quiet/verbose
-    'qubesctl'                  # Tests: Basic # Features: #TODOs
-    'qubesd-query'              # Tests: Basic # Features: #TODOs
-    'qubes-hcl-report'          # Tests: Basic # Features: 100%
-    'qubes-bug-report'          # Tests: Basic # Features: 100%
-    'qvm-get-image'             # Tests: Basic # Features: 100%
-    'qvm-get-tinted-image'      # Tests: Basic # Features: 100%
+    'qubesctl'                  # R4.2. Tests: Basic # Features: #TODOs
+    'qubesd-query'              # TODO:R4.2. Tests: Basic # Features: #TODOs
+    'qubes-hcl-report'          # TODO:R4.2. Tests: Basic # Features: 100%
+    'qubes-bug-report'          # R4.2. Tests: Basic # Features: 100%
+    'qvm-get-image'             # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-get-tinted-image'      # TODO:R4.2. Tests: Basic # Features: 100%
 
     # No man available, only --help:
-    'qubes-policy'              # Tests: Basic # Features: 100%
-    'qubes-vm-settings'         # Tests: Basic # Features: 100%
-    'qubes-vm-clone'            # Tests: Basic # Features: 100%
-    'qubes-vm-boot-from-device' # Tests: Basic # Features: 100%
-    'qubes-input-trigger'       # Tests: Basic # Features: 100%
+    'qubes-policy'              # TODO:R4.2. Tests: Basic # Features: 100%
+    'qubes-vm-settings'         # TODO:R4.2. Tests: Basic # Features: 100%
+    'qubes-vm-clone'            # TODO:R4.2. Tests: Basic # Features: 100%
+    'qubes-vm-boot-from-device' # TODO:R4.2. Tests: Basic # Features: 100%
+    'qubes-input-trigger'       # TODO:R4.2. Tests: Basic # Features: 100%
 
     # No man, no --help:
-    'qubes-guivm-session'       # Tests: Basic # Features: 100%
+    'qubes-guivm-session'       # TODO:R4.2. Tests: Basic # Features: 100%
 
     # Commands that have no --help/quiet/verbose
-    'qvm-console-dispvm'        # Tests: Basic # Features: 100%
+    'qvm-console-dispvm'        # TODO:R4.2. Tests: Basic # Features: 100%
 
 
     # -----------------------------------------------------------
@@ -2989,11 +2989,10 @@ function _qvm_service() {
 
 function _qubesctl() {
 
-    # TODO: NOTE: R4.1 has version that lacks several latest flags,
-    # so this has to be updated for R4.2 when it is ready
-
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # So, we have to do things manually
+    
+    # NOTE: man qubesctl is missing `--standalones` option, but --help shows it
 
     __init_qubes_completion '--max-concurrency --targets' || return 0
 
@@ -3014,7 +3013,7 @@ function _qubesctl() {
                 __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
 
                 # NOTE: we save the original QB_real_cur value and return it back, should work even without it
-                local saved_QB_real_cur="${QB_real_cur}"     # save original QB_real_cur just in case
+                local -r saved_QB_real_cur="${QB_real_cur}"  # save original QB_real_cur just in case
                 #
                     # We have to manually set QB_real_cur, because comma is non-standard separator
                     QB_real_cur="${last_qube_name_typing}"
@@ -3054,7 +3053,7 @@ function _qubesctl() {
         fi
     else
 
-        # TODO: Depending on previous salt state suggestions can be provided
+        # NOTE: Depending on previous salt state suggestions can be provided
         # Unfortunately the /srv/salt is only readable for the root user.
         # Therefore, completion based on its file structure could be provided but it would
         # only work for the root user or if the user had changed permissions for
@@ -3066,7 +3065,7 @@ function _qubesctl() {
 
 function _qubesd_query() {
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # So, we have to do things manually
 
     __init_qubes_completion '--connect -c' || return 0
@@ -3113,7 +3112,7 @@ function _qubes_hcl_report() {
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man qubes-hcl-report`
     # So, we have to do things manually
 
@@ -3137,7 +3136,7 @@ function _qubes_bug_report() {
 
     __init_qubes_completion '--dest-vm -d' || return 0
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man qubes-bug-report`
     # So, we have to do things manually
 
@@ -3173,7 +3172,7 @@ function _qvm_console_dispvm() {
     __init_qubes_completion '' || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man qvm-console-dispvm`
 
     # So, we have to do things manually
@@ -3199,7 +3198,7 @@ function _qvm_get_image() {
     __init_qubes_completion '' || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man qvm-get-image`
 
     # So, we have to do things manually
@@ -3240,7 +3239,7 @@ function _qvm_get_tinted_image() {
     __init_qubes_completion '' || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man qvm-get-image`
 
     # So, we have to do things manually
@@ -3359,7 +3358,7 @@ function _qubes_policy() {
     __init_qubes_completion '' || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man`
 
     # So, we have to do things manually
