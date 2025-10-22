@@ -1451,6 +1451,7 @@ function __complete_general_firewall_rule() {
                 ;;
             icmptype)
                 # Nothing to provide
+                # ICMP message type, specified as numeric value
                 return 0
                 ;;
             specialtarget)
