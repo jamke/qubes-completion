@@ -42,6 +42,7 @@
     "servicevm",
     "shellcheck",
     "specialtarget",
+    "standalones",
     "trayicon",
     "virt",
     "VIRTMODE",
