@@ -145,7 +145,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-input-trigger'       # TODO:R4.2. Tests: Basic # Features: 100%
 
     # No man, no --help:
-    'qubes-guivm-session'       # TODO:R4.2. Tests: Basic # Features: 100%
+    'qubes-guivm-session'       # R4.2. Tests: Basic # Features: 100%
 
     # Commands that have no --help/quiet/verbose
     'qvm-console-dispvm'        # TODO:R4.2. Tests: Basic # Features: 100%
