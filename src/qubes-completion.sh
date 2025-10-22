@@ -201,6 +201,49 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     # -----------------------------------------------------------
 )
 
+# =================================================================
+# Searching for bash-completion package functions
+# =================================================================
+# Between Fedora 39 and Fedora 42 the function names were changed
+# The change was made in bash-completion 2.12.
+# Because dom0 has old Fedora and development and testing 
+# uses newer one, we have to support both.
+
+# _init_completion() and _comp_initialize()
+QB_CALL_init_completion='_init_completion'
+if [[ $(type -t "${QB_CALL_init_completion}") != function ]]; then
+    QB_CALL_init_completion='_comp_initialize'
+fi
+
+if [[ $(type -t "${QB_CALL_init_completion}") != function ]]; then
+    __debug_msg "No function to run: ${QB_CALL_init_completion}"
+    return 1
+fi
+
+# __get_cword_at_cursor_by_ref() and _comp__get_cword_at_cursor()
+QB_CALL_get_cword_at_cursor='__get_cword_at_cursor_by_ref'
+if [[ $(type -t "${QB_CALL_get_cword_at_cursor}") != function ]]; then
+    QB_CALL_get_cword_at_cursor='_comp__get_cword_at_cursor'
+fi
+
+if [[ $(type -t "${QB_CALL_get_cword_at_cursor}") != function ]]; then
+    __debug_msg "No function to run: ${QB_CALL_get_cword_at_cursor}"
+    return 1
+fi
+
+# _filedir() and _comp_compgen_filedir()
+QB_CALL_filedir='_filedir'
+if [[ $(type -t "${QB_CALL_filedir}") != function ]]; then
+    QB_CALL_filedir='_comp_compgen_filedir'
+fi
+
+if [[ $(type -t "${QB_CALL_filedir}") != function ]]; then
+    __debug_msg "No function to run: ${QB_CALL_filedir}"
+    return 1
+fi
+
+# =================================================================
+
 
 # =================================================================
 # Global variables
@@ -364,11 +407,11 @@ function __run_filedir() {
 
     # NOTE: we need to re-init in a default way to make it work properly
     local cur prev words cword
-    _init_completion || return 1
+    "${QB_CALL_init_completion}" || return 1
 
     # files completion for rest args
-    _filedir
-    # _filedir "$@" # Not needed for this script
+    "${QB_CALL_filedir}"
+    # "${QB_CALL_filedir}" "$@" # Not needed for this script
 
     return 0
 }
@@ -710,14 +753,9 @@ function __init_qubes_completion() {
 
     __debug_log_start_of_init_qubes_completion "${flags_require_one}" "${flags_require_multiple}"
 
-    if [[ $(type -t _init_completion) != function ]]; then
-        __debug_msg 'ERROR: _init_completion() does not exist'
-        return 3
-    fi
-
-    # Run _init_completion() with options
+    # Run "${QB_CALL_init_completion}"() with options
     local cur prev words cword
-    _init_completion -n ':=' || return 1
+    "${QB_CALL_init_completion}" -n ':=' || return 1
     __debug_log_after_modified_init_completion words
 
     # Reset all result variables
@@ -847,26 +885,11 @@ function __init_qubes_completion() {
 
 
 function __find_original_really_completing() {
-    
-    # First task is to find the command to use,
-    # in Fedora 39 it was: __get_cword_at_cursor_by_ref
-    # in Fedora 42 it is: _comp__get_cword_at_cursor
-    # Because dom0 has old Fedora and development and testing 
-    # uses newer one, we have to support both
-    local command_to_run='__get_cword_at_cursor_by_ref'
-    if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
-        command_to_run='_comp__get_cword_at_cursor'
-    fi    
-    
-    if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
-        __debug_msg "No command to run: ${command_to_run}"
-        return
-    fi
 
     # Now recompute once again buy using default shell settings,
     # this way we get what terminal is actually being completing:
     local cur cword words=()
-    "${command_to_run}" '' words cword cur
+    "${QB_CALL_get_cword_at_cursor}" '' words cword cur
     QB_orig_cur="${cur}"
     if [[ "${QB_orig_cur}" == '=' ]]; then
         # Provide completion after = with no space before it as it's a new word already
@@ -3788,10 +3811,12 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
 
 function __qubes_dom0_update_run_dnf_completion() {
 
-    # NOTE: We can just use '_dnf' function as we know it completes dnf
+    # NOTE: We can just use '_dnf' function, as we know it completes dnf
     # but this approach with search of this function is more reliable,
     # prevents things from breaking in case _dnf is renamed or something.
     # It also is more flexible as it allows user to use custom dnf completion.
+    # Update: as of Fedora 42, the function is named _do_dnf5_completion().
+    # Luckily, we do not care and do not rely on it.
 
     local -r dnf_cmd='dnf'
 
