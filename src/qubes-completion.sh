@@ -138,7 +138,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-get-tinted-image'      # TODO:R4.2. Tests: Basic # Features: 100%
 
     # No man available, only --help:
-    'qubes-policy'              # TODO:R4.2. Tests: Basic # Features: 100%
+    'qubes-policy'              # R4.2. Tests: Basic # Features: 100%
     'qubes-vm-settings'         # TODO:R4.2. Tests: Basic # Features: 100%
     'qubes-vm-clone'            # TODO:R4.2. Tests: Basic # Features: 100%
     'qubes-vm-boot-from-device' # TODO:R4.2. Tests: Basic # Features: 100%
