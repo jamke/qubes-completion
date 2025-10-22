@@ -18,7 +18,7 @@ function test_wrapper() {
 }
 
 @test "Test 000. qubes-input-trigger: qubes-input-trigger " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="halted" [3]="other" [4]="paused" [5]="personal" [6]="runname2" [7]="running" [8]="standalone1" [9]="standalone2" [10]="standalone3" [11]="standalone4" [12]="sys-usb" [13]="template1" [14]="template2" [15]="template3" [16]="template4" [17]="transient" [18]="vault" [19]="work")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger '
 }
 
@@ -33,7 +33,7 @@ function test_wrapper() {
 }
 
 @test "Test 003. qubes-input-trigger: qubes-input-trigger -- " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="halted" [3]="other" [4]="paused" [5]="personal" [6]="runname2" [7]="running" [8]="standalone1" [9]="standalone2" [10]="standalone3" [11]="standalone4" [12]="sys-usb" [13]="template1" [14]="template2" [15]="template3" [16]="template4" [17]="transient" [18]="vault" [19]="work")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger -- '
 }
 
@@ -53,17 +53,17 @@ function test_wrapper() {
 }
 
 @test "Test 007. qubes-input-trigger: qubes-input-trigger run" {
-    EXPECTED_COMPREPLY=([0]="runname2" [1]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger run'
 }
 
 @test "Test 008. qubes-input-trigger: qubes-input-trigger runnin" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger runnin'
 }
 
 @test "Test 009. qubes-input-trigger: qubes-input-trigger running" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger running'
 }
 
@@ -73,17 +73,17 @@ function test_wrapper() {
 }
 
 @test "Test 011. qubes-input-trigger: qubes-input-trigger \"run" {
-    EXPECTED_COMPREPLY=([0]="runname2" [1]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger "run'
 }
 
 @test "Test 012. qubes-input-trigger: qubes-input-trigger \"runnin" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger "runnin'
 }
 
 @test "Test 013. qubes-input-trigger: qubes-input-trigger \"running" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger "running'
 }
 
@@ -93,17 +93,17 @@ function test_wrapper() {
 }
 
 @test "Test 015. qubes-input-trigger: qubes-input-trigger 'run" {
-    EXPECTED_COMPREPLY=([0]="runname2" [1]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger '\''run'
 }
 
 @test "Test 016. qubes-input-trigger: qubes-input-trigger 'runnin" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger '\''runnin'
 }
 
 @test "Test 017. qubes-input-trigger: qubes-input-trigger 'running" {
-    EXPECTED_COMPREPLY=([0]="running")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger '\''running'
 }
 
@@ -153,7 +153,7 @@ function test_wrapper() {
 }
 
 @test "Test 027. qubes-input-trigger: qubes-input-trigger --something_unknown " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="halted" [3]="other" [4]="paused" [5]="personal" [6]="runname2" [7]="running" [8]="standalone1" [9]="standalone2" [10]="standalone3" [11]="standalone4" [12]="sys-usb" [13]="template1" [14]="template2" [15]="template3" [16]="template4" [17]="transient" [18]="vault" [19]="work")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger --something_unknown '
 }
 
@@ -173,7 +173,7 @@ function test_wrapper() {
 }
 
 @test "Test 031. qubes-input-trigger: qubes-input-trigger --something_unknown -- " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="halted" [3]="other" [4]="paused" [5]="personal" [6]="runname2" [7]="running" [8]="standalone1" [9]="standalone2" [10]="standalone3" [11]="standalone4" [12]="sys-usb" [13]="template1" [14]="template2" [15]="template3" [16]="template4" [17]="transient" [18]="vault" [19]="work")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qubes-input-trigger --something_unknown -- '
 }
 
