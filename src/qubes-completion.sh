@@ -131,7 +131,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
      # Commands that have no --quiet/verbose
     'qubesctl'                  # R4.2. Tests: Basic # Features: #TODOs
-    'qubesd-query'              # TODO:R4.2. Tests: Basic # Features: #TODOs
+    'qubesd-query'              # R4.2. Tests: Basic # Features: #TODOs
     'qubes-hcl-report'          # TODO:R4.2. Tests: Basic # Features: 100%
     'qubes-bug-report'          # R4.2. Tests: Basic # Features: 100%
     'qvm-get-image'             # TODO:R4.2. Tests: Basic # Features: 100%
@@ -3068,13 +3068,17 @@ function _qubesd_query() {
     # NOTE: This command does not support --quiet and --verbose args.
     # So, we have to do things manually
 
-    __init_qubes_completion '--connect -c' || return 0
+    __init_qubes_completion '--connect -c --max-bytes' || return 0
 
     if (( QB_alone_args_count == 0 )); then
 
         case "${QB_prev_flag}" in
             --connect | -c)
                 __run_filedir
+                return 0
+                ;;
+            --max-bytes)
+                # Maximum number of bytes to read from stdin
                 return 0
                 ;;
             ?*)
@@ -3084,7 +3088,7 @@ function _qubesd_query() {
         esac
 
         if __need_flags ; then
-            __complete_string '--help -h --connect -c --empty -e --fail'
+            __complete_string '--help -h --connect -c --empty -e --fail --single-line --max-bytes --null'
             return 0
         fi
 
@@ -3102,7 +3106,7 @@ function _qubesd_query() {
         return 0
     fi
 
-    # NOTE: we can provide more, but documentation is awful, so no source of info
+    # NOTE: we can provide more, but documentation is not good, so no source of info
     return 0
 }
 
