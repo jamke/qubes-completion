@@ -23,12 +23,12 @@ function test_wrapper() {
 }
 
 @test "Test 001. qubesd-query: qubesd-query -" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--connect" [3]="-c" [4]="--empty" [5]="-e" [6]="--fail")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--connect" [3]="-c" [4]="--empty" [5]="-e" [6]="--fail" [7]="--single-line" [8]="--max-bytes" [9]="--null")
     test_wrapper 'qubesd-query -'
 }
 
 @test "Test 002. qubesd-query: qubesd-query --" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="--connect" [2]="--empty" [3]="--fail")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="--connect" [2]="--empty" [3]="--fail" [4]="--single-line" [5]="--max-bytes" [6]="--null")
     test_wrapper 'qubesd-query --'
 }
 
@@ -163,12 +163,12 @@ function test_wrapper() {
 }
 
 @test "Test 029. qubesd-query: qubesd-query --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--connect" [3]="-c" [4]="--empty" [5]="-e" [6]="--fail")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--connect" [3]="-c" [4]="--empty" [5]="-e" [6]="--fail" [7]="--single-line" [8]="--max-bytes" [9]="--null")
     test_wrapper 'qubesd-query --something_unknown -'
 }
 
 @test "Test 030. qubesd-query: qubesd-query --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--help" [1]="--connect" [2]="--empty" [3]="--fail")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="--connect" [2]="--empty" [3]="--fail" [4]="--single-line" [5]="--max-bytes" [6]="--null")
     test_wrapper 'qubesd-query --something_unknown --'
 }
 
