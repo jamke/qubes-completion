@@ -87,7 +87,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-unpause'               # R4.2. Tests: Basic # Features: 100%
 
     'qvm-create'                # R4.2. Tests: Basic # Features: #TODOs
-    'qvm-clone'                 # TODO:R4.2. Tests: Basic # Features: can be better and provide pool:volumes, but qvm-volume is too slow
+    'qvm-clone'                 # R4.2. Tests: Basic # Features: can be better and provide pool:volumes, but qvm-volume is too slow
     'qvm-remove'                # R4.2. Tests: Basic # Features: 100%
 
     'qvm-device'                # TODO:R4.2. Tests: Basic # Features: 100%
@@ -1715,6 +1715,11 @@ function _qvm_create() {
             return 0
             ;;
         -p | --pool)
+            # NOTE: `man qvm-create` shows "--pool=POOL:VOLUME, -p POOL:VOLUME", 
+            # while `qvm-create --help` shows "--pool VOLUME_NAME=POOL_NAME, -p VOLUME_NAME=POOL_NAME"
+            # --help is right, the code is:
+            # volume_name, pool_name = pool_vol.split('=')
+            
             # NOTE: unfortunately, we do not list the volumes because
             # qvm-volume list takes like seconds on a modern computer,
             # that is 10 times slower than sudo lvs that provides almost
@@ -1722,6 +1727,8 @@ function _qvm_create() {
             #
             # The completion for volumes can be added when qvm-volume
             # is either optimized or rewritten to be not that slow.
+            
+            # Do not even complete pools as the order is VOLUME_NAME=POOL_NAME            
             #__complete_pools_list
             return 0
             ;;
@@ -1773,16 +1780,21 @@ function _qvm_clone() {
             return 0
             ;;
         -p | --pool)
+            # NOTE: `man qvm-clone` shows "--pool=POOL:VOLUME, -p POOL:VOLUME", 
+            # while `qvm-clone --help` shows "--pool VOLUME=POOL, -p VOLUME=POOL"
+            # --help is right, the code is:
+            # volume_name, pool_name = pool_vol.split('=')
+            
             # NOTE: unfortunately, we do not list the volumes because
             # qvm-volume list takes like seconds on a modern computer,
             # that is 10 times slower than sudo lvs that provides almost
             # the same information.
-
+            #
             # The completion for volumes can be added when qvm-volume
             # is either optimized or rewritten to be not that slow.
-
-            __complete_pools_list
-
+            
+            # Do not even complete pools as the order is VOLUME=POOL
+            #__complete_pools_list
             return 0
             ;;
         ?*)
@@ -1796,6 +1808,7 @@ function _qvm_clone() {
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     # List qubes (up to 2)
+    # The second one for easy naming the cloned qube similar to an existing one
     if (( QB_alone_args_count < 2 )); then
         __complete_qubes_list_without_dom0 'all'
     fi
