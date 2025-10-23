@@ -149,7 +149,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-guivm-session'       # R4.2. Tests: Basic # Features: 100%
 
     # Commands that have no --help/quiet/verbose
-    'qvm-console-dispvm'        # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-console-dispvm'        # R4.2. Tests: Basic # Features: 100%
 
 
     # -----------------------------------------------------------
