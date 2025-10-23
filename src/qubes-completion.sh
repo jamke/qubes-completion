@@ -261,6 +261,7 @@ QB_full_line_args=()    # All args in all line, even after cursor (almost not us
 QB_cur=''               # Current word, can be different from cur due to different splitting
 QB_prev_flag=''         # Previous arg only if it must be related to the next one (qt_cur)
 QB_real_cur=''          # String that is used for __complete_string() and other __complete_* functions
+QB_was_quoted=0
 
 QB_orig_cur=''          # Original value of cur that BASH really wants us to complete
 
@@ -302,7 +303,7 @@ function __debug_msg() {
     if (( QB_DEBUG_MODE == 0 )) || (( QB_DEBUG_LOG == 0 )); then
         return
     fi
-
+    
     # NOTE: file for "tail -f" monitoring
     echo "${1}" >> "${QB_DEBUG_LOG_PATH}"
 }
@@ -416,7 +417,7 @@ function __run_filedir() {
     
     # Use stub filedir output for debug and running tests
     if (( QB_DEBUG_MODE != 0 )); then
-        __complete_string "${QB_DEBUG_STUB_FILEDIR}"
+        __complete_string "${QB_DEBUG_STUB_FILEDIR_OUTPUT}"
         return 0
     fi
 
@@ -509,7 +510,7 @@ function __reset_result_variables() {
     # Current word, that can be affected by splitting and be different from cur
     QB_cur=''
 
-    # String that is used for __complete_string() and other __complete_* functions
+    # String that is used for `__complete_string` and other __complete_* functions
     QB_real_cur=''
 }
 
@@ -661,7 +662,13 @@ function __parse_and_fix_cur() {
     # The argument under cursor can be a --flag=something that needs splitting,
     # or something complicated like: --flag=key=value=something=else
 
-    # strip quotes at the beginning, let __complete_string() worry about it
+    # save information about quotes at the beginning or original cur
+    QB_was_quoted=0
+    if [[ "${orig_cur:0:1}" == '"' || "${orig_cur:0:1}" == "'" ]]; then 
+        QB_was_quoted=1
+    fi
+    
+    # strip quotes at the beginning, let `__complete_string` and `__complete_array` worry about it
     QB_cur="$( __strip_quotes_on_left "${orig_cur}" )"
 
     if (( allow_flags_in_cur == 1 )) && [[ "${QB_cur}" == -* ]]; then
@@ -1219,6 +1226,37 @@ function __complete_pools_list() {
 }
 
 
+function __complete_backup_profile() {
+
+    # Profile is a filename without extension in directory /etc/qubes/backup
+    local backup_profile_dir='/etc/qubes/backup'
+    
+    if (( QB_DEBUG_MODE != 0 )); then
+        backup_profile_dir="${QB_DEBUG_STUB_PROFILES_DIR}"
+    fi
+
+    # In this function we should support spaces in completion strings
+    
+    local profile_names=()
+    readarray -d '' profile_names < <(find "${backup_profile_dir}" -maxdepth 1 -type f -name '*.conf' -print0)
+    
+    if (( "${#profile_names[@]}" > 0 )); then
+        # remove full path
+        profile_names=("${profile_names[@]##*/}")
+        # remove .conf extension
+        profile_names=("${profile_names[@]%.*}")
+        # Escape spaces in file names
+        profile_names=("${profile_names[@]/ /\\ }")
+        
+        __complete_array profile_names
+        
+        # For correct quoting we use -o filenames
+        compopt -o filenames &>/dev/null # to /dev/null because output interferes with running tests
+    fi
+    return 0
+}
+
+
 function __complete_device_ids() {
 
     local -r device_class="${1}"
@@ -1365,7 +1403,7 @@ function __complete_array() {
     local IFS=$'\n'
 
     local -n arr="${1}"
-
+    
     __debug_msg '--------------------------------------------------------'
     __debug_msg '* Called __complete_array()'
     __debug_msg ''
@@ -1373,17 +1411,30 @@ function __complete_array() {
     __debug_msg "=> QB_cur = \"${QB_cur}\""
     __debug_msg "=> QB_real_cur = \"${QB_real_cur}\""
     __debug_msg "=> QB_orig_cur = \"${QB_orig_cur}\""
+    __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""    
 
-    # TODO: consider case with quotes at the beginning? Or it all will work by itself?
-
-    # original completion based on "${QB_real_cur}"
-    # local full_comp=( "$(compgen -W "${arr[*]}" -- "${QB_real_cur}")" )
+    # We consider case with quotes at the beginning by checking QB_was_quoted
 
     local full_comp=()
+    
+    local local_QB_real_cur_to_use="${QB_real_cur}"
+    
+    # To preserve escape chars in the arr[] after calling `compgen` 
+    # we have to explicitly double them in case it was not quoted
+    if (( QB_was_quoted == 0 )); then
+        arr=("${arr[@]/\\/\\\\}")
+        
+        # we also have to use different escaped QB_real_cur, 
+        # because otherwise it would not match modified arr
+        local_QB_real_cur_to_use="${QB_real_cur/\\/\\\\}"
+    fi
+    
     local i
     for (( i=0; i < "${#arr[@]}"; i++ )); do
         local comp_str
-        comp_str="$(compgen -W "${arr[${i}]}" -- "${QB_real_cur}")"
+        #__debug_msg "=> arr[i] = \"${arr[${i}]}\""
+        comp_str="$(compgen -W "${arr[${i}]}" -- "${local_QB_real_cur_to_use}")"
+        #__debug_msg "=> comp_str = \"${comp_str}\""
         if (( "${#comp_str}" > 0 )); then
             full_comp+=( "${comp_str}" )
         fi
@@ -1408,15 +1459,15 @@ function __complete_string() {
     __debug_msg "=> QB_cur = \"${QB_cur}\""
     __debug_msg "=> QB_real_cur = \"${QB_real_cur}\""
     __debug_msg "=> QB_orig_cur = \"${QB_orig_cur}\""
-
-    # TODO: consider case with quotes at the beginning? Or it all will work by itself?
-
-    # original completion based on "${QB_real_cur}"
-    local -r full_comp=( $(compgen -W "${options}" -- "${QB_real_cur}") )
-    # local -r full_comp=( $(compgen -W "${options}" -- "${QB_cur}") ) #TODO: use something like that?
-    __debug_msg "$( __debug_print_array 'full_comp' full_comp )"
-
-    __replace_cur_and_add_to_compreply full_comp
+    __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""
+    
+    # We use more general __complete_array to avoid code duplication
+    
+    local options_arr=()
+    # shellcheck disable=SC2034 # we actually use `options_arr``, it's recommended to ignore such case
+    readarray -t -d ' ' options_arr <<< "${options}"
+    
+    __complete_array options_arr
 }
 
 
@@ -1435,13 +1486,13 @@ function __replace_cur_and_add_to_compreply() {
     local -r full_comp_arr_count="${#full_comp_arr[@]}"
     for (( i=0; i < full_comp_arr_count; i++ )); do
 
-        # __debug_msg "    => full_comp_arr[${i}] = \"${full_comp_arr[${i}]}\""
+        #__debug_msg "    => full_comp_arr[${i}] = \"${full_comp_arr[${i}]}\""
 
         local without_beginning="${full_comp_arr[${i}]:${#QB_real_cur}}"
-        # __debug_msg "    => without_beginning = \"${without_beginning}\""
+        #__debug_msg "    => without_beginning = \"${without_beginning}\""
 
         local with_bash_beginning="${QB_orig_cur}${without_beginning}"
-        # __debug_msg "    => with_bash_beginning = \"${with_bash_beginning}\""
+        #__debug_msg "    => with_bash_beginning = \"${with_bash_beginning}\""
 
         converted_comp+=( "${with_bash_beginning}" )
     done
@@ -2432,11 +2483,15 @@ function _qvm_backup() {
                 return 0
                 ;;
             --profile)
-                __run_filedir
+                # Profile is a filename without extension in directory /etc/qubes/backup
+                __complete_backup_profile
                 return 0
                 ;;
             --save-profile)
-                __run_filedir
+                # Profile is a filename without extension in directory /etc/qubes/backup
+                # To see the existing profiles and overwrite one we allow completion,
+                # but in future this may change
+                __complete_backup_profile
                 return 0
                 ;;
             ?*)
@@ -3487,10 +3542,14 @@ function _qubes_input_trigger() {
             ;;
         --event)
             # NOTE: probably only event* file names should be allowed but I am not sure
-            local -r event_files=("/dev/input/event"*)
+            local event_files=()
+            readarray -d '' event_files < <(find '/dev/input' -maxdepth 1 -type c -name 'event*' -print0)
+            readonly event_files
+            
             if (( "${#event_files[@]}" > 0 )); then
                 __complete_string "${event_files[*]##*/}"
             fi
+            
             return 0
             ;;
         ?*)
