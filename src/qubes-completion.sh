@@ -1467,13 +1467,9 @@ function __complete_string() {
     
     # In this function we should support both new lines, nulls and spaces as separators of completion strings
     # convert spaces and newlines to proper newlines
-    local options_mod="${options}"
-    options_mod=$(printf '%s' "${options_mod}" | tr ' ' $'\n')
-    options_mod=$(printf '%s' "${options_mod}" | tr $'\r' $'\n')
-    #__debug_msg "=> options_mod = \"${options_mod}\""
     
     local options_arr=()
-    readarray -t -d $'\n' options_arr <<< "${options_mod}"
+    readarray -t -d '' options_arr < <(printf '%s' "${options}" | tr ' ' '\0' | tr '\n' '\0' | tr '\r' '\0')
     #__debug_msg "$( __debug_print_array 'options_arr' options_arr )"
 
     # remove any empty elements
