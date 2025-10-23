@@ -112,7 +112,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-service'               # TODO:R4.2. Tests: Basic # Features: 100%
 
     'qvm-sync-appmenus'         # TODO:R4.2. Tests: Basic # Features: 100%
-    'qvm-appmenus'              # TODO:R4.2. Tests: Basic # Features: #TODOs (But all known is done)
+    'qvm-appmenus'              # R4.2. Tests: Basic # Features: #TODOs
 
     'qvm-copy-to-vm'            # TODO:R4.2. Tests: Basic # Features: 100%
     'qvm-move-to-vm'            # TODO:R4.2. Tests: Basic # Features: 100%
@@ -2564,20 +2564,23 @@ function _qvm_sync_appmenus() {
 
 
 function _qvm_appmenus() {
-
-    __init_qubes_completion '--set-whitelist --set-default-whitelist --get-default-whitelist --source --file-field --template' || return 0
+    
+    # NOTE: R4.2 has experimental and unstable feature that may be changed.
+    # TODO: Check that it was not changed someday in the future
+    # --get-available [EXPERIMENTAL] [REQUIRES --i-understand-format-is-unstable]
+    # List all available applications for the VM.  The current format is UNSTABLE.  The applications are
+    # listed as hyphen-separated pairs consisting of file name and application name.
+    
+    # NOTE: `--template` is not mentioned in man, but is in --help output
+    __init_qubes_completion '--set-whitelist --set-default-whitelist --source --file-field --template' || return 0
 
     case "${QB_prev_flag}" in
         --set-whitelist)
-            # TODO
+            __run_filedir
             return 0
             ;;
         --set-default-whitelist)
-            # TODO
-            return 0
-            ;;
-        --get-default-whitelist)
-            # TODO
+            __run_filedir
             return 0
             ;;
         --source)
@@ -2590,7 +2593,7 @@ function _qvm_appmenus() {
             return 0
             ;;
         --template)
-            # TODO
+            __complete_qubes_list 'all' 'TemplateVM'
             return 0
             ;;
         ?*)
