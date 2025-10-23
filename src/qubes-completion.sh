@@ -131,11 +131,11 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     
     # New commands
     'qubes-vm-update'           # R4.2. Tests: Basic  # Features: 100%
-    'qubes-fwupgmr'             # TODO:R4.2. Tests: TODO # Features: #TODO
-    'qubes-prepare-vm-kernel'   # TODO:R4.2. Tests: TODO # Features: #TODO
-    'qubes-app-menu'            # TODO:R4.2. Tests: TODO # Features: #TODO
-    'qubes-policy-lint'         # TODO:R4.2. Tests: TODO # Features: #TODO
-    'qubes-policy-editor'       # TODO:R4.2. Tests: TODO # Features: #TODO
+    'qubes-fwupgmr'             #TODO: Not implemented yet
+    'qubes-prepare-vm-kernel'   #TODO: Not implemented yet
+    'qubes-app-menu'            #TODO: Not implemented yet
+    'qubes-policy-lint'         #TODO: Not implemented yet
+    'qubes-policy-editor'       #TODO: Not implemented yet
     
      # Commands that have no --quiet/verbose
     'qubesctl'                  # R4.2. Tests: Basic # Features: #TODOs
