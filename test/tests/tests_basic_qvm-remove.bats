@@ -23,12 +23,12 @@ function test_wrapper() {
 }
 
 @test "Test 001. qvm-remove: qvm-remove -" {
-    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--force" [3]="-f" [4]="--force-root" [5]="--just-db" [6]="--verbose" [7]="-v" [8]="--quiet" [9]="-q" [10]="--help" [11]="-h")
+    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--force" [3]="-f" [4]="--verbose" [5]="-v" [6]="--quiet" [7]="-q" [8]="--help" [9]="-h")
     test_wrapper 'qvm-remove -'
 }
 
 @test "Test 002. qvm-remove: qvm-remove --" {
-    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--force" [3]="--force-root" [4]="--just-db" [5]="--verbose" [6]="--quiet" [7]="--help")
+    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--force" [3]="--verbose" [4]="--quiet" [5]="--help")
     test_wrapper 'qvm-remove --'
 }
 
@@ -163,12 +163,12 @@ function test_wrapper() {
 }
 
 @test "Test 029. qvm-remove: qvm-remove --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--force" [3]="-f" [4]="--force-root" [5]="--just-db" [6]="--verbose" [7]="-v" [8]="--quiet" [9]="-q" [10]="--help" [11]="-h")
+    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--force" [3]="-f" [4]="--verbose" [5]="-v" [6]="--quiet" [7]="-q" [8]="--help" [9]="-h")
     test_wrapper 'qvm-remove --something_unknown -'
 }
 
 @test "Test 030. qvm-remove: qvm-remove --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--force" [3]="--force-root" [4]="--just-db" [5]="--verbose" [6]="--quiet" [7]="--help")
+    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--force" [3]="--verbose" [4]="--quiet" [5]="--help")
     test_wrapper 'qvm-remove --something_unknown --'
 }
 
