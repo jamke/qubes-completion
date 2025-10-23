@@ -83,7 +83,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-kill'                  # R4.2. Tests: Basic # Features: 100%
     'qvm-run'                   # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-pause'                 # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-pause'                 # R4.2. Tests: Basic # Features: 100%
     'qvm-unpause'               # TODO:R4.2. Tests: Basic # Features: 100%
 
     'qvm-create'                # TODO:R4.2. Tests: Basic # Features: #TODOs
