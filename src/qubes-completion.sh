@@ -76,7 +76,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qubes-dom0-update'         # TODO:R4.2. Tests: Good  # Features: 100%
 
-    'qvm-ls'                    # TODO:R4.2. Tests: FULL  # Features: 100%
+    'qvm-ls'                    # R4.2. Tests: FULL  # Features: 100%
     'qvm-tags'                  # R4.2. Tests: FULL  # Features: 100%
     'qvm-start'                 # R4.2. Tests: Basic # Features: #TODOs
     'qvm-shutdown'              # R4.2. Tests: FULL  # Features: 100%
@@ -1603,8 +1603,6 @@ function __complete_all_starting_flags_if_needed() {
 function _qvm_ls() {
 
     __init_qubes_completion '-o --format -O --fields --exclude' '--tags' || return 0
-
-    # __debug_msg "_qvm_ls(): QB_alone_args_count = \"${QB_alone_args_count}\""
 
     case "${QB_prev_flag}" in
         -o | --format)
