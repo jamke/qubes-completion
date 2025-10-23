@@ -77,7 +77,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-dom0-update'         # TODO:R4.2. Tests: Good  # Features: 100%
 
     'qvm-ls'                    # TODO:R4.2. Tests: FULL  # Features: 100%
-    'qvm-tags'                  # TODO:R4.2. Tests: FULL  # Features: 100%
+    'qvm-tags'                  # R4.2. Tests: FULL  # Features: 100%
     'qvm-start'                 # R4.2. Tests: Basic # Features: #TODOs
     'qvm-shutdown'              # R4.2. Tests: FULL  # Features: 100%
     'qvm-kill'                  # R4.2. Tests: Basic # Features: 100%
