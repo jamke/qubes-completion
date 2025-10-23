@@ -114,10 +114,10 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-sync-appmenus'         # TODO:R4.2. Tests: Basic # Features: 100%
     'qvm-appmenus'              # R4.2. Tests: Basic # Features: #TODOs
 
-    'qvm-copy-to-vm'            # TODO:R4.2. Tests: Basic # Features: 100%
-    'qvm-move-to-vm'            # TODO:R4.2. Tests: Basic # Features: 100%
-    'qvm-copy'                  # TODO:R4.2. Tests: Basic # Features: 100%
-    'qvm-move'                  # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-copy-to-vm'            # R4.2. Tests: Basic # Features: 100%
+    'qvm-move-to-vm'            # R4.2. Tests: Basic # Features: 100%
+    'qvm-copy'                  # R4.2. Tests: Basic # Features: 100%
+    'qvm-move'                  # R4.2. Tests: Basic # Features: 100%
 
     'qvm-start-gui'             # TODO:R4.2. Tests: Basic # Features: 100% # Symlink to start-daemon
     'qvm-start-daemon'          # TODO:R4.2. Tests: Basic # Features: 100%
@@ -2696,9 +2696,9 @@ function _qvm_copy_to_vm() {
 
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
-
-    local -r flags='--without-progress'
-    __complete_all_starting_flags_if_needed "${flags}" && return 0
+    
+    # NOTE: `man qvm-move` mistakenly says that `qvm-move-to-vm` supports flag
+    # --without-progress while it actually does not, I checked the command code in `dom0`
 
     if (( QB_alone_args_count == 0 )); then
         __complete_qubes_list_without_dom0 'all'
