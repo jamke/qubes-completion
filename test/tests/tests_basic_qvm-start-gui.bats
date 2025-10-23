@@ -23,12 +23,12 @@ function test_wrapper() {
 }
 
 @test "Test 001. qvm-start-gui: qvm-start-gui -" {
-    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--watch" [3]="--force-stubdomain" [4]="--pidfile" [5]="--notify-monitor-layout" [6]="--kde" [7]="--force" [8]="--verbose" [9]="-v" [10]="--quiet" [11]="-q" [12]="--help" [13]="-h")
+    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--debug" [3]="-d" [4]="--watch" [5]="--kde" [6]="--force" [7]="--force-stubdomain" [8]="--pidfile" [9]="--notify-monitor-layout" [10]="--verbose" [11]="-v" [12]="--quiet" [13]="-q" [14]="--help" [15]="-h")
     test_wrapper 'qvm-start-gui -'
 }
 
 @test "Test 002. qvm-start-gui: qvm-start-gui --" {
-    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--watch" [3]="--force-stubdomain" [4]="--pidfile" [5]="--notify-monitor-layout" [6]="--kde" [7]="--force" [8]="--verbose" [9]="--quiet" [10]="--help")
+    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--debug" [3]="--watch" [4]="--kde" [5]="--force" [6]="--force-stubdomain" [7]="--pidfile" [8]="--notify-monitor-layout" [9]="--verbose" [10]="--quiet" [11]="--help")
     test_wrapper 'qvm-start-gui --'
 }
 
@@ -163,12 +163,12 @@ function test_wrapper() {
 }
 
 @test "Test 029. qvm-start-gui: qvm-start-gui --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--watch" [3]="--force-stubdomain" [4]="--pidfile" [5]="--notify-monitor-layout" [6]="--kde" [7]="--force" [8]="--verbose" [9]="-v" [10]="--quiet" [11]="-q" [12]="--help" [13]="-h")
+    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--debug" [3]="-d" [4]="--watch" [5]="--kde" [6]="--force" [7]="--force-stubdomain" [8]="--pidfile" [9]="--notify-monitor-layout" [10]="--verbose" [11]="-v" [12]="--quiet" [13]="-q" [14]="--help" [15]="-h")
     test_wrapper 'qvm-start-gui --something_unknown -'
 }
 
 @test "Test 030. qvm-start-gui: qvm-start-gui --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--watch" [3]="--force-stubdomain" [4]="--pidfile" [5]="--notify-monitor-layout" [6]="--kde" [7]="--force" [8]="--verbose" [9]="--quiet" [10]="--help")
+    EXPECTED_COMPREPLY=([0]="--all" [1]="--exclude" [2]="--debug" [3]="--watch" [4]="--kde" [5]="--force" [6]="--force-stubdomain" [7]="--pidfile" [8]="--notify-monitor-layout" [9]="--verbose" [10]="--quiet" [11]="--help")
     test_wrapper 'qvm-start-gui --something_unknown --'
 }
 
