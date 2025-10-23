@@ -84,7 +84,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-run'                   # R4.2. Tests: Basic # Features: 100%
 
     'qvm-pause'                 # R4.2. Tests: Basic # Features: 100%
-    'qvm-unpause'               # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-unpause'               # R4.2. Tests: Basic # Features: 100%
 
     'qvm-create'                # TODO:R4.2. Tests: Basic # Features: #TODOs
     'qvm-clone'                 # TODO:R4.2. Tests: Basic # Features: can be better and provide pool:volumes, but qvm-volume is too slow
