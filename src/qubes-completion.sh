@@ -105,7 +105,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qvm-pool'                  #TODO: Not implemented yet
 
-    'qvm-check'                 # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-check'                 # R4.2. Tests: Basic # Features: 100%
     'qvm-firewall'              # R4.2. Tests: Basic # Features: 100%
     'qvm-service'               # TODO:R4.2. Tests: Basic # Features: 100%
 
