@@ -96,7 +96,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-pci'                   # TODO:R4.2. Tests: Basic # Features: 100%
 
     'qvm-prefs'                 # TODO:R4.2. Tests: Basic # Features: 100%
-    'qvm-features'              # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-features'              # R4.2. Tests: Basic # Features: 100%
 
     'qvm-volume'                # TODO:R4.2. Tests: Basic # Features: #TODO
 
@@ -2365,7 +2365,7 @@ function _qvm_features() {
     local -r vm_rpc_features='supported-rpc.qubes.SetMonitorLayout supported-rpc.qubes.SelectFile supported-rpc.qubes.UpdatesProxy supported-rpc.qubes.TemplateDownload supported-rpc.qubes.PostInstall supported-rpc.qubes.VMExec supported-rpc.qubes.Backup supported-rpc.qubes.ShowInTerminal supported-rpc.qubes.RegisterBackupLocation supported-rpc.qubes.WaitForSession supported-rpc.qubes.SetDateTime supported-rpc.qubes.TemplateSearch supported-rpc.qubes.GetAppmenus supported-rpc.qubes.DetachPciDevice supported-rpc.qubes.SuspendPost supported-rpc.qubes.OpenURL supported-rpc.qubes.StartApp supported-rpc.qubes.ConnectTCP supported-rpc.qubes.ResizeDisk supported-rpc.qubes.SuspendPreAll supported-rpc.qubes.SelectDirectory supported-rpc.qubes.VMRootShell supported-rpc.qubes.Gpg supported-rpc.qubes.PdfConvert supported-rpc.qubes.USBDetach supported-rpc.qubes.RestoreById supported-rpc.qubes.GpgImportKey supported-rpc.qubes.GuiVMSession supported-rpc.qubes.VMExecGUI supported-rpc.qubes.USB supported-rpc.qubes.Filecopy supported-rpc.qubes.SuspendPostAll supported-rpc.qubes.VMShell supported-rpc.qubes.GetImageRGBA supported-rpc.qubes.GetDate supported-rpc.qubes.SuspendPre supported-rpc.qubes.USBAttach supported-rpc.qubes.InstallUpdatesGUI supported-rpc.qubes.OpenInVM supported-rpc.qubes.SaltLinuxVM supported-rpc.qubes.Restore supported-rpc.qubes.AudioInputEnable supported-rpc.qubes.AudioInputDisable'
     # cSpell:enable
 
-    local -r flags='--unset --default --delete --D'
+    local -r flags='--unset --default --delete -D'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     if (( QB_alone_args_count == 0 )); then
