@@ -81,7 +81,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-start'                 # TODO:R4.2. Tests: Basic # Features: #TODOs
     'qvm-shutdown'              # TODO:R4.2. Tests: FULL  # Features: 100%
     'qvm-kill'                  # TODO:R4.2. Tests: Basic # Features: 100%
-    'qvm-run'                   # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-run'                   # R4.2. Tests: Basic # Features: 100%
 
     'qvm-pause'                 # TODO:R4.2. Tests: Basic # Features: 100%
     'qvm-unpause'               # TODO:R4.2. Tests: Basic # Features: 100%
@@ -2817,7 +2817,7 @@ function _qvm_run() {
             esac
         fi
 
-        # not completing COMMAND nor ARGS (nothing else is not allowed after --dispvm)
+        # not completing COMMAND nor ARGS (nothing else is not allowed after --all)
         return 0
 
     elif __was_flag_used '--dispvm'; then
