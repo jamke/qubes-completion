@@ -1463,12 +1463,32 @@ function __complete_string() {
     __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""
     
     # We use more general __complete_array to avoid code duplication
+    # So, convert strings to array and go.
+    
+    # In this function we should support both new lines, nulls and spaces as separators of completion strings
+    # convert spaces and newlines to proper newlines
+    local options_mod="${options}"
+    options_mod=$(printf '%s' "${options_mod}" | tr ' ' $'\n')
+    options_mod=$(printf '%s' "${options_mod}" | tr $'\r' $'\n')
+    #__debug_msg "=> options_mod = \"${options_mod}\""
     
     local options_arr=()
-    # shellcheck disable=SC2034 # we actually use `options_arr``, it's recommended to ignore such case
-    readarray -t -d ' ' options_arr <<< "${options}"
+    readarray -t -d $'\n' options_arr <<< "${options_mod}"
+    #__debug_msg "$( __debug_print_array 'options_arr' options_arr )"
+
+    # remove any empty elements
+    local options_arr_cleaned=()
+    local -r options_arr_count="${#options_arr[@]}"
+    local i
+    for (( i=0; i < options_arr_count; i++ )); do
     
-    __complete_array options_arr
+        if [[ "${options_arr[${i}]}" != '' ]]; then
+            options_arr_cleaned+=( "${options_arr[${i}]}" )
+        fi
+    done
+    #__debug_msg "$( __debug_print_array 'options_arr_cleaned' options_arr_cleaned )"
+    
+    __complete_array options_arr_cleaned
 }
 
 
