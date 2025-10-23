@@ -119,8 +119,8 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-copy'                  # R4.2. Tests: Basic # Features: 100%
     'qvm-move'                  # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-start-gui'             # TODO:R4.2. Tests: Basic # Features: 100% # Symlink to start-daemon
-    'qvm-start-daemon'          # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-start-gui'             # R4.2. Tests: Basic # Features: 100% # Symlink to start-daemon
+    'qvm-start-daemon'          # R4.2. Tests: Basic # Features: 100%
 
     'qvm-xkill'                 # R4.2. Tests: Basic # Features: 100% # Supports no arguments
     'qvm-sync-clock'            # R4.2. Tests: Basic # Features: 100% # Supports no arguments
@@ -2771,7 +2771,7 @@ function _qvm_start_daemon() {
     esac
 
     # cSpell:disable-next-line
-    local -r flags='--all --exclude --watch --force-stubdomain --pidfile --notify-monitor-layout --kde --force'
+    local -r flags='--all --exclude --debug -d --watch --kde --force --force-stubdomain --pidfile --notify-monitor-layout'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list 'all' # TODO: we can do better?
