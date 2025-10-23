@@ -173,6 +173,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     # 'qubes-template-manager'
     # 'qubes-global-settings'
     # 'qubes-update-gui'
+    # 'qubes-policy-editor-gui'
     # -----------------------------------------------------------
 
     # -----------------------------------------------------------
