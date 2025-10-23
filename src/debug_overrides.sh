@@ -24,6 +24,8 @@ if (( QB_DEBUG_MODE != 0 )); then
 
     QB_DEBUG_LOG=1
     QB_DEBUG_LOG_PATH="${__debug_overrides_script_dir}/../log/qubes_completion_debug.log"
+    
+    QB_DEBUG_STUB_FILEDIR='dir1 dir2 _dir file1 file2 file33 file _file something'
 fi
 
 # ex: filetype=sh

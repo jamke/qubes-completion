@@ -413,6 +413,12 @@ function __run_filedir() {
     # We need file completion
 
     __debug_msg "Running completion for files (filedir)"
+    
+    # Use stub filedir output for debug and running tests
+    if (( QB_DEBUG_MODE != 0 )); then
+        __complete_string "${QB_DEBUG_STUB_FILEDIR}"
+        return 0
+    fi
 
     # NOTE: we need to re-init in a default way to make it work properly
     local cur prev words cword
