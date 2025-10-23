@@ -123,7 +123,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-start-daemon'          # TODO:R4.2. Tests: Basic # Features: 100%
 
     'qvm-xkill'                 # R4.2. Tests: Basic # Features: 100% # Supports no arguments
-    'qvm-sync-clock'            # TODO:R4.2. Tests: Basic # Features: 100% # Supports no arguments
+    'qvm-sync-clock'            # R4.2. Tests: Basic # Features: 100% # Supports no arguments
 
     'qubes-prefs'               # R4.2. Tests: Basic # Features: 100% # but can be better
     'qubes-guid'                # R4.2. Tests: Basic # Features: 100% # can be better, but no need
