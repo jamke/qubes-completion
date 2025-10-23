@@ -86,7 +86,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-pause'                 # R4.2. Tests: Basic # Features: 100%
     'qvm-unpause'               # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-create'                # TODO:R4.2. Tests: Basic # Features: #TODOs
+    'qvm-create'                # R4.2. Tests: Basic # Features: #TODOs
     'qvm-clone'                 # TODO:R4.2. Tests: Basic # Features: can be better and provide pool:volumes, but qvm-volume is too slow
     'qvm-remove'                # TODO:R4.2. Tests: Basic # Features: 100%
 
@@ -1679,11 +1679,24 @@ function _qvm_ls() {
 
 function _qvm_create() {
 
-    __init_qubes_completion '--class -C --property --prop -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R'  || return 0
+    # NOTE: `--force-root` is not provided in `--help` but mistakenly mentioned in man
+
+    local -r flags_require_one='--class -C --property --prop -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R'
+    
+    # NOTE: intentionally skipping --prop (short version of --property)
+    local -r flags_all="--class -C --property -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R --standalone --disp --help-classes"
+    
+    __init_qubes_completion "${flags_require_one}"  || return 0
 
     # Call with --help-classes needs no more arguments
     __was_flag_used '--help-classes' && return 0
-
+    
+    if (( QB_alone_args_count > 0 )); then
+        # Standalone argument (VMNAME) must be the last one, 
+        # so, nothing to complete anymore
+        return 0
+    fi
+    
     case "${QB_prev_flag}" in
         -C | --class)
             __complete_string "${QVM_VM_CLASSES}"
@@ -1701,7 +1714,7 @@ function _qvm_create() {
             #
             # The completion for volumes can be added when qvm-volume
             # is either optimized or rewritten to be not that slow.
-            __complete_pools_list
+            #__complete_pools_list
             return 0
             ;;
         --property | --prop)
@@ -1726,9 +1739,7 @@ function _qvm_create() {
             ;;
     esac
 
-    # NOTE: skipping --prop (short version of --property)
-    local -r flags='--class -C --property -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R --standalone --disp --help-classes --force-root'
-    __complete_all_starting_flags_if_needed "${flags}" && return 0
+    __complete_all_starting_flags_if_needed "${flags_all}" && return 0
 
     # List qubes
     if (( QB_alone_args_count == 0 )); then
