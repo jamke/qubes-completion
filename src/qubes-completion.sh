@@ -2693,8 +2693,7 @@ function _qvm_appmenus() {
             ;;
     esac
 
-
-    local -r flags='--force-root --init --create --remove --update --get-available --get-whitelist --set-whitelist --set-default-whitelist --get-default-whitelist --source --force --i-understand-format-is-unstable --file-field --template --all'
+    local -r flags='--init --create --remove --update --get-available --get-whitelist --set-whitelist --set-default-whitelist --get-default-whitelist --source --force --i-understand-format-is-unstable --file-field --template --all'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list 'all'
