@@ -111,7 +111,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-firewall'              # R4.2. Tests: Basic # Features: 100%
     'qvm-service'               # TODO:R4.2. Tests: Basic # Features: 100%
 
-    'qvm-sync-appmenus'         # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-sync-appmenus'         # R4.2. Tests: Basic # Features: 100%
     'qvm-appmenus'              # R4.2. Tests: Basic # Features: #TODOs
 
     'qvm-copy-to-vm'            # R4.2. Tests: Basic # Features: 100%
@@ -2645,7 +2645,7 @@ function _qvm_sync_appmenus() {
         return 0
     fi
 
-    local -r flags='--force-root --force-rpc --regenerate-only'
+    local -r flags='--force-rpc --regenerate-only'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list_without_dom0 'all'
