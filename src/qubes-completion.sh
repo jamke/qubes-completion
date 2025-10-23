@@ -103,7 +103,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-template'              #TODO: Not implemented yet
     'qvm-template-postprocess'  #TODO: Not implemented yet
     'qvm-backup'                # R4.2. Tests: Basic # Features: 100%
-    'qvm-backup-restore'        # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-backup-restore'        # R4.2. Tests: Basic # Features: 100%
 
     'qvm-pool'                  #TODO: Not implemented yet
 
@@ -2540,8 +2540,7 @@ function _qvm_backup() {
 function _qvm_backup_restore() {
 
     local -r flags_require_one='--exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
-    local -r flags_require_zero='--verify-only --skip-broken --ignore-missing --skip-conflicting --rename-conflicting --skip-dom0-home
-    --ignore-username-mismatch --ignore-size-limit --paranoid-mode --plan-b --location-is-service --auto-close'
+    local -r flags_require_zero='--verify-only --skip-broken --ignore-missing --skip-conflicting --rename-conflicting --skip-dom0-home --ignore-username-mismatch --ignore-size-limit --paranoid-mode --plan-b --location-is-service --auto-close'
     local -r backup_compression_filters='gzip bzip2 xz'
 
     __init_qubes_completion "${flags_require_one}" || return 0
@@ -2597,9 +2596,10 @@ function _qvm_backup_restore() {
         fi
 
     elif (( QB_alone_args_count > 0 )); then
-        # every other argument is meant to be a qube
-        # TODO: not clear if this completion should be provided here, because it shows existing qubes, not ones inside the backup
-        __complete_qubes_list 'all'
+        # Every other argument is meant to be a qube inside the backup
+        # No completion should be provided here, because we do not know the qubes inside the backup
+        # And providing existing in the system does not seem right
+        #__complete_qubes_list 'all'
         return 0
     fi
 }
