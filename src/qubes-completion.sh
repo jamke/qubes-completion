@@ -136,7 +136,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-hcl-report'          # R4.2. Tests: Basic # Features: 100%
     'qubes-bug-report'          # R4.2. Tests: Basic # Features: 100%
     'qvm-get-image'             # R4.2. Tests: Basic # Features: 100%
-    'qvm-get-tinted-image'      # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-get-tinted-image'      # R4.2. Tests: Basic # Features: 100%
 
     # No man available, only --help:
     'qubes-policy'              # R4.2. Tests: Basic # Features: 100%
