@@ -100,8 +100,6 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qvm-volume'                # TODO:R4.2. Tests: Basic # Features: #TODO
 
-    'qvm-template'              #TODO: Not implemented yet
-    'qvm-template-postprocess'  #TODO: Not implemented yet
     'qvm-backup'                # R4.2. Tests: Basic # Features: 100%
     'qvm-backup-restore'        # R4.2. Tests: Basic # Features: 100%
 
@@ -128,8 +126,17 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-prefs'               # R4.2. Tests: Basic # Features: 100% # but can be better
     'qubes-guid'                # R4.2. Tests: Basic # Features: 100% # can be better, but no need
     
+    'qvm-template'              #TODO: Not implemented yet
+    'qvm-template-postprocess'  #TODO: Not implemented yet
+    
+    # New commands
     'qubes-vm-update'           # R4.2. Tests: Basic  # Features: 100%
-
+    'qubes-fwupgmr'             # TODO:R4.2. Tests: TODO # Features: #TODO
+    'qubes-prepare-vm-kernel'   # TODO:R4.2. Tests: TODO # Features: #TODO
+    'qubes-app-menu'            # TODO:R4.2. Tests: TODO # Features: #TODO
+    'qubes-policy-lint'         # TODO:R4.2. Tests: TODO # Features: #TODO
+    'qubes-policy-editor'       # TODO:R4.2. Tests: TODO # Features: #TODO
+    
      # Commands that have no --quiet/verbose
     'qubesctl'                  # R4.2. Tests: Basic # Features: #TODOs
     'qubesd-query'              # R4.2. Tests: Basic # Features: #TODOs

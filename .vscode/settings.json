@@ -16,6 +16,7 @@
     "dsthost",
     "dstports",
     "filedir",
+    "fwupgmr",
     "guivm",
     "hddisk",
     "icmptype",
