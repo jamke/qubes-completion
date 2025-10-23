@@ -108,7 +108,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-pool'                  #TODO: Not implemented yet
 
     'qvm-check'                 # TODO:R4.2. Tests: Basic # Features: 100%
-    'qvm-firewall'              # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-firewall'              # R4.2. Tests: Basic # Features: 100%
     'qvm-service'               # TODO:R4.2. Tests: Basic # Features: 100%
 
     'qvm-sync-appmenus'         # TODO:R4.2. Tests: Basic # Features: 100%
@@ -1557,9 +1557,13 @@ function __complete_general_firewall_rule() {
                 ;;
         esac
     else
-        __complete_string 'tcp udp icmp' # accept and drop are not here, because they must be first, not general
+        # `accept` and `drop` are not provided here, because they must be used first, not in any position
+        __complete_string 'tcp udp icmp'
+        
+        # NOTE: `comment=` is still not documented for R4.2 in `man qvm-firewall` and `qvm-firewall --help`
         __complete_string 'action= dsthost= dst4= dst6= dstports= icmptype= proto= specialtarget= expire= comment='
 
+        # To avoid space after option=
         if (( "${#COMPREPLY[@]}" == 1 )) && [[ "${COMPREPLY[0]}" == *= ]]; then
             compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
         fi
@@ -2908,7 +2912,7 @@ function _qvm_firewall() {
 
         __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-        # limit completion  if --raw was used
+        # limit completion if --raw was used
         if __was_flag_used '--raw'; then
             # The use case with only list being allowed (case 3 in man)
             __complete_string 'list'
