@@ -107,7 +107,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qvm-check'                 # R4.2. Tests: Basic # Features: 100%
     'qvm-firewall'              # R4.2. Tests: Basic # Features: 100%
-    'qvm-service'               # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-service'               # R4.2. Tests: Basic # Features: 100%
 
     'qvm-sync-appmenus'         # R4.2. Tests: Basic # Features: 100%
     'qvm-appmenus'              # R4.2. Tests: Basic # Features: #TODOs
@@ -3065,8 +3065,9 @@ function _qvm_service() {
         __was_flag_used '--list' && return 0
         __was_flag_used '-l' && return 0
 
+        # List of services from manual
         # cSpell:disable-next-line
-        __complete_string 'qubes-firewall qubes-network qubes-update-check cups crond network-manager clocksync qubes-updates-proxy updates-proxy-setup disable-default-route disable-dns-server lightdm guivm guivm-gui-agent guivm-vnc'
+        __complete_string 'meminfo-writer qubes-firewall qubes-network qubes-update-check cups crond network-manager clocksync qubes-updates-proxy updates-proxy-setup disable-default-route disable-dns-server lightdm software-rendering guivm guivm-gui-agent guivm-vnc tracker evolution-data-server usb-reset-on-attach '
         return 0
     fi
 
