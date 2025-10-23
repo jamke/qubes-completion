@@ -88,7 +88,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qvm-create'                # R4.2. Tests: Basic # Features: #TODOs
     'qvm-clone'                 # TODO:R4.2. Tests: Basic # Features: can be better and provide pool:volumes, but qvm-volume is too slow
-    'qvm-remove'                # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-remove'                # R4.2. Tests: Basic # Features: 100%
 
     'qvm-device'                # TODO:R4.2. Tests: Basic # Features: 100%
     'qvm-block'                 # TODO:R4.2. Tests: Basic # Features: 100%
@@ -2009,7 +2009,7 @@ function _qvm_remove() {
             ;;
     esac
 
-    local -r flags='--all --exclude --force -f --force-root --just-db'
+    local -r flags='--all --exclude --force -f'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list 'halted'
