@@ -78,7 +78,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qvm-ls'                    # TODO:R4.2. Tests: FULL  # Features: 100%
     'qvm-tags'                  # TODO:R4.2. Tests: FULL  # Features: 100%
-    'qvm-start'                 # TODO:R4.2. Tests: Basic # Features: #TODOs
+    'qvm-start'                 # R4.2. Tests: Basic # Features: #TODOs
     'qvm-shutdown'              # TODO:R4.2. Tests: FULL  # Features: 100%
     'qvm-kill'                  # TODO:R4.2. Tests: Basic # Features: 100%
     'qvm-run'                   # R4.2. Tests: Basic # Features: 100%
