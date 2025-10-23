@@ -102,7 +102,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qvm-template'              #TODO: Not implemented yet
     'qvm-template-postprocess'  #TODO: Not implemented yet
-    'qvm-backup'                # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-backup'                # R4.2. Tests: Basic # Features: 100%
     'qvm-backup-restore'        # TODO:R4.2. Tests: Basic # Features: 100%
 
     'qvm-pool'                  #TODO: Not implemented yet
@@ -2402,7 +2402,7 @@ function _qvm_volume() {
 function _qvm_backup() {
 
     local -r flags_require_one='--profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
-    local -r flags_require_zero='--yes -y --encrypt -e  --compress -z --no-compress'
+    local -r flags_require_zero='--encrypt -e  --compress -z --no-compress --yes -y'
     local -r backup_compression_filters='gzip bzip2 xz'
 
     __init_qubes_completion "${flags_require_one}" || return 0
