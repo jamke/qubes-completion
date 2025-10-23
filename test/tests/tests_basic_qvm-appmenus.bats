@@ -23,12 +23,12 @@ function test_wrapper() {
 }
 
 @test "Test 001. qvm-appmenus: qvm-appmenus -" {
-    EXPECTED_COMPREPLY=([0]="--force-root" [1]="--init" [2]="--create" [3]="--remove" [4]="--update" [5]="--get-available" [6]="--get-whitelist" [7]="--set-whitelist" [8]="--set-default-whitelist" [9]="--get-default-whitelist" [10]="--source" [11]="--force" [12]="--i-understand-format-is-unstable" [13]="--file-field" [14]="--template" [15]="--all" [16]="--verbose" [17]="-v" [18]="--quiet" [19]="-q" [20]="--help" [21]="-h")
+    EXPECTED_COMPREPLY=([0]="--init" [1]="--create" [2]="--remove" [3]="--update" [4]="--get-available" [5]="--get-whitelist" [6]="--set-whitelist" [7]="--set-default-whitelist" [8]="--get-default-whitelist" [9]="--source" [10]="--force" [11]="--i-understand-format-is-unstable" [12]="--file-field" [13]="--template" [14]="--all" [15]="--verbose" [16]="-v" [17]="--quiet" [18]="-q" [19]="--help" [20]="-h")
     test_wrapper 'qvm-appmenus -'
 }
 
 @test "Test 002. qvm-appmenus: qvm-appmenus --" {
-    EXPECTED_COMPREPLY=([0]="--force-root" [1]="--init" [2]="--create" [3]="--remove" [4]="--update" [5]="--get-available" [6]="--get-whitelist" [7]="--set-whitelist" [8]="--set-default-whitelist" [9]="--get-default-whitelist" [10]="--source" [11]="--force" [12]="--i-understand-format-is-unstable" [13]="--file-field" [14]="--template" [15]="--all" [16]="--verbose" [17]="--quiet" [18]="--help")
+    EXPECTED_COMPREPLY=([0]="--init" [1]="--create" [2]="--remove" [3]="--update" [4]="--get-available" [5]="--get-whitelist" [6]="--set-whitelist" [7]="--set-default-whitelist" [8]="--get-default-whitelist" [9]="--source" [10]="--force" [11]="--i-understand-format-is-unstable" [12]="--file-field" [13]="--template" [14]="--all" [15]="--verbose" [16]="--quiet" [17]="--help")
     test_wrapper 'qvm-appmenus --'
 }
 
@@ -163,12 +163,12 @@ function test_wrapper() {
 }
 
 @test "Test 029. qvm-appmenus: qvm-appmenus --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--force-root" [1]="--init" [2]="--create" [3]="--remove" [4]="--update" [5]="--get-available" [6]="--get-whitelist" [7]="--set-whitelist" [8]="--set-default-whitelist" [9]="--get-default-whitelist" [10]="--source" [11]="--force" [12]="--i-understand-format-is-unstable" [13]="--file-field" [14]="--template" [15]="--all" [16]="--verbose" [17]="-v" [18]="--quiet" [19]="-q" [20]="--help" [21]="-h")
+    EXPECTED_COMPREPLY=([0]="--init" [1]="--create" [2]="--remove" [3]="--update" [4]="--get-available" [5]="--get-whitelist" [6]="--set-whitelist" [7]="--set-default-whitelist" [8]="--get-default-whitelist" [9]="--source" [10]="--force" [11]="--i-understand-format-is-unstable" [12]="--file-field" [13]="--template" [14]="--all" [15]="--verbose" [16]="-v" [17]="--quiet" [18]="-q" [19]="--help" [20]="-h")
     test_wrapper 'qvm-appmenus --something_unknown -'
 }
 
 @test "Test 030. qvm-appmenus: qvm-appmenus --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--force-root" [1]="--init" [2]="--create" [3]="--remove" [4]="--update" [5]="--get-available" [6]="--get-whitelist" [7]="--set-whitelist" [8]="--set-default-whitelist" [9]="--get-default-whitelist" [10]="--source" [11]="--force" [12]="--i-understand-format-is-unstable" [13]="--file-field" [14]="--template" [15]="--all" [16]="--verbose" [17]="--quiet" [18]="--help")
+    EXPECTED_COMPREPLY=([0]="--init" [1]="--create" [2]="--remove" [3]="--update" [4]="--get-available" [5]="--get-whitelist" [6]="--set-whitelist" [7]="--set-default-whitelist" [8]="--get-default-whitelist" [9]="--source" [10]="--force" [11]="--i-understand-format-is-unstable" [12]="--file-field" [13]="--template" [14]="--all" [15]="--verbose" [16]="--quiet" [17]="--help")
     test_wrapper 'qvm-appmenus --something_unknown --'
 }
 
