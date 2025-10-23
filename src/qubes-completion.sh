@@ -95,7 +95,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-usb'                   # TODO:R4.2. Tests: Basic # Features: 100%
     'qvm-pci'                   # TODO:R4.2. Tests: Basic # Features: 100%
 
-    'qvm-prefs'                 # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-prefs'                 # R4.2. Tests: Basic # Features: 100% # but can be better
     'qvm-features'              # R4.2. Tests: Basic # Features: 100%
 
     'qvm-volume'                # TODO:R4.2. Tests: Basic # Features: #TODO
@@ -2302,7 +2302,7 @@ function _qvm_prefs() {
 
         # or provide full properties list otherwise
         local -r qube="${QB_alone_args[0]}"
-        if [[ "${qube}"  == 'dom0' ]]; then
+        if [[ "${qube}" == 'dom0' ]]; then
             # for dom0
             __complete_string "${QVM_VM_PROPERTIES_DOM0}"
             return 0
