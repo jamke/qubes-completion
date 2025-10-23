@@ -215,8 +215,8 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 # =================================================================
 # Between Fedora 39 and Fedora 42 the function names were changed
 # The change was made in bash-completion 2.12.
-# Because dom0 has old Fedora and development and testing 
-# uses newer one, we have to support both.
+# Because dom0 has old Fedora, while development and testing 
+# requires a newer one, we have to support both.
 
 # _init_completion() and _comp_initialize()
 QB_CALL_init_completion='_init_completion'
