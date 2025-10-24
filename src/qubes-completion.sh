@@ -258,7 +258,7 @@ fi
 # =================================================================
 # Global variables
 # =================================================================
-# Used to store results of __init_qubes_completion() and provide proper
+# Used to store results of `__init_qubes_completion`` and provide proper
 # completion according to Qubes OS command-line call rules.
 # Allows to avoid code duplications (DRY) of parsing details everywhere else.
 
@@ -4064,31 +4064,19 @@ function _qubes_vm_update() {
 
 
 function __complete_repo() {
+    
+    local -r command_to_run="${QVMTOOL_QVM_TEMPLATE}"
+
+    if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
+        __debug_msg "No command to run: ${command_to_run}"
+        return 1
+    fi
+        
     local repos
-    repos="$( qvm-template repolist | cut --fields=1 --delimiter=' ' )"
+    repos="$( "${command_to_run}" repolist | cut --fields=1 --delimiter=' ' )"
 
     __complete_string "${repos}"
     return 0
-}
-
-
-function __complete_repos() {
-    local last_repo_name_typing="${QB_cur##*,}"
-    last_repo_name_typing="$( __strip_quotes_on_left "${last_repo_name_typing}" )"
-    readonly last_repo_name_typing
-    __debug_msg "last_repo_name_typing=\"${last_repo_name_typing}\""
-
-    # NOTE: we save the original QB_real_cur value and return it back, should work even without it
-    local -r saved_QB_real_cur="${QB_real_cur}"  # save original QB_real_cur just in case
-    #
-        # We have to manually set QB_real_cur, because comma is non-standard separator
-        QB_real_cur="${last_repo_name_typing}"
-        __complete_repo
-    #
-    QB_real_cur="${saved_QB_real_cur}"           # return the original value of QB_real_cur back
-
-    # Nospace because it is comma separated list of repos
-    compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
 }
 
 
@@ -4101,6 +4089,8 @@ function __complete_templatespec() {
             filter='--installed'
             ;;
         'all' | '')
+            # NOTE: calling `qvm-template list --available` starts update qube!
+            # Currently will keep this completion, but this part can be removed later
             filter='--available'
             ;;
         ?*)
@@ -4108,17 +4098,16 @@ function __complete_templatespec() {
             return 1
             ;;
     esac
-
     
     local -r command_to_run="${QVMTOOL_QVM_TEMPLATE}"
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
         __debug_msg "No command to run: ${command_to_run}"
         return 1
     fi
-
+    
     # NOTE: machine readable format is faster
     local template
-    template="$(${command_to_run} list --machine-readable ${filter} | cut --fields=2 --delimiter='|')"
+    template="$( "${command_to_run}" list --machine-readable ${filter} | cut --fields=2 --delimiter='|' )"
 
     # TODO: This could in principle also complete the templates available version
     __complete_string "${template}"
@@ -4128,31 +4117,56 @@ function __complete_templatespec() {
 
 function _qvm_template() {
     # cSpell:disable
-    local -r arguments='install reinstall downgrade upgrade download list info search remove purge clean repolist migrate-from-rpmdb'
-    local -r flags_require_one=' --repo-files --keyring --updatevm --enablerepo --disablerepo --repoid --releasever --cachedir'
+    local -r flags_require_one='--repo-files --keyring --updatevm --enablerepo --disablerepo --repoid --releasever --cachedir'
     local -r flags_require_zero='--refresh --keep-cache --yes'
-    local -r sub_flags='--allow-pv --retries --downloaddir --nogpgcheck'
-    local -r sub_flags_install="${sub_flags} --pool"
+    local -r sub_flags_require_one='--pool --downloaddir --retries'
+    local -r sub_commands='install reinstall downgrade upgrade download list info search remove purge clean repolist migrate-from-rpmdb'
     local -r releasever='4.2 4.3'
+    
+    local -r sub_flags_command_install='--pool --allow-pv --downloaddir --retries --nogpgcheck'
+    local -r sub_flags_command_reinstall_downgrade_upgrade='--allow-pv --downloaddir --retries --nogpgcheck'
+    local -r sub_flags_command_download='--downloaddir --retries --nogpgcheck' # man does not mention --nogpgcheck 
+    local -r sub_flags_command_list='--all --installed --available --extras --upgrades --all-versions --machine-readable --machine-readable-json'
+    local -r sub_flags_command_info='--all --installed --available --extras --upgrades --all-versions --machine-readable --machine-readable-json'
+    local -r sub_flags_command_search='--all'
+    local -r sub_flags_command_remove='--disassoc'
+    local -r sub_flags_command_purge=''
+    local -r sub_flags_command_clean=''
+    local -r sub_flags_command_repolist='--all --enabled --disabled'
+    local -r sub_flags_command_migrate_from_rpmdb=''
     # cSpell:enable
 
-    __init_qubes_completion "${flags_require_zero} ${flags_require_one} ${sub_flags_install}" || return 0
+    __init_qubes_completion "${flags_require_one} ${sub_flags_require_one}" || return 0
 
     if (( QB_alone_args_count == 0 )); then
         case "${QB_prev_flag}" in
+            --repo-files)
+                # file path (*.repo mostly)
+                __run_filedir
+                return 0
+                ;;
+            --keyring)
+                # directory path
+                __run_filedir
+                return 0
+                ;;
+            --updatevm)
+                # should it be limited to running only?
+                __complete_qubes_list 'all'
+                return 0
+                ;;
+            --enablerepo | --disablerepo | --repoid)
+                # A single repo
+                # The flag can be used more than once according to docs, but with single repo each time
+                __complete_repo
+                return 0
+                ;;
             --releasever)
                 __complete_string "${releasever}"
                 return 0
                 ;;
-            --enablerepo | --disablerepo | --repoid)
-                __complete_repos
-                return 0
-                ;;
-            --updatevm)
-                __complete_qubes_list 'running'
-                return 0
-                ;;
-            --repo-files | --keyring | --cachedir)
+            --cachedir)
+                # directory path
                 __run_filedir
                 return 0
                 ;;
@@ -4164,77 +4178,116 @@ function _qvm_template() {
 
         __complete_all_flags_if_needed "${flags_require_zero} ${flags_require_one}" && return 0
 
-        __complete_string "${arguments}"
+        __complete_string "${sub_commands}"
         return 0
-    else
-
-        # Complete sub_flag argument if needed
-        case "${QB_prev_flag}" in
-            --pool)
-                __complete_pools_list
-                return 0
-                ;;
-            --downloaddir)
-                __run_filedir
-                return 0
-                ;;
-            --retries)
-                # Do not suggest a retry number
-                return 0
-                ;;
-        esac
-
-        case "${QB_alone_args[0]}" in
-            install)
-                __complete_all_flags_if_needed "${sub_flags_install}" && return 0
-                __complete_templatespec 'all'
-                return 0
-                ;;
-            reinstall | downgrade | upgrade)
-                __complete_all_flags_if_needed "${sub_flags}" && return 0
-                __complete_templatespec 'installed'
-                return 0
-                ;;
-            download)
-                __complete_all_flags_if_needed "${sub_flags}" && return 0
-                __complete_templatespec 'all'
-                return 0
-                ;;
-            info | list)
-                __complete_all_flags_if_needed "--all --installed --available --extras --upgrades --all-versions --machine-readable --machine-readable-json" && return 0
-                __complete_templatespec 'all'
-                return 0
-                ;;
-            search)
-                __complete_all_flags_if_needed "--all" && return 0
-                # Do not complete search query
-                return 0
-                ;;
-            remove)
-                __complete_all_flags_if_needed "--disassoc" && return 0
-                __complete_templatespec 'installed'
-                return 0
-                ;;
-            purge)
-                __complete_all_flags_if_needed "" && return 0
-                __complete_templatespec 'installed'
-                return 0
-                ;;
-            repolist)
-                __complete_all_flags_if_needed "--all --enabled --disabled" && return 0
-                # Do not complete repos
-                return 0
-                ;;
-            clean | migrate-from-rpmdb)
-                __complete_all_flags_if_needed ""
-                return 0
-                ;;
-            ?*)
-                # unknown prev flag expects sub-argument
-                return 0
-                ;;
-        esac
+    
     fi
+    
+    # Starting from here we have 1+ standalone arguments, 
+    # the first one ("${QB_alone_args[0]}") is a sub_command
+
+    case "${QB_alone_args[0]}" in
+        install)
+            case "${QB_prev_flag}" in
+                --pool)
+                    __complete_pools_list
+                    return 0
+                    ;;
+                --downloaddir)
+                    # directory
+                    __run_filedir
+                    return 0
+                    ;;
+                --retries)
+                    # Do not suggest a retry number
+                    return 0
+                    ;;
+            esac
+            
+            __complete_all_flags_if_needed "${sub_flags_command_install}" && return 0
+            __complete_templatespec 'all'
+            return 0
+            ;;
+        reinstall | downgrade | upgrade)
+            case "${QB_prev_flag}" in
+                --downloaddir)
+                    # directory
+                    __run_filedir
+                    return 0
+                    ;;
+                --retries)
+                    # Do not suggest a retry number
+                    return 0
+                    ;;
+            esac
+                    
+            __complete_all_flags_if_needed "${sub_flags_command_reinstall_downgrade_upgrade}" && return 0
+            __complete_templatespec 'installed'
+            return 0
+            ;;
+        download)
+            case "${QB_prev_flag}" in
+                --downloaddir)
+                    # directory
+                    __run_filedir
+                    return 0
+                    ;;
+                --retries)
+                    # Do not suggest a retry number
+                    return 0
+                    ;;
+            esac
+                    
+            __complete_all_flags_if_needed "${sub_flags_command_download}" && return 0
+            __complete_templatespec 'all'
+            return 0
+            ;;
+        list)
+            __complete_all_flags_if_needed "${sub_flags_command_list}" && return 0
+            __complete_templatespec 'all'
+            return 0
+            ;;
+        info)
+            __complete_all_flags_if_needed "${sub_flags_command_info}" && return 0
+            __complete_templatespec 'all'
+            return 0
+            ;;
+        search)
+            __complete_all_flags_if_needed "${sub_flags_command_search}" && return 0
+            # Do not complete search query
+            return 0
+            ;;
+        remove)
+            __complete_all_flags_if_needed "${sub_flags_command_remove}" && return 0
+            __complete_templatespec 'installed'
+            return 0
+            ;;
+        purge)
+            __complete_all_flags_if_needed "${sub_flags_command_purge}" && return 0
+            __complete_templatespec 'installed'
+            return 0
+            ;;
+        clean)
+            __complete_all_flags_if_needed "${sub_flags_command_clean}" && return 0
+            __complete_templatespec 'installed'
+            return 0
+            ;;
+        repolist)
+            __complete_all_flags_if_needed "${sub_flags_command_repolist}" && return 0
+            # Do not complete repos
+            return 0
+            ;;
+        migrate-from-rpmdb)
+            __complete_all_flags_if_needed "${sub_flags_command_migrate_from_rpmdb}" && return 0
+            return 0
+            ;;
+        ?*)
+            # unknown sub command
+            return 0
+            ;;
+    esac
+    
+    return 0
 }
 
 
