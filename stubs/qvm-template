@@ -1,0 +1,79 @@
+#!/bin/bash
+
+function __stub_qvm_template() {
+    
+    local -r first_arg="${1}"
+    
+    if [[ "${first_arg}" == 'repolist' ]]; then
+
+        # cSpell:disable
+        echo \
+'qubes-templates-community          Qubes Community Templates repository  enabled
+qubes-templates-community-testing  Qubes Community Templates repository  enabled
+qubes-templates-itl                Qubes Templates repository            enabled'
+        # cSpell:enable
+    
+    elif [[ "${first_arg}" == 'list' ]]; then
+    
+        for arg in "${@}"; do
+            if [[ "${arg}" == '--installed' ]]; then
+                echo \
+'installed|debian-11|0:4.0.6-202201171556|@commandline
+installed|debian-12-xfce|0:4.2.0-202409070311|@commandline
+installed|fedora-39|0:4.0.6-202311210248|qubes-templates-itl
+installed|fedora-39-minimal|0:4.0.6-202311211453|qubes-templates-itl
+installed|fedora-41-xfce|0:4.2.0-202501300253|@commandline
+installed|fedora-42-minimal|0:4.2.0-202506090022|qubes-templates-itl
+installed|fedora-42-xfce|0:4.2.0-202506082132|qubes-templates-itl'
+                return 0
+            fi
+        done
+    
+        for arg in "${@}"; do
+            if [[ "${arg}" == '--available' ]]; then
+                echo \
+'available|archlinux|0:4.2.0-202403302353|qubes-templates-community-testing
+available|centos-stream-8-xfce|0:4.2.0-202311250849|qubes-templates-community-testing
+available|debian-11-minimal|0:4.2.0-202307021203|qubes-templates-itl
+available|debian-11|0:4.2.0-202306021016|qubes-templates-itl
+available|debian-12-minimal|0:4.2.0-202409070311|qubes-templates-itl
+available|debian-12-xfce|0:4.2.0-202409070311|qubes-templates-itl
+available|debian-12|0:4.2.0-202409070311|qubes-templates-itl
+available|fedora-37-minimal|0:4.2.0-202305141453|qubes-templates-itl
+available|fedora-37-xfce|0:4.2.0-202305160402|qubes-templates-itl
+available|fedora-37|0:4.2.0-202306020612|qubes-templates-itl
+available|fedora-38-minimal|0:4.2.0-202308251538|qubes-templates-itl
+available|fedora-38-xfce|0:4.2.0-202312171103|qubes-templates-itl
+available|fedora-38|0:4.2.0-202308270125|qubes-templates-itl
+available|fedora-39-minimal|0:4.2.0-202403250044|qubes-templates-itl
+available|fedora-39-xfce|0:4.2.0-202403100103|qubes-templates-itl
+available|fedora-39|0:4.2.0-202403091939|qubes-templates-itl
+available|fedora-40-minimal|0:4.2.0-202409070311|qubes-templates-itl
+available|fedora-40-xfce|0:4.2.0-202411080221|qubes-templates-itl
+available|fedora-40|0:4.2.0-202409070311|qubes-templates-itl
+available|fedora-41-minimal|0:4.2.0-202411262134|qubes-templates-itl
+available|fedora-41-xfce|0:4.2.0-202501300253|qubes-templates-itl
+available|fedora-41|0:4.2.0-202412200202|qubes-templates-itl
+available|fedora-42-minimal|0:4.2.0-202506090022|qubes-templates-itl
+available|fedora-42-xfce|0:4.2.0-202506082132|qubes-templates-itl
+available|fedora-42|0:4.2.0-202506082132|qubes-templates-itl
+available|gentoo-minimal|0:4.2.0-202311241320|qubes-templates-community-testing
+available|kali-core|0:4.2.0-202411221432|qubes-templates-community-testing
+available|kicksecure-17|0:4.2.0-202508121120|qubes-templates-community
+available|whonix-gateway-17|0:4.2.0-202508121120|qubes-templates-community
+available|whonix-gw-16|0:4.1.0-202303181802|qubes-templates-community-testing
+available|whonix-workstation-17|0:4.2.0-202508121120|qubes-templates-community
+available|whonix-ws-16|0:4.1.0-202304100918|qubes-templates-community-testing'
+                
+                return 0
+            fi
+        done
+        
+        echo 'Error: stub does not support that mode.' >&2
+        
+    else 
+        echo 'Error: stub does not support that first argument.' >&2
+    fi
+}
+
+__stub_qvm_template "$@"

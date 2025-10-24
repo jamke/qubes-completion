@@ -13,6 +13,7 @@ if (( QB_DEBUG_MODE != 0 )); then
     QVMTOOL_QVM_TAGS="${__debug_overrides_script_dir}/../stubs/qvm-tags"
     QVMTOOL_QVM_DEVICE="${__debug_overrides_script_dir}/../stubs/qvm-device"
     QVMTOOL_QVM_POOL="${__debug_overrides_script_dir}/../stubs/qvm-pool"
+    QVMTOOL_QVM_TEMPLATE="${__debug_overrides_script_dir}/../stubs/qvm-template"
 
     # These full paths of stubs are provided as an example,
     # if you want absolute paths, you should change them according to your locations:
