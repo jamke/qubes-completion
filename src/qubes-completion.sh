@@ -75,7 +75,7 @@ QVM_FIREWALL_USE_TABLE_OUTPUT='1'
 # The list of supported commands for completion
 declare -a SUPPORTED_COMMANDS_LIST=(
 
-    'qubes-dom0-update'         # TODO:R4.2. Tests: Good  # Features: 100%
+    'qubes-dom0-update'         # TODO:R4.2. Tests: Good  # Features: 100% # Breaks in f42 but works in dom0 of R4.2
 
     'qvm-ls'                    # R4.2. Tests: FULL  # Features: 100%
     'qvm-tags'                  # R4.2. Tests: FULL  # Features: 100%
