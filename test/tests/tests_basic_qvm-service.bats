@@ -68,7 +68,7 @@ function test_wrapper() {
 }
 
 @test "Test 010. qvm-service: qvm-service running " {
-    EXPECTED_COMPREPLY=([0]="qubes-firewall" [1]="qubes-network" [2]="qubes-update-check" [3]="cups" [4]="crond" [5]="network-manager" [6]="clocksync" [7]="qubes-updates-proxy" [8]="updates-proxy-setup" [9]="disable-default-route" [10]="disable-dns-server" [11]="lightdm" [12]="guivm" [13]="guivm-gui-agent" [14]="guivm-vnc")
+    EXPECTED_COMPREPLY=([0]="meminfo-writer" [1]="qubes-firewall" [2]="qubes-network" [3]="qubes-update-check" [4]="cups" [5]="crond" [6]="network-manager" [7]="clocksync" [8]="qubes-updates-proxy" [9]="updates-proxy-setup" [10]="disable-default-route" [11]="disable-dns-server" [12]="lightdm" [13]="software-rendering" [14]="guivm" [15]="guivm-gui-agent" [16]="guivm-vnc" [17]="tracker" [18]="evolution-data-server" [19]="usb-reset-on-attach")
     test_wrapper 'qvm-service running '
 }
 
@@ -88,7 +88,7 @@ function test_wrapper() {
 }
 
 @test "Test 014. qvm-service: qvm-service \"running\" " {
-    EXPECTED_COMPREPLY=([0]="qubes-firewall" [1]="qubes-network" [2]="qubes-update-check" [3]="cups" [4]="crond" [5]="network-manager" [6]="clocksync" [7]="qubes-updates-proxy" [8]="updates-proxy-setup" [9]="disable-default-route" [10]="disable-dns-server" [11]="lightdm" [12]="guivm" [13]="guivm-gui-agent" [14]="guivm-vnc")
+    EXPECTED_COMPREPLY=([0]="meminfo-writer" [1]="qubes-firewall" [2]="qubes-network" [3]="qubes-update-check" [4]="cups" [5]="crond" [6]="network-manager" [7]="clocksync" [8]="qubes-updates-proxy" [9]="updates-proxy-setup" [10]="disable-default-route" [11]="disable-dns-server" [12]="lightdm" [13]="software-rendering" [14]="guivm" [15]="guivm-gui-agent" [16]="guivm-vnc" [17]="tracker" [18]="evolution-data-server" [19]="usb-reset-on-attach")
     test_wrapper 'qvm-service "running" '
 }
 
@@ -108,7 +108,7 @@ function test_wrapper() {
 }
 
 @test "Test 018. qvm-service: qvm-service 'running' " {
-    EXPECTED_COMPREPLY=([0]="qubes-firewall" [1]="qubes-network" [2]="qubes-update-check" [3]="cups" [4]="crond" [5]="network-manager" [6]="clocksync" [7]="qubes-updates-proxy" [8]="updates-proxy-setup" [9]="disable-default-route" [10]="disable-dns-server" [11]="lightdm" [12]="guivm" [13]="guivm-gui-agent" [14]="guivm-vnc")
+    EXPECTED_COMPREPLY=([0]="meminfo-writer" [1]="qubes-firewall" [2]="qubes-network" [3]="qubes-update-check" [4]="cups" [5]="crond" [6]="network-manager" [7]="clocksync" [8]="qubes-updates-proxy" [9]="updates-proxy-setup" [10]="disable-default-route" [11]="disable-dns-server" [12]="lightdm" [13]="software-rendering" [14]="guivm" [15]="guivm-gui-agent" [16]="guivm-vnc" [17]="tracker" [18]="evolution-data-server" [19]="usb-reset-on-attach")
     test_wrapper 'qvm-service '\''running'\'' '
 }
 
@@ -118,7 +118,7 @@ function test_wrapper() {
 }
 
 @test "Test 020. qvm-service: qvm-service nonexistent " {
-    EXPECTED_COMPREPLY=([0]="qubes-firewall" [1]="qubes-network" [2]="qubes-update-check" [3]="cups" [4]="crond" [5]="network-manager" [6]="clocksync" [7]="qubes-updates-proxy" [8]="updates-proxy-setup" [9]="disable-default-route" [10]="disable-dns-server" [11]="lightdm" [12]="guivm" [13]="guivm-gui-agent" [14]="guivm-vnc")
+    EXPECTED_COMPREPLY=([0]="meminfo-writer" [1]="qubes-firewall" [2]="qubes-network" [3]="qubes-update-check" [4]="cups" [5]="crond" [6]="network-manager" [7]="clocksync" [8]="qubes-updates-proxy" [9]="updates-proxy-setup" [10]="disable-default-route" [11]="disable-dns-server" [12]="lightdm" [13]="software-rendering" [14]="guivm" [15]="guivm-gui-agent" [16]="guivm-vnc" [17]="tracker" [18]="evolution-data-server" [19]="usb-reset-on-attach")
     test_wrapper 'qvm-service nonexistent '
 }
 
@@ -133,7 +133,7 @@ function test_wrapper() {
 }
 
 @test "Test 023. qvm-service: qvm-service nonexistent -- " {
-    EXPECTED_COMPREPLY=([0]="qubes-firewall" [1]="qubes-network" [2]="qubes-update-check" [3]="cups" [4]="crond" [5]="network-manager" [6]="clocksync" [7]="qubes-updates-proxy" [8]="updates-proxy-setup" [9]="disable-default-route" [10]="disable-dns-server" [11]="lightdm" [12]="guivm" [13]="guivm-gui-agent" [14]="guivm-vnc")
+    EXPECTED_COMPREPLY=([0]="meminfo-writer" [1]="qubes-firewall" [2]="qubes-network" [3]="qubes-update-check" [4]="cups" [5]="crond" [6]="network-manager" [7]="clocksync" [8]="qubes-updates-proxy" [9]="updates-proxy-setup" [10]="disable-default-route" [11]="disable-dns-server" [12]="lightdm" [13]="software-rendering" [14]="guivm" [15]="guivm-gui-agent" [16]="guivm-vnc" [17]="tracker" [18]="evolution-data-server" [19]="usb-reset-on-attach")
     test_wrapper 'qvm-service nonexistent -- '
 }
 

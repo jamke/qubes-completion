@@ -2,7 +2,7 @@
 #
 #   qubes-completion - BASH completion for Qubes OS
 #
-#   Copyright © 2022-2024, @jamke (https://github.com/jamke)
+#   Copyright © 2022-2025, @jamke (https://github.com/jamke)
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -75,81 +75,89 @@ QVM_FIREWALL_USE_TABLE_OUTPUT='1'
 # The list of supported commands for completion
 declare -a SUPPORTED_COMMANDS_LIST=(
 
-    'qubes-dom0-update'         # Tests: Good  # Features: 100%
+    'qubes-dom0-update'         # TODO:R4.2. Tests: Good  # Features: 100%
 
-    'qvm-ls'                    # Tests: FULL  # Features: 100%
-    'qvm-tags'                  # Tests: FULL  # Features: 100%
-    'qvm-start'                 # Tests: Basic # Features: #TODOs
-    'qvm-shutdown'              # Tests: FULL  # Features: 100%
-    'qvm-kill'                  # Tests: Basic # Features: 100%
-    'qvm-run'                   # Tests: Basic # Features: 100%
+    'qvm-ls'                    # R4.2. Tests: FULL  # Features: 100%
+    'qvm-tags'                  # R4.2. Tests: FULL  # Features: 100%
+    'qvm-start'                 # R4.2. Tests: Basic # Features: #TODOs
+    'qvm-shutdown'              # R4.2. Tests: FULL  # Features: 100%
+    'qvm-kill'                  # R4.2. Tests: Basic # Features: 100%
+    'qvm-run'                   # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-pause'                 # Tests: Basic # Features: 100%
-    'qvm-unpause'               # Tests: Basic # Features: 100%
+    'qvm-pause'                 # R4.2. Tests: Basic # Features: 100%
+    'qvm-unpause'               # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-create'                # Tests: Basic # Features: #TODOs
-    'qvm-clone'                 # Tests: Basic # Features: can be better and provide pool:volumes, but qvm-volume is too slow
-    'qvm-remove'                # Tests: Basic # Features: 100%
+    'qvm-create'                # R4.2. Tests: Basic # Features: #TODOs
+    'qvm-clone'                 # R4.2. Tests: Basic # Features: can be better and provide pool:volumes, but qvm-volume is too slow
+    'qvm-remove'                # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-device'                # Tests: Basic # Features: 100%
-    'qvm-block'                 # Tests: Basic # Features: 100%
-    'qvm-usb'                   # Tests: Basic # Features: 100%
-    'qvm-pci'                   # Tests: Basic # Features: 100%
+    'qvm-device'                # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-block'                 # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-usb'                   # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-pci'                   # TODO:R4.2. Tests: Basic # Features: 100%
 
-    'qvm-prefs'                 # Tests: Basic # Features: 100%
-    'qvm-features'              # Tests: Basic # Features: 100%
+    'qvm-prefs'                 # R4.2. Tests: Basic # Features: 100% # but can be better
+    'qvm-features'              # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-volume'                # Tests: Basic # Features: #TODO
+    'qvm-volume'                # TODO:R4.2. Tests: Basic # Features: #TODO
 
-    'qvm-template'              # Tests: None  # Features: 100%
-    'qvm-template-postprocess'  #TODO: Not implemented yet
-    'qvm-backup'                # Tests: Basic # Features: 100%
-    'qvm-backup-restore'        # Tests: Basic # Features: 100%
+    'qvm-backup'                # R4.2. Tests: Basic # Features: 100%
+    'qvm-backup-restore'        # R4.2. Tests: Basic # Features: 100%
 
     'qvm-pool'                  #TODO: Not implemented yet
 
-    'qvm-check'                 # Tests: Basic # Features: 100%
-    'qvm-firewall'              # Tests: Basic # Features: 100%
-    'qvm-service'               # Tests: Basic # Features: 100%
+    'qvm-check'                 # R4.2. Tests: Basic # Features: 100%
+    'qvm-firewall'              # R4.2. Tests: Basic # Features: 100%
+    'qvm-service'               # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-sync-appmenus'         # Tests: Basic # Features: 100%
-    'qvm-appmenus'              # Tests: Basic # Features: #TODOs (But all known is done)
+    'qvm-sync-appmenus'         # R4.2. Tests: Basic # Features: 100%
+    'qvm-appmenus'              # R4.2. Tests: Basic # Features: #TODOs
 
-    'qvm-copy-to-vm'            # Tests: Basic # Features: 100%
-    'qvm-move-to-vm'            # Tests: Basic # Features: 100%
-    'qvm-copy'                  # Tests: Basic # Features: 100%
-    'qvm-move'                  # Tests: Basic # Features: 100%
+    'qvm-copy-to-vm'            # R4.2. Tests: Basic # Features: 100%
+    'qvm-move-to-vm'            # R4.2. Tests: Basic # Features: 100%
+    'qvm-copy'                  # R4.2. Tests: Basic # Features: 100%
+    'qvm-move'                  # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-start-gui'             # Tests: Basic # Features: 100% # Symlink to start-daemon
-    'qvm-start-daemon'          # Tests: Basic # Features: 100%
+    'qvm-start-gui'             # R4.2. Tests: Basic # Features: 100% # Symlink to start-daemon
+    'qvm-start-daemon'          # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-xkill'                 # Tests: Basic # Features: 100% # Supports no arguments
-    'qvm-sync-clock'            # Tests: Basic # Features: 100% # Supports no arguments
+    'qvm-xkill'                 # R4.2. Tests: Basic # Features: 100% # Supports no arguments
+    'qvm-sync-clock'            # R4.2. Tests: Basic # Features: 100% # Supports no arguments
 
-    'qubes-prefs'               # Tests: Basic # Features: 100% # but can be better
-    'qubes-guid'                # Tests: Basic # Features: 100% # can be better, but no need
-    'qubes-vm-update'           # Tests: None  # Features: 100%
-
+    'qubes-prefs'               # R4.2. Tests: Basic # Features: 100% # but can be better
+    'qubes-guid'                # R4.2. Tests: Basic # Features: 100% # can be better, but no need
+    
+    'qvm-template'              #TODO: Not implemented yet
+    'qvm-template-postprocess'  #TODO: Not implemented yet
+    
+    # New commands
+    'qubes-vm-update'           # R4.2. Tests: Basic  # Features: 100%
+    'qubes-fwupgmr'             #TODO: Not implemented yet
+    'qubes-prepare-vm-kernel'   #TODO: Not implemented yet
+    'qubes-app-menu'            #TODO: Not implemented yet
+    'qubes-policy-lint'         #TODO: Not implemented yet
+    'qubes-policy-editor'       #TODO: Not implemented yet
+    
      # Commands that have no --quiet/verbose
-    'qubesctl'                  # Tests: Basic # Features: #TODOs
-    'qubesd-query'              # Tests: Basic # Features: #TODOs
-    'qubes-hcl-report'          # Tests: Basic # Features: 100%
-    'qubes-bug-report'          # Tests: Basic # Features: 100%
-    'qvm-get-image'             # Tests: Basic # Features: 100%
-    'qvm-get-tinted-image'      # Tests: Basic # Features: 100%
+    'qubesctl'                  # R4.2. Tests: Basic # Features: #TODOs
+    'qubesd-query'              # R4.2. Tests: Basic # Features: #TODOs
+    'qubes-hcl-report'          # R4.2. Tests: Basic # Features: 100%
+    'qubes-bug-report'          # R4.2. Tests: Basic # Features: 100%
+    'qvm-get-image'             # R4.2. Tests: Basic # Features: 100%
+    'qvm-get-tinted-image'      # R4.2. Tests: Basic # Features: 100%
 
     # No man available, only --help:
-    'qubes-policy'              # Tests: Basic # Features: 100%
-    'qubes-vm-settings'         # Tests: Basic # Features: 100%
-    'qubes-vm-clone'            # Tests: Basic # Features: 100%
-    'qubes-vm-boot-from-device' # Tests: Basic # Features: 100%
-    'qubes-input-trigger'       # Tests: Basic # Features: 100%
+    'qubes-policy'              # R4.2. Tests: Basic # Features: 100%
+    'qubes-vm-settings'         # R4.2. Tests: Basic # Features: 100%
+    'qubes-vm-clone'            # R4.2. Tests: Basic # Features: 100%
+    'qubes-vm-boot-from-device' # R4.2. Tests: Basic # Features: 100%
+    'qubes-input-trigger'       # R4.2. Tests: Basic # Features: 100%
 
     # No man, no --help:
-    'qubes-guivm-session'       # Tests: Basic # Features: 100%
+    'qubes-guivm-session'       # R4.2. Tests: Basic # Features: 100%
 
     # Commands that have no --help/quiet/verbose
-    'qvm-console-dispvm'        # Tests: Basic # Features: 100%
+    'qvm-console-dispvm'        # R4.2. Tests: Basic # Features: 100%
 
 
     # -----------------------------------------------------------
@@ -166,6 +174,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     # 'qubes-template-manager'
     # 'qubes-global-settings'
     # 'qubes-update-gui'
+    # 'qubes-policy-editor-gui'
     # -----------------------------------------------------------
 
     # -----------------------------------------------------------
@@ -202,6 +211,49 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     # -----------------------------------------------------------
 )
 
+# =================================================================
+# Searching for bash-completion package functions
+# =================================================================
+# Between Fedora 39 and Fedora 42 the function names were changed
+# The change was made in bash-completion 2.12.
+# Because dom0 has old Fedora, while development and testing 
+# requires a newer one, we have to support both.
+
+# _init_completion() and _comp_initialize()
+QB_CALL_init_completion='_init_completion'
+if [[ $(type -t "${QB_CALL_init_completion}") != function ]]; then
+    QB_CALL_init_completion='_comp_initialize'
+fi
+
+if [[ $(type -t "${QB_CALL_init_completion}") != function ]]; then
+    __debug_msg "No function to run: ${QB_CALL_init_completion}"
+    return 1
+fi
+
+# __get_cword_at_cursor_by_ref() and _comp__get_cword_at_cursor()
+QB_CALL_get_cword_at_cursor='__get_cword_at_cursor_by_ref'
+if [[ $(type -t "${QB_CALL_get_cword_at_cursor}") != function ]]; then
+    QB_CALL_get_cword_at_cursor='_comp__get_cword_at_cursor'
+fi
+
+if [[ $(type -t "${QB_CALL_get_cword_at_cursor}") != function ]]; then
+    __debug_msg "No function to run: ${QB_CALL_get_cword_at_cursor}"
+    return 1
+fi
+
+# _filedir() and _comp_compgen_filedir()
+QB_CALL_filedir='_filedir'
+if [[ $(type -t "${QB_CALL_filedir}") != function ]]; then
+    QB_CALL_filedir='_comp_compgen_filedir'
+fi
+
+if [[ $(type -t "${QB_CALL_filedir}") != function ]]; then
+    __debug_msg "No function to run: ${QB_CALL_filedir}"
+    return 1
+fi
+
+# =================================================================
+
 
 # =================================================================
 # Global variables
@@ -219,6 +271,7 @@ QB_full_line_args=()    # All args in all line, even after cursor (almost not us
 QB_cur=''               # Current word, can be different from cur due to different splitting
 QB_prev_flag=''         # Previous arg only if it must be related to the next one (qt_cur)
 QB_real_cur=''          # String that is used for __complete_string() and other __complete_* functions
+QB_was_quoted=0
 
 QB_orig_cur=''          # Original value of cur that BASH really wants us to complete
 
@@ -260,13 +313,22 @@ function __debug_msg() {
     if (( QB_DEBUG_MODE == 0 )) || (( QB_DEBUG_LOG == 0 )); then
         return
     fi
-
+    
     # NOTE: file for "tail -f" monitoring
-    local -r filename="${QB_DEBUG_LOG_PATH}"
-
-    echo "${1}" >> "${filename}"
+    echo "${1}" >> "${QB_DEBUG_LOG_PATH}"
 }
 
+# Log a message to the log file and echo to stdout if debug mode is on
+function __debug_msg_and_echo() {
+
+    if (( QB_DEBUG_MODE == 0 )) || (( QB_DEBUG_LOG == 0 )); then
+        return
+    fi
+
+    # NOTE: file for "tail -f" monitoring
+    echo "${1}" >> "${QB_DEBUG_LOG_PATH}"
+    echo "${1}"
+}
 
 # Log an array to the log file if debug mode is on (similar to declare -p but cleaner and works with refs)
 function __debug_print_array() {
@@ -362,14 +424,20 @@ function __run_filedir() {
     # We need file completion
 
     __debug_msg "Running completion for files (filedir)"
+    
+    # Use stub filedir output for debug and running tests
+    if (( QB_DEBUG_MODE != 0 )); then
+        __complete_string "${QB_DEBUG_STUB_FILEDIR_OUTPUT}"
+        return 0
+    fi
 
     # NOTE: we need to re-init in a default way to make it work properly
     local cur prev words cword
-    _init_completion || return 1
+    "${QB_CALL_init_completion}" || return 1
 
     # files completion for rest args
-    _filedir
-    # _filedir "$@" # Not needed for this script
+    "${QB_CALL_filedir}"
+    # "${QB_CALL_filedir}" "$@" # Not needed for this script
 
     return 0
 }
@@ -452,7 +520,7 @@ function __reset_result_variables() {
     # Current word, that can be affected by splitting and be different from cur
     QB_cur=''
 
-    # String that is used for __complete_string() and other __complete_* functions
+    # String that is used for `__complete_string` and other __complete_* functions
     QB_real_cur=''
 }
 
@@ -604,7 +672,13 @@ function __parse_and_fix_cur() {
     # The argument under cursor can be a --flag=something that needs splitting,
     # or something complicated like: --flag=key=value=something=else
 
-    # strip quotes at the beginning, let __complete_string() worry about it
+    # save information about quotes at the beginning or original cur
+    QB_was_quoted=0
+    if [[ "${orig_cur:0:1}" == '"' || "${orig_cur:0:1}" == "'" ]]; then 
+        QB_was_quoted=1
+    fi
+    
+    # strip quotes at the beginning, let `__complete_string` and `__complete_array` worry about it
     QB_cur="$( __strip_quotes_on_left "${orig_cur}" )"
 
     if (( allow_flags_in_cur == 1 )) && [[ "${QB_cur}" == -* ]]; then
@@ -711,14 +785,9 @@ function __init_qubes_completion() {
 
     __debug_log_start_of_init_qubes_completion "${flags_require_one}" "${flags_require_multiple}"
 
-    if [[ $(type -t _init_completion) != function ]]; then
-        __debug_msg 'ERROR: _init_completion() does not exist'
-        return 3
-    fi
-
-    # Run _init_completion() with options
+    # Run "${QB_CALL_init_completion}"() with options
     local cur prev words cword
-    _init_completion -n ':=' || return 1
+    "${QB_CALL_init_completion}" -n ':=' || return 1
     __debug_log_after_modified_init_completion words
 
     # Reset all result variables
@@ -852,7 +921,7 @@ function __find_original_really_completing() {
     # Now recompute once again buy using default shell settings,
     # this way we get what terminal is actually being completing:
     local cur cword words=()
-    __get_cword_at_cursor_by_ref '' words cword cur
+    "${QB_CALL_get_cword_at_cursor}" '' words cword cur
     QB_orig_cur="${cur}"
     if [[ "${QB_orig_cur}" == '=' ]]; then
         # Provide completion after = with no space before it as it's a new word already
@@ -1167,6 +1236,37 @@ function __complete_pools_list() {
 }
 
 
+function __complete_backup_profile() {
+
+    # Profile is a filename without extension in directory /etc/qubes/backup
+    local backup_profile_dir='/etc/qubes/backup'
+    
+    if (( QB_DEBUG_MODE != 0 )); then
+        backup_profile_dir="${QB_DEBUG_STUB_PROFILES_DIR}"
+    fi
+
+    # In this function we should support spaces in completion strings
+    
+    local profile_names=()
+    readarray -d '' profile_names < <(find "${backup_profile_dir}" -maxdepth 1 -type f -name '*.conf' -print0)
+    
+    if (( "${#profile_names[@]}" > 0 )); then
+        # remove full path
+        profile_names=("${profile_names[@]##*/}")
+        # remove .conf extension
+        profile_names=("${profile_names[@]%.*}")
+        # Escape spaces in file names
+        profile_names=("${profile_names[@]/ /\\ }")
+        
+        __complete_array profile_names
+        
+        # For correct quoting we use -o filenames
+        compopt -o filenames &>/dev/null # to /dev/null because output interferes with running tests
+    fi
+    return 0
+}
+
+
 function __complete_device_ids() {
 
     local -r device_class="${1}"
@@ -1313,7 +1413,7 @@ function __complete_array() {
     local IFS=$'\n'
 
     local -n arr="${1}"
-
+    
     __debug_msg '--------------------------------------------------------'
     __debug_msg '* Called __complete_array()'
     __debug_msg ''
@@ -1321,17 +1421,30 @@ function __complete_array() {
     __debug_msg "=> QB_cur = \"${QB_cur}\""
     __debug_msg "=> QB_real_cur = \"${QB_real_cur}\""
     __debug_msg "=> QB_orig_cur = \"${QB_orig_cur}\""
+    __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""    
 
-    # TODO: consider case with quotes at the beginning? Or it all will work by itself?
-
-    # original completion based on "${QB_real_cur}"
-    # local full_comp=( "$(compgen -W "${arr[*]}" -- "${QB_real_cur}")" )
+    # We consider case with quotes at the beginning by checking QB_was_quoted
 
     local full_comp=()
+    
+    local local_QB_real_cur_to_use="${QB_real_cur}"
+    
+    # To preserve escape chars in the arr[] after calling `compgen` 
+    # we have to explicitly double them in case it was not quoted
+    if (( QB_was_quoted == 0 )); then
+        arr=("${arr[@]/\\/\\\\}")
+        
+        # we also have to use different escaped QB_real_cur, 
+        # because otherwise it would not match modified arr
+        local_QB_real_cur_to_use="${QB_real_cur/\\/\\\\}"
+    fi
+    
     local i
     for (( i=0; i < "${#arr[@]}"; i++ )); do
         local comp_str
-        comp_str="$(compgen -W "${arr[${i}]}" -- "${QB_real_cur}")"
+        #__debug_msg "=> arr[i] = \"${arr[${i}]}\""
+        comp_str="$(compgen -W "${arr[${i}]}" -- "${local_QB_real_cur_to_use}")"
+        #__debug_msg "=> comp_str = \"${comp_str}\""
         if (( "${#comp_str}" > 0 )); then
             full_comp+=( "${comp_str}" )
         fi
@@ -1356,15 +1469,31 @@ function __complete_string() {
     __debug_msg "=> QB_cur = \"${QB_cur}\""
     __debug_msg "=> QB_real_cur = \"${QB_real_cur}\""
     __debug_msg "=> QB_orig_cur = \"${QB_orig_cur}\""
+    __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""
+    
+    # We use more general __complete_array to avoid code duplication
+    # So, convert strings to array and go.
+    
+    # In this function we should support both new lines, nulls and spaces as separators of completion strings
+    # convert spaces and newlines to proper newlines
+    
+    local options_arr=()
+    readarray -t -d '' options_arr < <(printf '%s' "${options}" | tr ' ' '\0' | tr '\n' '\0' | tr '\r' '\0')
+    #__debug_msg "$( __debug_print_array 'options_arr' options_arr )"
 
-    # TODO: consider case with quotes at the beginning? Or it all will work by itself?
-
-    # original completion based on "${QB_real_cur}"
-    local -r full_comp=( $(compgen -W "${options}" -- "${QB_real_cur}") )
-    # local -r full_comp=( $(compgen -W "${options}" -- "${QB_cur}") ) #TODO: use something like that?
-    __debug_msg "$( __debug_print_array 'full_comp' full_comp )"
-
-    __replace_cur_and_add_to_compreply full_comp
+    # remove any empty elements
+    local options_arr_cleaned=()
+    local -r options_arr_count="${#options_arr[@]}"
+    local i
+    for (( i=0; i < options_arr_count; i++ )); do
+    
+        if [[ "${options_arr[${i}]}" != '' ]]; then
+            options_arr_cleaned+=( "${options_arr[${i}]}" )
+        fi
+    done
+    #__debug_msg "$( __debug_print_array 'options_arr_cleaned' options_arr_cleaned )"
+    
+    __complete_array options_arr_cleaned
 }
 
 
@@ -1383,13 +1512,13 @@ function __replace_cur_and_add_to_compreply() {
     local -r full_comp_arr_count="${#full_comp_arr[@]}"
     for (( i=0; i < full_comp_arr_count; i++ )); do
 
-        # __debug_msg "    => full_comp_arr[${i}] = \"${full_comp_arr[${i}]}\""
+        #__debug_msg "    => full_comp_arr[${i}] = \"${full_comp_arr[${i}]}\""
 
         local without_beginning="${full_comp_arr[${i}]:${#QB_real_cur}}"
-        # __debug_msg "    => without_beginning = \"${without_beginning}\""
+        #__debug_msg "    => without_beginning = \"${without_beginning}\""
 
         local with_bash_beginning="${QB_orig_cur}${without_beginning}"
-        # __debug_msg "    => with_bash_beginning = \"${with_bash_beginning}\""
+        #__debug_msg "    => with_bash_beginning = \"${with_bash_beginning}\""
 
         converted_comp+=( "${with_bash_beginning}" )
     done
@@ -1437,6 +1566,7 @@ function __complete_general_firewall_rule() {
                 ;;
             icmptype)
                 # Nothing to provide
+                # ICMP message type, specified as numeric value
                 return 0
                 ;;
             specialtarget)
@@ -1453,9 +1583,13 @@ function __complete_general_firewall_rule() {
                 ;;
         esac
     else
-        __complete_string 'tcp udp icmp' # accept and drop are not here, because they must be first, not general
+        # `accept` and `drop` are not provided here, because they must be used first, not in any position
+        __complete_string 'tcp udp icmp'
+        
+        # NOTE: `comment=` is still not documented for R4.2 in `man qvm-firewall` and `qvm-firewall --help`
         __complete_string 'action= dsthost= dst4= dst6= dstports= icmptype= proto= specialtarget= expire= comment='
 
+        # To avoid space after option=
         if (( "${#COMPREPLY[@]}" == 1 )) && [[ "${COMPREPLY[0]}" == *= ]]; then
             compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
         fi
@@ -1494,8 +1628,6 @@ function __complete_all_starting_flags_if_needed() {
 function _qvm_ls() {
 
     __init_qubes_completion '-o --format -O --fields --exclude' '--tags' || return 0
-
-    # __debug_msg "_qvm_ls(): QB_alone_args_count = \"${QB_alone_args_count}\""
 
     case "${QB_prev_flag}" in
         -o | --format)
@@ -1556,11 +1688,24 @@ function _qvm_ls() {
 
 function _qvm_create() {
 
-    __init_qubes_completion '--class -C --property --prop -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R'  || return 0
+    # NOTE: `--force-root` is not provided in `--help` but mistakenly mentioned in man
+
+    local -r flags_require_one='--class -C --property --prop -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R'
+    
+    # NOTE: intentionally skipping --prop (short version of --property)
+    local -r flags_all="--class -C --property -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R --standalone --disp --help-classes"
+    
+    __init_qubes_completion "${flags_require_one}"  || return 0
 
     # Call with --help-classes needs no more arguments
     __was_flag_used '--help-classes' && return 0
-
+    
+    if (( QB_alone_args_count > 0 )); then
+        # Standalone argument (VMNAME) must be the last one, 
+        # so, nothing to complete anymore
+        return 0
+    fi
+    
     case "${QB_prev_flag}" in
         -C | --class)
             __complete_string "${QVM_VM_CLASSES}"
@@ -1571,6 +1716,11 @@ function _qvm_create() {
             return 0
             ;;
         -p | --pool)
+            # NOTE: `man qvm-create` shows "--pool=POOL:VOLUME, -p POOL:VOLUME", 
+            # while `qvm-create --help` shows "--pool VOLUME_NAME=POOL_NAME, -p VOLUME_NAME=POOL_NAME"
+            # --help is right, the code is:
+            # volume_name, pool_name = pool_vol.split('=')
+            
             # NOTE: unfortunately, we do not list the volumes because
             # qvm-volume list takes like seconds on a modern computer,
             # that is 10 times slower than sudo lvs that provides almost
@@ -1578,7 +1728,9 @@ function _qvm_create() {
             #
             # The completion for volumes can be added when qvm-volume
             # is either optimized or rewritten to be not that slow.
-            __complete_pools_list
+            
+            # Do not even complete pools as the order is VOLUME_NAME=POOL_NAME            
+            #__complete_pools_list
             return 0
             ;;
         --property | --prop)
@@ -1603,12 +1755,10 @@ function _qvm_create() {
             ;;
     esac
 
-    # NOTE: skipping --prop (short version of --property)
-    local -r flags='--class -C --property -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R --standalone --disp --help-classes --force-root'
-    __complete_all_starting_flags_if_needed "${flags}" && return 0
+    __complete_all_starting_flags_if_needed "${flags_all}" && return 0
 
     # List qubes
-    if (( QB_alone_args_count = 0 )); then
+    if (( QB_alone_args_count == 0 )); then
         # Provide names of qubes to make it easy to create qube with similar name
         __complete_qubes_list_without_dom0 'all'
     fi
@@ -1631,16 +1781,21 @@ function _qvm_clone() {
             return 0
             ;;
         -p | --pool)
+            # NOTE: `man qvm-clone` shows "--pool=POOL:VOLUME, -p POOL:VOLUME", 
+            # while `qvm-clone --help` shows "--pool VOLUME=POOL, -p VOLUME=POOL"
+            # --help is right, the code is:
+            # volume_name, pool_name = pool_vol.split('=')
+            
             # NOTE: unfortunately, we do not list the volumes because
             # qvm-volume list takes like seconds on a modern computer,
             # that is 10 times slower than sudo lvs that provides almost
             # the same information.
-
+            #
             # The completion for volumes can be added when qvm-volume
             # is either optimized or rewritten to be not that slow.
-
-            __complete_pools_list
-
+            
+            # Do not even complete pools as the order is VOLUME=POOL
+            #__complete_pools_list
             return 0
             ;;
         ?*)
@@ -1654,6 +1809,7 @@ function _qvm_clone() {
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     # List qubes (up to 2)
+    # The second one for easy naming the cloned qube similar to an existing one
     if (( QB_alone_args_count < 2 )); then
         __complete_qubes_list_without_dom0 'all'
     fi
@@ -1875,7 +2031,7 @@ function _qvm_remove() {
             ;;
     esac
 
-    local -r flags='--all --exclude --force -f --force-root --just-db'
+    local -r flags='--all --exclude --force -f'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list 'halted'
@@ -2193,7 +2349,7 @@ function _qvm_prefs() {
 
         # or provide full properties list otherwise
         local -r qube="${QB_alone_args[0]}"
-        if [[ "${qube}"  == 'dom0' ]]; then
+        if [[ "${qube}" == 'dom0' ]]; then
             # for dom0
             __complete_string "${QVM_VM_PROPERTIES_DOM0}"
             return 0
@@ -2249,13 +2405,14 @@ function _qvm_features() {
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # cSpell:disable-next-line
+    # cSpell:disable
     local -r vm_common_features='gui gui-emulated gui-default-allow-utf8-titles input-dom0-proxy qrexec rpc-clipboard no-monitor-layout internal appmenus-legacy appmenus-dispvm qubes-firewall updates-available video-model net.fake-ip net.fake-gateway net.fake-netmask pci-e820-host linux-stubdom tag-created-vm-with set-created-guivm check-updates menu-items qubesmanager.maxmem_value servicevm service.clocksync service.qubes-update-check default-menu-items netvm-menu-items os vmexec audio-model stubdom-qrexec timezone timer-period out.latency out.buffer-length gui-videoram-min gui-videoram-overhead gui-default-secure-copy-sequence gui-default-secure-paste-sequence last-update last-update-check selinux apparmor'
     local -r vm_template_features='template-name template-epoch template-version template-release template-reponame template-buildtime template-installtime template-license template-url template-summary template-description'
     local -r vm_service_features='supported-service.apparmor supported-service.crond supported-service.network-manager supported-service.pipewire supported-service.cups supported-service.gui-agent-clipboard-wipe supported-service.guivm-gui-agent supported-service.qubes-update-check supported-service.qubes-updates-proxy supported-service.qubes-firewall supported-service.qubes-network supported-service.clocksync supported-service.updates-proxy-setup supported-service.meminfo-writer supported-service.modem-manager supported-service.blueman'
     local -r vm_rpc_features='supported-rpc.qubes.SetMonitorLayout supported-rpc.qubes.SelectFile supported-rpc.qubes.UpdatesProxy supported-rpc.qubes.TemplateDownload supported-rpc.qubes.PostInstall supported-rpc.qubes.VMExec supported-rpc.qubes.Backup supported-rpc.qubes.ShowInTerminal supported-rpc.qubes.RegisterBackupLocation supported-rpc.qubes.WaitForSession supported-rpc.qubes.SetDateTime supported-rpc.qubes.TemplateSearch supported-rpc.qubes.GetAppmenus supported-rpc.qubes.DetachPciDevice supported-rpc.qubes.SuspendPost supported-rpc.qubes.OpenURL supported-rpc.qubes.StartApp supported-rpc.qubes.ConnectTCP supported-rpc.qubes.ResizeDisk supported-rpc.qubes.SuspendPreAll supported-rpc.qubes.SelectDirectory supported-rpc.qubes.VMRootShell supported-rpc.qubes.Gpg supported-rpc.qubes.PdfConvert supported-rpc.qubes.USBDetach supported-rpc.qubes.RestoreById supported-rpc.qubes.GpgImportKey supported-rpc.qubes.GuiVMSession supported-rpc.qubes.VMExecGUI supported-rpc.qubes.USB supported-rpc.qubes.Filecopy supported-rpc.qubes.SuspendPostAll supported-rpc.qubes.VMShell supported-rpc.qubes.GetImageRGBA supported-rpc.qubes.GetDate supported-rpc.qubes.SuspendPre supported-rpc.qubes.USBAttach supported-rpc.qubes.InstallUpdatesGUI supported-rpc.qubes.OpenInVM supported-rpc.qubes.SaltLinuxVM supported-rpc.qubes.Restore supported-rpc.qubes.AudioInputEnable supported-rpc.qubes.AudioInputDisable'
+    # cSpell:enable
 
-    local -r flags='--unset --default --delete --D'
+    local -r flags='--unset --default --delete -D'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     if (( QB_alone_args_count == 0 )); then
@@ -2354,7 +2511,7 @@ function _qvm_volume() {
 function _qvm_backup() {
 
     local -r flags_require_one='--profile --save-profile --exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
-    local -r flags_require_zero='--yes -y --encrypt -e  --compress -z --no-compress'
+    local -r flags_require_zero='--encrypt -e  --compress -z --no-compress --yes -y'
     local -r backup_compression_filters='gzip bzip2 xz'
 
     __init_qubes_completion "${flags_require_one}" || return 0
@@ -2378,11 +2535,15 @@ function _qvm_backup() {
                 return 0
                 ;;
             --profile)
-                __run_filedir
+                # Profile is a filename without extension in directory /etc/qubes/backup
+                __complete_backup_profile
                 return 0
                 ;;
             --save-profile)
-                __run_filedir
+                # Profile is a filename without extension in directory /etc/qubes/backup
+                # To see the existing profiles and overwrite one we allow completion,
+                # but in future this may change
+                __complete_backup_profile
                 return 0
                 ;;
             ?*)
@@ -2412,7 +2573,10 @@ function _qvm_backup() {
 
             return 0
         else
-            # provide directory completion if dest-vm was not provided
+            # The first positional parameter is the backup location 
+            # (absolute directory path, or command to pipe backup to)
+
+            # so, we provide directory completion if --dest-vm was not provided
             __run_filedir
             return 0
         fi
@@ -2428,8 +2592,7 @@ function _qvm_backup() {
 function _qvm_backup_restore() {
 
     local -r flags_require_one='--exclude -x --dest-vm -d --passphrase-file -p --compress-filter -Z'
-    local -r flags_require_zero='--verify-only --skip-broken --ignore-missing --skip-conflicting --rename-conflicting --skip-dom0-home
-    --ignore-username-mismatch --ignore-size-limit --paranoid-mode --plan-b --location-is-service --auto-close'
+    local -r flags_require_zero='--verify-only --skip-broken --ignore-missing --skip-conflicting --rename-conflicting --skip-dom0-home --ignore-username-mismatch --ignore-size-limit --paranoid-mode --plan-b --location-is-service --auto-close'
     local -r backup_compression_filters='gzip bzip2 xz'
 
     __init_qubes_completion "${flags_require_one}" || return 0
@@ -2485,9 +2648,10 @@ function _qvm_backup_restore() {
         fi
 
     elif (( QB_alone_args_count > 0 )); then
-        # every other argument is meant to be a qube
-        # TODO: not clear if this completion should be provided here, because it shows existing qubes, not ones inside the backup
-        __complete_qubes_list 'all'
+        # Every other argument is meant to be a qube inside the backup
+        # No completion should be provided here, because we do not know the qubes inside the backup
+        # And providing existing in the system does not seem right
+        #__complete_qubes_list 'all'
         return 0
     fi
 }
@@ -2503,7 +2667,7 @@ function _qvm_sync_appmenus() {
         return 0
     fi
 
-    local -r flags='--force-root --force-rpc --regenerate-only'
+    local -r flags='--force-rpc --regenerate-only'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list_without_dom0 'all'
@@ -2513,20 +2677,23 @@ function _qvm_sync_appmenus() {
 
 
 function _qvm_appmenus() {
-
-    __init_qubes_completion '--set-whitelist --set-default-whitelist --get-default-whitelist --source --file-field --template' || return 0
+    
+    # NOTE: R4.2 has experimental and unstable feature that may be changed.
+    # TODO: Check that it was not changed someday in the future
+    # --get-available [EXPERIMENTAL] [REQUIRES --i-understand-format-is-unstable]
+    # List all available applications for the VM.  The current format is UNSTABLE.  The applications are
+    # listed as hyphen-separated pairs consisting of file name and application name.
+    
+    # NOTE: `--template` is not mentioned in man, but is in --help output
+    __init_qubes_completion '--set-whitelist --set-default-whitelist --source --file-field --template' || return 0
 
     case "${QB_prev_flag}" in
         --set-whitelist)
-            # TODO
+            __run_filedir
             return 0
             ;;
         --set-default-whitelist)
-            # TODO
-            return 0
-            ;;
-        --get-default-whitelist)
-            # TODO
+            __run_filedir
             return 0
             ;;
         --source)
@@ -2539,7 +2706,7 @@ function _qvm_appmenus() {
             return 0
             ;;
         --template)
-            # TODO
+            __complete_qubes_list 'all' 'TemplateVM'
             return 0
             ;;
         ?*)
@@ -2548,8 +2715,7 @@ function _qvm_appmenus() {
             ;;
     esac
 
-
-    local -r flags='--force-root --init --create --remove --update --get-available --get-whitelist --set-whitelist --set-default-whitelist --get-default-whitelist --source --force --i-understand-format-is-unstable --file-field --template --all'
+    local -r flags='--init --create --remove --update --get-available --get-whitelist --set-whitelist --set-default-whitelist --get-default-whitelist --source --force --i-understand-format-is-unstable --file-field --template --all'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list 'all'
@@ -2562,9 +2728,9 @@ function _qvm_copy_to_vm() {
 
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
-
-    local -r flags='--without-progress'
-    __complete_all_starting_flags_if_needed "${flags}" && return 0
+    
+    # NOTE: `man qvm-move` mistakenly says that `qvm-move-to-vm` supports flag
+    # --without-progress while it actually does not, I checked the command code in `dom0`
 
     if (( QB_alone_args_count == 0 )); then
         __complete_qubes_list_without_dom0 'all'
@@ -2627,7 +2793,7 @@ function _qvm_start_daemon() {
     esac
 
     # cSpell:disable-next-line
-    local -r flags='--all --exclude --watch --force-stubdomain --pidfile --notify-monitor-layout --kde --force'
+    local -r flags='--all --exclude --debug -d --watch --kde --force --force-stubdomain --pidfile --notify-monitor-layout'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     __complete_qubes_list 'all' # TODO: we can do better?
@@ -2702,7 +2868,7 @@ function _qvm_run() {
             esac
         fi
 
-        # not completing COMMAND nor ARGS (nothing else is not allowed after --dispvm)
+        # not completing COMMAND nor ARGS (nothing else is not allowed after --all)
         return 0
 
     elif __was_flag_used '--dispvm'; then
@@ -2793,7 +2959,7 @@ function _qvm_firewall() {
 
         __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-        # limit completion  if --raw was used
+        # limit completion if --raw was used
         if __was_flag_used '--raw'; then
             # The use case with only list being allowed (case 3 in man)
             __complete_string 'list'
@@ -2913,8 +3079,9 @@ function _qvm_service() {
         __was_flag_used '--list' && return 0
         __was_flag_used '-l' && return 0
 
+        # List of services from manual
         # cSpell:disable-next-line
-        __complete_string 'qubes-firewall qubes-network qubes-update-check cups crond network-manager clocksync qubes-updates-proxy updates-proxy-setup disable-default-route disable-dns-server lightdm guivm guivm-gui-agent guivm-vnc'
+        __complete_string 'meminfo-writer qubes-firewall qubes-network qubes-update-check cups crond network-manager clocksync qubes-updates-proxy updates-proxy-setup disable-default-route disable-dns-server lightdm software-rendering guivm guivm-gui-agent guivm-vnc tracker evolution-data-server usb-reset-on-attach '
         return 0
     fi
 
@@ -2938,11 +3105,10 @@ function _qvm_service() {
 
 function _qubesctl() {
 
-    # TODO: NOTE: R4.1 has version that lacks several latest flags,
-    # so this has to be updated for R4.2 when it is ready
-
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # So, we have to do things manually
+    
+    # NOTE: man qubesctl is missing `--standalones` option, but --help shows it
 
     __init_qubes_completion '--max-concurrency --targets' || return 0
 
@@ -2963,7 +3129,7 @@ function _qubesctl() {
                 __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
 
                 # NOTE: we save the original QB_real_cur value and return it back, should work even without it
-                local saved_QB_real_cur="${QB_real_cur}"     # save original QB_real_cur just in case
+                local -r saved_QB_real_cur="${QB_real_cur}"  # save original QB_real_cur just in case
                 #
                     # We have to manually set QB_real_cur, because comma is non-standard separator
                     QB_real_cur="${last_qube_name_typing}"
@@ -3003,7 +3169,7 @@ function _qubesctl() {
         fi
     else
 
-        # TODO: Depending on previous salt state suggestions can be provided
+        # NOTE: Depending on previous salt state suggestions can be provided
         # Unfortunately the /srv/salt is only readable for the root user.
         # Therefore, completion based on its file structure could be provided but it would
         # only work for the root user or if the user had changed permissions for
@@ -3015,16 +3181,20 @@ function _qubesctl() {
 
 function _qubesd_query() {
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # So, we have to do things manually
 
-    __init_qubes_completion '--connect -c' || return 0
+    __init_qubes_completion '--connect -c --max-bytes' || return 0
 
     if (( QB_alone_args_count == 0 )); then
 
         case "${QB_prev_flag}" in
             --connect | -c)
                 __run_filedir
+                return 0
+                ;;
+            --max-bytes)
+                # Maximum number of bytes to read from stdin
                 return 0
                 ;;
             ?*)
@@ -3034,7 +3204,7 @@ function _qubesd_query() {
         esac
 
         if __need_flags ; then
-            __complete_string '--help -h --connect -c --empty -e --fail'
+            __complete_string '--help -h --connect -c --empty -e --fail --single-line --max-bytes --null'
             return 0
         fi
 
@@ -3052,7 +3222,7 @@ function _qubesd_query() {
         return 0
     fi
 
-    # NOTE: we can provide more, but documentation is awful, so no source of info
+    # NOTE: we can provide more, but documentation is not good, so no source of info
     return 0
 }
 
@@ -3062,14 +3232,14 @@ function _qubes_hcl_report() {
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man qubes-hcl-report`
     # So, we have to do things manually
 
     if (( QB_alone_args_count == 0 )); then
 
         if __need_flags ; then
-            __complete_string '--help -h --support -s --yaml -y'
+            __complete_string '--help -h --support -s --yaml-only -y'
             return 0
         fi
 
@@ -3086,7 +3256,7 @@ function _qubes_bug_report() {
 
     __init_qubes_completion '--dest-vm -d' || return 0
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man qubes-bug-report`
     # So, we have to do things manually
 
@@ -3122,7 +3292,7 @@ function _qvm_console_dispvm() {
     __init_qubes_completion '' || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man qvm-console-dispvm`
 
     # So, we have to do things manually
@@ -3130,7 +3300,7 @@ function _qvm_console_dispvm() {
     if (( QB_alone_args_count == 0 )); then
 
         if __need_flags ; then
-            __complete_string '--autostart'
+            __complete_string '--autostart -h --help'
             return 0
         fi
 
@@ -3148,7 +3318,7 @@ function _qvm_get_image() {
     __init_qubes_completion '' || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man qvm-get-image`
 
     # So, we have to do things manually
@@ -3189,7 +3359,7 @@ function _qvm_get_tinted_image() {
     __init_qubes_completion '' || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man qvm-get-image`
 
     # So, we have to do things manually
@@ -3278,6 +3448,7 @@ function _qubes_guid() {
             return 0
             ;;
         --trayicon-mode)
+            # NOTE: currently does not support additional modifiers, like tint+saturation50 and etc
             __complete_string 'bg border1 border2 tint'
             return 0
             ;;
@@ -3296,7 +3467,7 @@ function _qubes_guid() {
     esac
 
     # cSpell:disable-next-line
-    local -r flags='--config -C --domid -d --target-domid -t --name -N --color -c --label -l --icon -i --kill-on-connect -K --prop -p --trayicon-mode --screensaver-name --override-redirect --qrexec-for-clipboard -Q --background -n --foreground -f --invisible -I --title-name -T'
+    local -r flags='--config -C --domid -d --target-domid -t --name -N --color -c --label -l --icon -i --qrexec-for-clipboard -Q --background -n --foreground -f --invisible -I --kill-on-connect -K --prop -p --title-name -T --trayicon-mode --screensaver-name --override-redirect'
     __complete_all_flags_if_needed "${flags}" && return 0
 
     return 0
@@ -3308,7 +3479,7 @@ function _qubes_policy() {
     __init_qubes_completion '' || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-    # NOTE: this command supports no --quiet and --verbose args.
+    # NOTE: This command does not support --quiet and --verbose args.
     # It also has no `man`
 
     # So, we have to do things manually
@@ -3423,10 +3594,14 @@ function _qubes_input_trigger() {
             ;;
         --event)
             # NOTE: probably only event* file names should be allowed but I am not sure
-            local -r event_files=("/dev/input/event"*)
+            local event_files=()
+            readarray -d '' event_files < <(find '/dev/input' -maxdepth 1 -type c -name 'event*' -print0)
+            readonly event_files
+            
             if (( "${#event_files[@]}" > 0 )); then
                 __complete_string "${event_files[*]##*/}"
             fi
+            
             return 0
             ;;
         ?*)
@@ -3439,8 +3614,6 @@ function _qubes_input_trigger() {
     local -r flags='-h --help --all --action --event --dom0'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
-    __complete_qubes_list 'all'
-
     return 0
 }
 
@@ -3450,15 +3623,15 @@ function _qubes_prefs() {
     __init_qubes_completion '' || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
+    # cSpell:disable
     local -r sys_properties_bool='check_updates_vm'
-    # cSpell:disable-next-line
     local -r sys_properties_qube='clockvm default_audiovm default_dispvm default_guivm default_netvm default_template management_dispvm updatevm'
     # TODO: add completion of pools?
     local -r sys_properties_pools='default_pool default_pool_kernel default_pool_private default_pool_root default_pool_volatile'
     local -r sys_properties_string="${sys_properties_pools} default_kernel default_qrexec_timeout default_shutdown_timeout stats_interval"
     local -r sys_properties_all="${sys_properties_bool} ${sys_properties_qube} ${sys_properties_string}"
-
     local -r sys_properties_values_generic_bool='True False'
+    # cSpell:enable
 
     # NOTE: --get --set -g -s are deprecated and ignored
     local -r flags='--force-root --help-properties --hide-default'
@@ -3476,7 +3649,8 @@ function _qubes_prefs() {
 
     if (( QB_alone_args_count == 1 )); then
 
-        # default is always a valid option for value
+        # --default is always a valid option for value
+        # We ignore -D option as --default is a better options and means the same
         __complete_string '--default'
 
         # we have a property that defines type
@@ -3651,7 +3825,7 @@ function __qubes_dom0_update_remove_action_from_compline() {
                         cursor_is_after_skipped=1;
                     fi
 
-                    (( words_to_skip = 0 ))
+                    (( words_to_skip == 0 ))
                     (( words_skipped++ ))
                     continue;
                 fi
@@ -3769,10 +3943,12 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
 
 function __qubes_dom0_update_run_dnf_completion() {
 
-    # NOTE: We can just use '_dnf' function as we know it completes dnf
+    # NOTE: We can just use '_dnf' function, as we know it completes dnf
     # but this approach with search of this function is more reliable,
     # prevents things from breaking in case _dnf is renamed or something.
     # It also is more flexible as it allows user to use custom dnf completion.
+    # Update: as of Fedora 42, the function is named _do_dnf5_completion().
+    # Luckily, we do not care and do not rely on it.
 
     local -r dnf_cmd='dnf'
 
@@ -3831,67 +4007,59 @@ function __qubes_dom0_update_run_dnf_completion() {
 function _qubes_vm_update() {
 
     # NOTE: this command does not support --verbose arg
-    __init_qubes_completion '--max-concurrency --update-if-stale --skip --targets --log' || return 0
+    __init_qubes_completion '--max-concurrency -x --update-if-stale --skip --targets --log' || return 0
 
-    if (( QB_alone_args_count == 0 )); then
+    if (( QB_alone_args_count > 0 )); then
+        # too many standalone args, completion should not work
+        return;
+    fi
 
-        # all options should be only before first standalone argument
-        case "${QB_prev_flag}" in
-            --max-concurrency | --update-if-stale)
-                # Number here, no completion
-                return 0
-                ;;
-            --targets | --skip)
-                # complete comma separated list of qubes
+    case "${QB_prev_flag}" in
+        -x | --max-concurrency | --update-if-stale)
+            # Number here, no completion
+            return 0
+            ;;
+        --targets | --skip)
+            # complete comma separated list of qubes
 
-                local last_qube_name_typing="${QB_cur##*,}"
-                last_qube_name_typing="$( __strip_quotes_on_left "${last_qube_name_typing}" )"
-                readonly last_qube_name_typing
-                __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
+            local last_qube_name_typing="${QB_cur##*,}"
+            last_qube_name_typing="$( __strip_quotes_on_left "${last_qube_name_typing}" )"
+            readonly last_qube_name_typing
+            __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
 
-                # NOTE: we save the original QB_real_cur value and return it back, should work even without it
-                local saved_QB_real_cur="${QB_real_cur}"     # save original QB_real_cur just in case
-                #
-                    # We have to manually set QB_real_cur, because comma is non-standard separator
-                    QB_real_cur="${last_qube_name_typing}"
-                    __complete_qubes_list 'all'
-                #
-                QB_real_cur="${saved_QB_real_cur}"           # return the original value of QB_real_cur back
+            # NOTE: we save the original QB_real_cur value and return it back, should work even without it
+            local -r saved_QB_real_cur="${QB_real_cur}"  # save original QB_real_cur just in case
+            #
+                # We have to manually set QB_real_cur, because comma is non-standard separator
+                QB_real_cur="${last_qube_name_typing}"
+                __complete_qubes_list 'all'
+            #
+            QB_real_cur="${saved_QB_real_cur}"           # return the original value of QB_real_cur back
 
-                # Nospace because it is comma separated list of qubes
-                compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
+            # Nospace because it is comma separated list of qubes
+            compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
 
-                return 0
-                ;;
-            --log)
-
-                # cSpell:disable-next-line
-                local -r log_types='DEBUG INFO WARNING ERROR CRITICAL'
-
-                __complete_string "${log_types}"
-                return 0
-                ;;
-            ?*)
-                # unknown prev flag expects sub-argument
-                return 0
-                ;;
-        esac
-
-        if __need_flags ; then
+            return 0
+            ;;
+        --log)
 
             # cSpell:disable-next-line
-            local -r flags='-h --help --max-concurrency --restart --no-cleanup --targets --all --update-if-stale --skip --templates --standalones --app --dry-run --log --no-refresh --force-upgrade --force-update --leave-obsolete --show-output --quiet --no-progress'
+            local -r log_types='DEBUG INFO WARNING ERROR CRITICAL'
 
-            __complete_string "${flags}"
+            __complete_string "${log_types}"
             return 0
-        else
+            ;;
+        ?*)
+            # unknown prev flag expects sub-argument
+            return 0
+            ;;
+    esac
+    
+    # cSpell:disable-next-line
+    local -r flags='--max-concurrency -x --dry-run --signal-no-updates --apply-to-sys --restart -r --apply-to-all -R --no-apply --force-update --update-if-stale --update-if-available --skip --targets --templates -T --standalones -S --apps -A --all --log --no-refresh --force-upgrade -f --no-cleanup --leave-obsolete --show-output --no-progress'
+    __complete_all_starting_flags_if_needed "${flags}" && return 0
 
-            return 0;
-        fi
-    else
-
-        return 0;
-    fi
+    return 0;
 }
 
 

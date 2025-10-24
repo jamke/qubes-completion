@@ -318,6 +318,10 @@ function tests_generator_main() {
     source "${script_dir}/tests_generator_helper.sh"
     tests_generator_init
     tests_common_setup
+    
+    # Example for generation a single command basic test:
+    #tests_create_all_basic_tests_and_save 'qvm-service'
+    #return
 
 
     # manual full tests
@@ -375,6 +379,8 @@ function tests_generator_main() {
     tests_create_all_basic_tests_and_save 'qubesd-query'
     tests_create_all_basic_tests_and_save 'qvm-backup'
     tests_create_all_basic_tests_and_save 'qvm-backup-restore'
+    
+    tests_create_all_basic_tests_and_save 'qubes-vm-update'
     
     
     # dnf provides too big output with a full list of packages that are also env-dependent

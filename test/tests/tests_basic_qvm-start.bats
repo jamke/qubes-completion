@@ -68,7 +68,7 @@ function test_wrapper() {
 }
 
 @test "Test 010. qvm-start: qvm-start running " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-start running '
 }
 
@@ -88,7 +88,7 @@ function test_wrapper() {
 }
 
 @test "Test 014. qvm-start: qvm-start \"running\" " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-start "running" '
 }
 
@@ -108,7 +108,7 @@ function test_wrapper() {
 }
 
 @test "Test 018. qvm-start: qvm-start 'running' " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-start '\''running'\'' '
 }
 
@@ -118,7 +118,7 @@ function test_wrapper() {
 }
 
 @test "Test 020. qvm-start: qvm-start nonexistent " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-start nonexistent '
 }
 
@@ -133,7 +133,7 @@ function test_wrapper() {
 }
 
 @test "Test 023. qvm-start: qvm-start nonexistent -- " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="halted" [1]="standalone1" [2]="template1" [3]="work")
     test_wrapper 'qvm-start nonexistent -- '
 }
 

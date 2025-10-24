@@ -23,12 +23,12 @@ function test_wrapper() {
 }
 
 @test "Test 001. qvm-console-dispvm: qvm-console-dispvm -" {
-    EXPECTED_COMPREPLY=([0]="--autostart")
+    EXPECTED_COMPREPLY=([0]="--autostart" [1]="-h" [2]="--help")
     test_wrapper 'qvm-console-dispvm -'
 }
 
 @test "Test 002. qvm-console-dispvm: qvm-console-dispvm --" {
-    EXPECTED_COMPREPLY=([0]="--autostart")
+    EXPECTED_COMPREPLY=([0]="--autostart" [1]="--help")
     test_wrapper 'qvm-console-dispvm --'
 }
 
@@ -43,12 +43,12 @@ function test_wrapper() {
 }
 
 @test "Test 005. qvm-console-dispvm: qvm-console-dispvm -h" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="-h")
     test_wrapper 'qvm-console-dispvm -h'
 }
 
 @test "Test 006. qvm-console-dispvm: qvm-console-dispvm --h" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--help")
     test_wrapper 'qvm-console-dispvm --h'
 }
 
@@ -163,12 +163,12 @@ function test_wrapper() {
 }
 
 @test "Test 029. qvm-console-dispvm: qvm-console-dispvm --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--autostart")
+    EXPECTED_COMPREPLY=([0]="--autostart" [1]="-h" [2]="--help")
     test_wrapper 'qvm-console-dispvm --something_unknown -'
 }
 
 @test "Test 030. qvm-console-dispvm: qvm-console-dispvm --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--autostart")
+    EXPECTED_COMPREPLY=([0]="--autostart" [1]="--help")
     test_wrapper 'qvm-console-dispvm --something_unknown --'
 }
 
@@ -178,12 +178,12 @@ function test_wrapper() {
 }
 
 @test "Test 032. qvm-console-dispvm: qvm-console-dispvm --something_unknown -h" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="-h")
     test_wrapper 'qvm-console-dispvm --something_unknown -h'
 }
 
 @test "Test 033. qvm-console-dispvm: qvm-console-dispvm --something_unknown --h" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--help")
     test_wrapper 'qvm-console-dispvm --something_unknown --h'
 }
 

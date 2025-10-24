@@ -23,12 +23,12 @@ function test_wrapper() {
 }
 
 @test "Test 001. qvm-move-to-vm: qvm-move-to-vm -" {
-    EXPECTED_COMPREPLY=([0]="--without-progress" [1]="--verbose" [2]="-v" [3]="--quiet" [4]="-q" [5]="--help" [6]="-h")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-move-to-vm -'
 }
 
 @test "Test 002. qvm-move-to-vm: qvm-move-to-vm --" {
-    EXPECTED_COMPREPLY=([0]="--without-progress" [1]="--verbose" [2]="--quiet" [3]="--help")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-move-to-vm --'
 }
 
@@ -43,12 +43,12 @@ function test_wrapper() {
 }
 
 @test "Test 005. qvm-move-to-vm: qvm-move-to-vm -h" {
-    EXPECTED_COMPREPLY=([0]="-h")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-move-to-vm -h'
 }
 
 @test "Test 006. qvm-move-to-vm: qvm-move-to-vm --h" {
-    EXPECTED_COMPREPLY=([0]="--help")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-move-to-vm --h'
 }
 
@@ -68,7 +68,7 @@ function test_wrapper() {
 }
 
 @test "Test 010. qvm-move-to-vm: qvm-move-to-vm running " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-move-to-vm running '
 }
 
@@ -88,7 +88,7 @@ function test_wrapper() {
 }
 
 @test "Test 014. qvm-move-to-vm: qvm-move-to-vm \"running\" " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-move-to-vm "running" '
 }
 
@@ -108,7 +108,7 @@ function test_wrapper() {
 }
 
 @test "Test 018. qvm-move-to-vm: qvm-move-to-vm 'running' " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-move-to-vm '\''running'\'' '
 }
 
@@ -118,7 +118,7 @@ function test_wrapper() {
 }
 
 @test "Test 020. qvm-move-to-vm: qvm-move-to-vm nonexistent " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-move-to-vm nonexistent '
 }
 
@@ -133,7 +133,7 @@ function test_wrapper() {
 }
 
 @test "Test 023. qvm-move-to-vm: qvm-move-to-vm nonexistent -- " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-move-to-vm nonexistent -- '
 }
 
@@ -163,12 +163,12 @@ function test_wrapper() {
 }
 
 @test "Test 029. qvm-move-to-vm: qvm-move-to-vm --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--without-progress" [1]="--verbose" [2]="-v" [3]="--quiet" [4]="-q" [5]="--help" [6]="-h")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-move-to-vm --something_unknown -'
 }
 
 @test "Test 030. qvm-move-to-vm: qvm-move-to-vm --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--without-progress" [1]="--verbose" [2]="--quiet" [3]="--help")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-move-to-vm --something_unknown --'
 }
 
@@ -178,12 +178,12 @@ function test_wrapper() {
 }
 
 @test "Test 032. qvm-move-to-vm: qvm-move-to-vm --something_unknown -h" {
-    EXPECTED_COMPREPLY=([0]="-h")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-move-to-vm --something_unknown -h'
 }
 
 @test "Test 033. qvm-move-to-vm: qvm-move-to-vm --something_unknown --h" {
-    EXPECTED_COMPREPLY=([0]="--help")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-move-to-vm --something_unknown --h'
 }
 

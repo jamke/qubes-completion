@@ -23,12 +23,12 @@ function test_wrapper() {
 }
 
 @test "Test 001. qvm-sync-appmenus: qvm-sync-appmenus -" {
-    EXPECTED_COMPREPLY=([0]="--force-root" [1]="--force-rpc" [2]="--regenerate-only" [3]="--verbose" [4]="-v" [5]="--quiet" [6]="-q" [7]="--help" [8]="-h")
+    EXPECTED_COMPREPLY=([0]="--force-rpc" [1]="--regenerate-only" [2]="--verbose" [3]="-v" [4]="--quiet" [5]="-q" [6]="--help" [7]="-h")
     test_wrapper 'qvm-sync-appmenus -'
 }
 
 @test "Test 002. qvm-sync-appmenus: qvm-sync-appmenus --" {
-    EXPECTED_COMPREPLY=([0]="--force-root" [1]="--force-rpc" [2]="--regenerate-only" [3]="--verbose" [4]="--quiet" [5]="--help")
+    EXPECTED_COMPREPLY=([0]="--force-rpc" [1]="--regenerate-only" [2]="--verbose" [3]="--quiet" [4]="--help")
     test_wrapper 'qvm-sync-appmenus --'
 }
 
@@ -163,12 +163,12 @@ function test_wrapper() {
 }
 
 @test "Test 029. qvm-sync-appmenus: qvm-sync-appmenus --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--force-root" [1]="--force-rpc" [2]="--regenerate-only" [3]="--verbose" [4]="-v" [5]="--quiet" [6]="-q" [7]="--help" [8]="-h")
+    EXPECTED_COMPREPLY=([0]="--force-rpc" [1]="--regenerate-only" [2]="--verbose" [3]="-v" [4]="--quiet" [5]="-q" [6]="--help" [7]="-h")
     test_wrapper 'qvm-sync-appmenus --something_unknown -'
 }
 
 @test "Test 030. qvm-sync-appmenus: qvm-sync-appmenus --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--force-root" [1]="--force-rpc" [2]="--regenerate-only" [3]="--verbose" [4]="--quiet" [5]="--help")
+    EXPECTED_COMPREPLY=([0]="--force-rpc" [1]="--regenerate-only" [2]="--verbose" [3]="--quiet" [4]="--help")
     test_wrapper 'qvm-sync-appmenus --something_unknown --'
 }
 

@@ -18,7 +18,7 @@ function test_wrapper() {
 }
 
 @test "Test 000. qvm-backup-restore: qvm-backup-restore " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-backup-restore '
 }
 
@@ -33,7 +33,7 @@ function test_wrapper() {
 }
 
 @test "Test 003. qvm-backup-restore: qvm-backup-restore -- " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-backup-restore -- '
 }
 
@@ -68,7 +68,7 @@ function test_wrapper() {
 }
 
 @test "Test 010. qvm-backup-restore: qvm-backup-restore running " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="halted" [3]="other" [4]="paused" [5]="personal" [6]="runname2" [7]="running" [8]="standalone1" [9]="standalone2" [10]="standalone3" [11]="standalone4" [12]="sys-usb" [13]="template1" [14]="template2" [15]="template3" [16]="template4" [17]="transient" [18]="vault" [19]="work")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-backup-restore running '
 }
 
@@ -88,7 +88,7 @@ function test_wrapper() {
 }
 
 @test "Test 014. qvm-backup-restore: qvm-backup-restore \"running\" " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="halted" [3]="other" [4]="paused" [5]="personal" [6]="runname2" [7]="running" [8]="standalone1" [9]="standalone2" [10]="standalone3" [11]="standalone4" [12]="sys-usb" [13]="template1" [14]="template2" [15]="template3" [16]="template4" [17]="transient" [18]="vault" [19]="work")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-backup-restore "running" '
 }
 
@@ -108,7 +108,7 @@ function test_wrapper() {
 }
 
 @test "Test 018. qvm-backup-restore: qvm-backup-restore 'running' " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="halted" [3]="other" [4]="paused" [5]="personal" [6]="runname2" [7]="running" [8]="standalone1" [9]="standalone2" [10]="standalone3" [11]="standalone4" [12]="sys-usb" [13]="template1" [14]="template2" [15]="template3" [16]="template4" [17]="transient" [18]="vault" [19]="work")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-backup-restore '\''running'\'' '
 }
 
@@ -118,7 +118,7 @@ function test_wrapper() {
 }
 
 @test "Test 020. qvm-backup-restore: qvm-backup-restore nonexistent " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="halted" [3]="other" [4]="paused" [5]="personal" [6]="runname2" [7]="running" [8]="standalone1" [9]="standalone2" [10]="standalone3" [11]="standalone4" [12]="sys-usb" [13]="template1" [14]="template2" [15]="template3" [16]="template4" [17]="transient" [18]="vault" [19]="work")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-backup-restore nonexistent '
 }
 
@@ -133,7 +133,7 @@ function test_wrapper() {
 }
 
 @test "Test 023. qvm-backup-restore: qvm-backup-restore nonexistent -- " {
-    EXPECTED_COMPREPLY=([0]="disp" [1]="dom0" [2]="halted" [3]="other" [4]="paused" [5]="personal" [6]="runname2" [7]="running" [8]="standalone1" [9]="standalone2" [10]="standalone3" [11]="standalone4" [12]="sys-usb" [13]="template1" [14]="template2" [15]="template3" [16]="template4" [17]="transient" [18]="vault" [19]="work")
+    EXPECTED_COMPREPLY=()
     test_wrapper 'qvm-backup-restore nonexistent -- '
 }
 
@@ -153,7 +153,7 @@ function test_wrapper() {
 }
 
 @test "Test 027. qvm-backup-restore: qvm-backup-restore --something_unknown " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-backup-restore --something_unknown '
 }
 
@@ -173,7 +173,7 @@ function test_wrapper() {
 }
 
 @test "Test 031. qvm-backup-restore: qvm-backup-restore --something_unknown -- " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-backup-restore --something_unknown -- '
 }
 

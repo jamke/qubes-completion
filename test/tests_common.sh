@@ -226,8 +226,19 @@ function test_command() {
 
     # Compare size
     if (( "${#COMPREPLY[@]}" != "${#EXPECTED_COMPREPLY[@]}" )); then
-        echo "Wrong COMPREPLY size: expected '${#EXPECTED_COMPREPLY[@]}', got '${#COMPREPLY[@]}'"
-        __debug_msg "Wrong COMPREPLY size: expected '${#EXPECTED_COMPREPLY[@]}', got '${#COMPREPLY[@]}'"
+        __debug_msg_and_echo "Wrong COMPREPLY size: expected '${#EXPECTED_COMPREPLY[@]}', got '${#COMPREPLY[@]}'"
+        __debug_msg_and_echo "===================================="
+        __debug_msg_and_echo "Expected: "
+        local i1
+        for (( i1=0; i1 < "${#EXPECTED_COMPREPLY[@]}"; i1++ )); do
+            __debug_msg_and_echo "[${i1}]='${EXPECTED_COMPREPLY[${i1}]}'"
+        done
+        __debug_msg_and_echo "===================================="
+        __debug_msg_and_echo "Got: "
+        local i2
+        for (( i2=0; i2 < "${#COMPREPLY[@]}"; i2++ )); do
+            __debug_msg_and_echo "[${i2}]='${COMPREPLY[${i2}]}'"
+        done        
         __debug_msg "===================================="
         __debug_msg "ERROR: TEST FAILED"
         __debug_msg "===================================="
@@ -238,8 +249,7 @@ function test_command() {
     local i
     for (( i=0; i < "${#COMPREPLY[@]}"; i++ )); do
         if [[ "${COMPREPLY[${i}]}" != "${EXPECTED_COMPREPLY[${i}]}" ]]; then
-            echo "Wrong COMPREPLY value: expected '${EXPECTED_COMPREPLY[${i}]}', got '${COMPREPLY[${i}]}'"
-            __debug_msg "Wrong COMPREPLY value: expected '${EXPECTED_COMPREPLY[${i}]}', got '${COMPREPLY[${i}]}'"
+            __debug_msg_and_echo "Wrong COMPREPLY value: expected '${EXPECTED_COMPREPLY[${i}]}', got '${COMPREPLY[${i}]}'"
             __debug_msg "===================================="
             __debug_msg "ERROR: TEST FAILED"
             __debug_msg "===================================="

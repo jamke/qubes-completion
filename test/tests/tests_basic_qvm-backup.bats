@@ -18,22 +18,22 @@ function test_wrapper() {
 }
 
 @test "Test 000. qvm-backup: qvm-backup " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-backup '
 }
 
 @test "Test 001. qvm-backup: qvm-backup -" {
-    EXPECTED_COMPREPLY=([0]="--yes" [1]="-y" [2]="--encrypt" [3]="-e" [4]="--compress" [5]="-z" [6]="--no-compress" [7]="--profile" [8]="--save-profile" [9]="--exclude" [10]="-x" [11]="--dest-vm" [12]="-d" [13]="--passphrase-file" [14]="-p" [15]="--compress-filter" [16]="-Z" [17]="--verbose" [18]="-v" [19]="--quiet" [20]="-q" [21]="--help" [22]="-h")
+    EXPECTED_COMPREPLY=([0]="--encrypt" [1]="-e" [2]="--compress" [3]="-z" [4]="--no-compress" [5]="--yes" [6]="-y" [7]="--profile" [8]="--save-profile" [9]="--exclude" [10]="-x" [11]="--dest-vm" [12]="-d" [13]="--passphrase-file" [14]="-p" [15]="--compress-filter" [16]="-Z" [17]="--verbose" [18]="-v" [19]="--quiet" [20]="-q" [21]="--help" [22]="-h")
     test_wrapper 'qvm-backup -'
 }
 
 @test "Test 002. qvm-backup: qvm-backup --" {
-    EXPECTED_COMPREPLY=([0]="--yes" [1]="--encrypt" [2]="--compress" [3]="--no-compress" [4]="--profile" [5]="--save-profile" [6]="--exclude" [7]="--dest-vm" [8]="--passphrase-file" [9]="--compress-filter" [10]="--verbose" [11]="--quiet" [12]="--help")
+    EXPECTED_COMPREPLY=([0]="--encrypt" [1]="--compress" [2]="--no-compress" [3]="--yes" [4]="--profile" [5]="--save-profile" [6]="--exclude" [7]="--dest-vm" [8]="--passphrase-file" [9]="--compress-filter" [10]="--verbose" [11]="--quiet" [12]="--help")
     test_wrapper 'qvm-backup --'
 }
 
 @test "Test 003. qvm-backup: qvm-backup -- " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-backup -- '
 }
 
@@ -153,7 +153,7 @@ function test_wrapper() {
 }
 
 @test "Test 027. qvm-backup: qvm-backup --something_unknown " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-backup --something_unknown '
 }
 
@@ -163,17 +163,17 @@ function test_wrapper() {
 }
 
 @test "Test 029. qvm-backup: qvm-backup --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--yes" [1]="-y" [2]="--encrypt" [3]="-e" [4]="--compress" [5]="-z" [6]="--no-compress" [7]="--profile" [8]="--save-profile" [9]="--exclude" [10]="-x" [11]="--dest-vm" [12]="-d" [13]="--passphrase-file" [14]="-p" [15]="--compress-filter" [16]="-Z" [17]="--verbose" [18]="-v" [19]="--quiet" [20]="-q" [21]="--help" [22]="-h")
+    EXPECTED_COMPREPLY=([0]="--encrypt" [1]="-e" [2]="--compress" [3]="-z" [4]="--no-compress" [5]="--yes" [6]="-y" [7]="--profile" [8]="--save-profile" [9]="--exclude" [10]="-x" [11]="--dest-vm" [12]="-d" [13]="--passphrase-file" [14]="-p" [15]="--compress-filter" [16]="-Z" [17]="--verbose" [18]="-v" [19]="--quiet" [20]="-q" [21]="--help" [22]="-h")
     test_wrapper 'qvm-backup --something_unknown -'
 }
 
 @test "Test 030. qvm-backup: qvm-backup --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--yes" [1]="--encrypt" [2]="--compress" [3]="--no-compress" [4]="--profile" [5]="--save-profile" [6]="--exclude" [7]="--dest-vm" [8]="--passphrase-file" [9]="--compress-filter" [10]="--verbose" [11]="--quiet" [12]="--help")
+    EXPECTED_COMPREPLY=([0]="--encrypt" [1]="--compress" [2]="--no-compress" [3]="--yes" [4]="--profile" [5]="--save-profile" [6]="--exclude" [7]="--dest-vm" [8]="--passphrase-file" [9]="--compress-filter" [10]="--verbose" [11]="--quiet" [12]="--help")
     test_wrapper 'qvm-backup --something_unknown --'
 }
 
 @test "Test 031. qvm-backup: qvm-backup --something_unknown -- " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="dir1" [1]="dir2" [2]="_dir" [3]="file1" [4]="file2" [5]="file33" [6]="file" [7]="_file" [8]="something")
     test_wrapper 'qvm-backup --something_unknown -- '
 }
 
