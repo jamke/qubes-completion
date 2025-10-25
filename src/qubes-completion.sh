@@ -135,7 +135,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-prepare-vm-kernel'   # R4.2. Tests: Basic  # Features: 100%
     'qubes-app-menu'            # R4.2. Tests: Basic  # Features: 100% # No man, GUI app
     'qubes-policy-lint'         # R4.2. Tests: Basic  # Features: 100% # No man
-    'qubes-policy-editor'       #TODO: Not implemented yet
+    'qubes-policy-editor'       # R4.2. Tests: Basic  # Features: 100% # No man
     
      # Commands that have no --quiet/verbose
     'qubesctl'                  # R4.2. Tests: Basic # Features: #TODOs
@@ -4254,6 +4254,34 @@ function _qubes_policy_lint() {
     
     # file (FILE [FILE ...])
     __run_filedir
+    
+    return 0
+}
+
+
+function _qubes_policy_editor() {
+
+    # NOTE: This command does not support --quiet and --verbose args.
+    # So, we have to do things manually
+    
+    __init_qubes_completion '' || return 0
+
+    if (( QB_alone_args_count == 0 )); then
+    
+        if __need_flags ; then
+            __complete_string '--help -h'
+            return 0
+        fi
+    fi
+    
+    # Do not provide completion for now. It's a file without extension:
+    
+    # [[include/]FILE]
+    # [include/]FILE  set file to be edited.
+    # The '.policy' suffix must not be
+    # included. Will search for an editor by looking at $EDITOR,
+    # $VISUAL if previous entry is unset or 'vi' if previous entry
+    # is also unset. Defaults to the user file.
     
     return 0
 }
