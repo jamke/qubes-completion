@@ -1412,7 +1412,9 @@ function __complete_array() {
     # in this function we should support spaces in completion strings
     local IFS=$'\n'
 
-    local -n arr="${1}"
+    # the passed array can be readonly, so we copy it
+    local -n arr_readonly_ref="${1}"
+    local arr=("${arr_readonly_ref[@]}")
     
     __debug_msg '--------------------------------------------------------'
     __debug_msg '* Called __complete_array()'
@@ -1427,7 +1429,7 @@ function __complete_array() {
 
     local full_comp=()
     
-    local local_QB_real_cur_to_use="${QB_real_cur}"
+    local local_QB_real_cur_to_use="${QB_real_cur}"    
     
     # To preserve escape chars in the arr[] after calling `compgen` 
     # we have to explicitly double them in case it was not quoted
