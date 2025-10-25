@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function __stub_qvm_pool() {
+function __stub_qvm_tags() {
 
     # cSpell:disable
     echo \
@@ -14,4 +14,4 @@ debian'
     # cSpell:enable
 }
 
-__stub_qvm_pool "$@"
+__stub_qvm_tags "$@"
