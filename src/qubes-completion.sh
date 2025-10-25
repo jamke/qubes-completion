@@ -3798,15 +3798,18 @@ function _qubes_dom0_update() {
 
     # Now we can add our flags if we need to
     if (( QB_alone_args_count == 0 )) && ! __is_prev_flag_not_empty && __need_flags ; then
-
-        __complete_string '--help --action= --clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal'
+        
+        # We remove --help, because dnf will provide it and there would be 2 --help otherwise
+        #__complete_string '--help --action= --clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal'
+        __complete_string '--action= --clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal'
 
         # Use for case of '--action='
         if (( "${#COMPREPLY[@]}" == 1 )) && [[ "${COMPREPLY[0]}" == *= ]]; then
             compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
         fi
 
-        # NOTE: new can keep order to separate dnf and qubes arguments better
+        # NOTE: we can keep order to separate dnf and qubes arguments better
+        compopt -o nosort &>/dev/null # to /dev/null because output interferes with running tests
     fi
 
     return 0
@@ -3830,10 +3833,11 @@ function __qubes_dom0_update_remove_action_from_compline() {
     # If we have a '--action=command' substring
     if [[ "${COMP_LINE}" == *"${action_arg_full_substring}"* ]]; then
 
-        # TODO: it as a minor flaw - the substring can be surrounded by
-        # chars that are not from COMP_WORDBREAKS or there can be
-        # multiple occurrences of substring and we will replace only one.
-        # But this scenario is so improbable that currently we neglect it.
+        # TODO: it has a minor flaw:
+        # The substring can be surrounded by some chars that 
+        # are not from COMP_WORDBREAKS or there can be multiple
+        # occurrences of substring and we will replace only one.
+        # But this scenario is improbable, we neglect it.
 
         COMP_LINE="${COMP_LINE/"${action_arg_full_substring}"/}"
 
@@ -3851,9 +3855,11 @@ function __qubes_dom0_update_remove_action_from_compline() {
                 continue; # skip
             fi
 
+            # in case '=' of '--action=command' is a COMP_WORDBREAKS, 
+            # we skip up to 3 words ('--action', '=', 'command')
             if [[ "${COMP_WORDBREAKS}" == *"${action_arg_sep}"* ]]; then
 
-                # we should skip 3 words (max)
+                # we should skip 3 up to words
                 if [[ "${COMP_WORDS[${i}]}" == "${action_arg_name}" ]]; then
 
                     if (( COMP_CWORD >= i )) && (( COMP_CWORD <= i + 2 )); then
@@ -3866,9 +3872,10 @@ function __qubes_dom0_update_remove_action_from_compline() {
                     if (( i < COMP_CWORD )); then
                         cursor_is_after_skipped=1;
                     fi
-
+                    
+                    # skip 2 more words after '--action'
                     (( words_to_skip = 2 ))
-                    (( words_skipped++ ))
+                    (( words_skipped++ )) # +1 for skipping current '--action'
                     continue;
                 fi
             else
@@ -3891,14 +3898,13 @@ function __qubes_dom0_update_remove_action_from_compline() {
                     continue;
                 fi
             fi
-
+            
+            # collect not skipped words:
             new_comp_words+=("${COMP_WORDS[${i}]}")
         done
 
-        new_comp_words+=("${COMP_WORDS[${i}]}")
         COMP_WORDS=("${new_comp_words[@]}")
         unset new_comp_words
-
 
         # Replace the beginning of the line COMP_LINE
         if (( cursor_is_after_skipped == 1 )); then
@@ -4004,8 +4010,8 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
 
 function __qubes_dom0_update_run_dnf_completion() {
 
-    # NOTE: We can just use '_dnf' function, as we know it completes dnf
-    # but this approach with search of this function is more reliable,
+    # NOTE: This approach with search of this function is more reliable,
+    # than using the known function name for dnf (like _dnf), as it
     # prevents things from breaking in case _dnf is renamed or something.
     # It also is more flexible as it allows user to use custom dnf completion.
     # Update: as of Fedora 42, the function is named _do_dnf5_completion().
@@ -4039,6 +4045,8 @@ function __qubes_dom0_update_run_dnf_completion() {
         local func_name="${cspec#*-F[[:blank:]]}"
         func_name="${func_name%%[[:blank:]]*}"
         readonly func_name
+        
+        __debug_msg "func_name = \"${func_name}\""
 
         # Call function with dnf as $1 arg, and last and one before last as $2 and optional $3 (more in `man complete`)
         local -r comp_words_count="${#COMP_WORDS[@]}"
