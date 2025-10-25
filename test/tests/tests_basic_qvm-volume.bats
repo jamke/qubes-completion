@@ -23,12 +23,12 @@ function test_wrapper() {
 }
 
 @test "Test 001. qvm-volume: qvm-volume -" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--verbose" [1]="-v" [2]="--quiet" [3]="-q" [4]="--help" [5]="-h")
     test_wrapper 'qvm-volume -'
 }
 
 @test "Test 002. qvm-volume: qvm-volume --" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--verbose" [1]="--quiet" [2]="--help")
     test_wrapper 'qvm-volume --'
 }
 
@@ -43,12 +43,12 @@ function test_wrapper() {
 }
 
 @test "Test 005. qvm-volume: qvm-volume -h" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="-h")
     test_wrapper 'qvm-volume -h'
 }
 
 @test "Test 006. qvm-volume: qvm-volume --h" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--help")
     test_wrapper 'qvm-volume --h'
 }
 
@@ -158,17 +158,17 @@ function test_wrapper() {
 }
 
 @test "Test 028. qvm-volume: qvm-volume --something_unknown=" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="list" [1]="info" [2]="config" [3]="resize" [4]="revert" [5]="import")
     test_wrapper 'qvm-volume --something_unknown='
 }
 
 @test "Test 029. qvm-volume: qvm-volume --something_unknown -" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--verbose" [1]="-v" [2]="--quiet" [3]="-q" [4]="--help" [5]="-h")
     test_wrapper 'qvm-volume --something_unknown -'
 }
 
 @test "Test 030. qvm-volume: qvm-volume --something_unknown --" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--verbose" [1]="--quiet" [2]="--help")
     test_wrapper 'qvm-volume --something_unknown --'
 }
 
@@ -178,12 +178,12 @@ function test_wrapper() {
 }
 
 @test "Test 032. qvm-volume: qvm-volume --something_unknown -h" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="-h")
     test_wrapper 'qvm-volume --something_unknown -h'
 }
 
 @test "Test 033. qvm-volume: qvm-volume --something_unknown --h" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--help")
     test_wrapper 'qvm-volume --something_unknown --h'
 }
 
