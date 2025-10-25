@@ -320,8 +320,8 @@ function tests_generator_main() {
     tests_common_setup
     
     # Example for generation a single command basic test:
-    #tests_create_all_basic_tests_and_save 'qvm-service'
-    #return
+    # tests_create_all_basic_tests_and_save 'qvm-service'
+    # return
 
 
     # manual full tests
