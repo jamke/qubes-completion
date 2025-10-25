@@ -131,7 +131,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     # New commands
     'qubes-vm-update'           # R4.2. Tests: Basic  # Features: 100%
-    'qubes-fwupgmr'             #TODO: Not implemented yet
+    'qubes-fwupdmgr'            # R4.2. Tests: Never  # Features: 100% # NOTE: Does not run without root even for --help. And has no man.
     'qubes-prepare-vm-kernel'   #TODO: Not implemented yet
     'qubes-app-menu'            #TODO: Not implemented yet
     'qubes-policy-lint'         #TODO: Not implemented yet
@@ -2455,7 +2455,7 @@ function _qvm_volume() {
         __debug_msg "command = \"${command}\""
 
         case "${command}" in
-            list | ls | l)            
+            list | ls | l)
                 if (( QB_alone_args_count == 1 )); then
                     case "${QB_prev_flag}" in
                         -p | --pool)
@@ -4122,6 +4122,51 @@ function _qubes_vm_update() {
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
     return 0;
+}
+
+
+function _qubes_fwupdmgr() {
+
+    # NOTE: This command does not support --quiet and --verbose args.
+    # So, we have to do things manually
+    
+    __init_qubes_completion '--device --url' || return 0
+
+    if (( QB_alone_args_count == 0 )); then
+
+        if __need_flags ; then
+            # I check, it works like that without standalone argument
+            __complete_string '-h --help' 
+            return 0
+        fi
+
+        __complete_string 'get-devices get-updates refresh update update-heads downgrade clean'
+        return 0
+    fi    
+    
+    case "${QB_prev_flag}" in
+        --device)
+            # default value is x230
+            return 0
+            ;;
+        --url)
+            # no completion for url
+            return 0
+            ;;
+        ?*)
+            # unknown prev flag expects sub-argument
+            return 0
+            ;;
+    esac
+    
+    # NOTE: we can check the option (the first standalone arg)
+    # and provide no flags completion. 
+    # But the --help output suggests we should complete flags anyway
+    
+    # NOTE: it does not support --help and -h after standalone arg
+    __complete_string "--whonix --device --url"
+    
+    return 0
 }
 
 
