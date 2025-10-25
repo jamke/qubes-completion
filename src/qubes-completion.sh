@@ -133,7 +133,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-vm-update'           # R4.2. Tests: Basic  # Features: 100%
     'qubes-fwupdmgr'            # R4.2. Tests: Basic  # Features: 100% # NOTE: Does not run without root even for --help. And has no man.
     'qubes-prepare-vm-kernel'   # R4.2. Tests: Basic  # Features: 100%
-    'qubes-app-menu'            # R4.2. Tests: Basic  # Features: 100%
+    'qubes-app-menu'            # R4.2. Tests: Basic  # Features: 100% # No man, GUI app
     'qubes-policy-lint'         #TODO: Not implemented yet
     'qubes-policy-editor'       #TODO: Not implemented yet
     
