@@ -132,7 +132,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     # New commands
     'qubes-vm-update'           # R4.2. Tests: Basic  # Features: 100%
     'qubes-fwupdmgr'            # R4.2. Tests: Basic  # Features: 100% # NOTE: Does not run without root even for --help. And has no man.
-    'qubes-prepare-vm-kernel'   #TODO: Not implemented yet
+    'qubes-prepare-vm-kernel'   # R4.2. Tests: Basic  # Features: 100%
     'qubes-app-menu'            #TODO: Not implemented yet
     'qubes-policy-lint'         #TODO: Not implemented yet
     'qubes-policy-editor'       #TODO: Not implemented yet
@@ -4165,6 +4165,40 @@ function _qubes_fwupdmgr() {
     
     # NOTE: it does not support --help and -h after standalone arg
     __complete_string "--whonix --device --url"
+    
+    return 0
+}
+
+
+function _qubes_prepare_vm_kernel() {
+
+    # NOTE: This command does not support --quiet and --verbose args.
+    # It does not even support --help, but outputs usage on any unknown flag like --help
+    # It is a bash script (at least in R4.2 and before)
+    
+    __init_qubes_completion '' || return 0
+
+    if (( QB_alone_args_count == 0 )); then
+
+        if __need_flags ; then
+            # I check, it works like that without standalone argument
+            __complete_string '--modules-only --include-devel' 
+            return 0
+        fi
+        
+        # We complete kernel-version (the first standalone arg)
+        # Use stub filedir output for debug and running tests
+        if (( QB_DEBUG_MODE != 0 )); then
+            __complete_string "${QB_DEBUG_STUB_RPM_KERNELS_OUTPUT}"
+            return 0
+        else
+            __complete_string "$( rpm --query 'kernel-*' | grep '^kernel-' | sed 's/^kernel-//' | sort -V )"
+        fi
+    fi
+    
+    # NOTE: the second standalone arg is `display-kernel-version`, not completion for it.
+    
+    # Further arguments are not allowed
     
     return 0
 }

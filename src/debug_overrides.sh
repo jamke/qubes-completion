@@ -28,6 +28,8 @@ if (( QB_DEBUG_MODE != 0 )); then
     
     QB_DEBUG_STUB_FILEDIR_OUTPUT='dir1 dir2 _dir file1 file2 file33 file _file something'
     QB_DEBUG_STUB_PROFILES_DIR="${__debug_overrides_script_dir}/../stubs/profiles"
+    QB_DEBUG_STUB_RPM_KERNELS_OUTPUT=$'kernel-6.11.11-1.qubes.fc37.x86_64\nkernel-6.12.20-1.qubes.fc37.x86_64\nkernel-6.12.40-1.qubes.fc37.x86_64'
+
 fi
 
 # ex: filetype=sh
