@@ -4070,6 +4070,13 @@ function __qubes_dom0_update_run_dnf_completion() {
         cspec="${cspec%%[[:blank:]]"${dnf_cmd}"}"
         COMPREPLY=( $( eval "compgen ${cspec} -- '${QB_orig_cur}'" ) )
     fi
+    
+    # fix dnf strange problem (at least on f42) when it returns COMPREPLY with 1 empty element instead of empty COMPREPLY
+    if (( "${#COMPREPLY[@]}" == 1 )); then
+        if [[ "${COMPREPLY[0]}" == '' ]]; then
+            COMPREPLY=()
+        fi
+    fi
 }
 
 
