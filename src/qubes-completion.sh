@@ -99,7 +99,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-prefs'                 # R4.2. Tests: Basic # Features: 100% # but can be better
     'qvm-features'              # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-volume'                # TODO:R4.2. Tests: Basic # Features: #TODO
+    'qvm-volume'                # R4.2. Tests: Basic # Features: 100% # but can be better
 
     'qvm-backup'                # R4.2. Tests: Basic # Features: 100%
     'qvm-backup-restore'        # R4.2. Tests: Basic # Features: 100%
@@ -2438,70 +2438,132 @@ function _qvm_features() {
 
 function _qvm_volume() {
 
-    __init_qubes_completion || return 0
-    __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
+    __init_qubes_completion '-p --pool --exclude --size' || return 0
 
     if (( QB_alone_args_count == 0 )); then
+        # complete basic flags if needed.
+        # NOTE: man is missing such arg order, but --help shows it
+        __complete_all_starting_flags_if_needed '' && return 0
+    
         __complete_string 'list info config resize revert import'
         return 0
     fi
-
+    
     if (( QB_alone_args_count >= 1 )); then
 
         local -r command="${QB_alone_args[0]}"
         __debug_msg "command = \"${command}\""
 
         case "${command}" in
-            list)
-                # TODO
+            list | ls | l)            
+                if (( QB_alone_args_count == 1 )); then
+                    case "${QB_prev_flag}" in
+                        -p | --pool)
+                            __complete_pools_list
+                            return 0
+                            ;;
+                        --exclude)
+                            __complete_qubes_list 'all'
+                            return 0
+                            ;;
+                    esac
+                    # flags are allowed only before the first VMNAME and after `list`
+                    __complete_all_flags_if_needed '-p --pool --full --all --exclude' && return 0
+                fi
+                
+                # Complete qube (many times if needed)
+                __complete_qubes_list 'all'
                 return 0
                 ;;
 
-            info)
-                # TODO
+            info | i)
+                if (( QB_alone_args_count == 1 )); then
+                    # flags are allowed only before the first VMNAME and after `list`
+                    __complete_all_flags_if_needed '' && return 0
+                    
+                    # Complete a single qube (VMNAME)
+                    # Currently complete only VMNAME out of VMNAME:VOLUME
+                    __complete_qubes_list 'all'
+                fi
+                
+                # TODO: We can also complete :VOLUME, and PROPERTY in the future
+                
                 return 0
                 ;;
 
-            config)
-                # TODO
+            config | c | s | set)
+                if (( QB_alone_args_count == 1 )); then
+                    # flags are allowed only before the first VMNAME and after `list`
+                    __complete_all_flags_if_needed '' && return 0
+                    
+                    # Complete a single qube (VMNAME)
+                    # Currently complete only VMNAME out of VMNAME:VOLUME
+                    __complete_qubes_list 'all'
+                fi
+                
+                # TODO: We can also complete :VOLUME, PROPERTY and VALUE in the future
                 return 0
                 ;;
 
             resize)
-                # TODO
+                if (( QB_alone_args_count == 1 )); then
+                    # flags are allowed only before the first VMNAME and after `list`
+                    __complete_all_flags_if_needed '-f --force' && return 0
+                    
+                    # Complete a single qube (VMNAME)
+                    # Currently complete only VMNAME out of VMNAME:VOLUME
+                    __complete_qubes_list 'all'
+                fi
+                
+                # TODO: We can also complete :VOLUME in the future
                 return 0
                 ;;
 
-            revert)
-                # TODO
+            revert | rv | r)
+                if (( QB_alone_args_count == 1 )); then
+                    # flags are allowed only before the first VMNAME and after `list`
+                    __complete_all_flags_if_needed '' && return 0
+                    
+                    # Complete a single qube (VMNAME)
+                    # Currently complete only VMNAME out of VMNAME:VOLUME
+                    __complete_qubes_list 'all'
+                fi
+                
+                # TODO: We can also complete :VOLUME and rev in the future
+                
                 return 0
                 ;;
 
-            import)
-                # TODO
+            # no aliases for import one
+            import) 
+                if (( QB_alone_args_count == 1 )); then
+                    case "${QB_prev_flag}" in
+                        --size)
+                            # No size completion is needed
+                            return 0
+                            ;;
+                    esac
+
+                
+                    # flags are allowed only before the first VMNAME and after `list`
+                    __complete_all_flags_if_needed '--size --no-resize' && return 0
+                    
+                    # Complete a single qube (VMNAME)
+                    # Currently complete only VMNAME out of VMNAME:VOLUME
+                    __complete_qubes_list 'all'
+                fi
+                
+                # TODO: We can also complete :VOLUME and PATH in the future
+                
                 return 0
                 ;;
 
             *)
-                # Not a valid action
+                # Not a valid command
                 return 0
                 ;;
 
         esac
-
-        # local -r flags='--force-root --force-rpc --regenerate-only'
-        # __complete_all_starting_flags_if_needed "${flags}" && return 0
-
-
-        # # provide all common features. The list is not full nor it can be,
-        # # as everything can be used as a name and value actually.
-        # __complete_string "${vm_common_features}"
-        # return 0
-    fi
-
-    if (( QB_alone_args_count == 2 )); then
-        # The value can be anything
-        return 0
     fi
 
     return 0
