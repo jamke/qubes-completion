@@ -104,7 +104,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-backup'                # R4.2. Tests: Basic # Features: 100%
     'qvm-backup-restore'        # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-pool'                  #TODO: Not implemented yet
+    'qvm-pool'                  # R4.2. Tests: Basic # Features: 100% # but can be better
 
     'qvm-check'                 # R4.2. Tests: Basic # Features: 100%
     'qvm-firewall'              # R4.2. Tests: Basic # Features: 100%
@@ -4507,6 +4507,278 @@ function _qvm_template() {
         ?*)
             # unknown sub command
             return 0
+            ;;
+    esac
+    
+    return 0
+}
+
+
+function _qvm_pool() {
+
+    __init_qubes_completion '--option -o' || return 0
+    
+    local -r sub_commands='add drivers info list remove set'
+
+    if (( QB_alone_args_count == 0 )); then
+
+        __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
+
+        __complete_all_flags_if_needed '' && return 0
+
+        __complete_string "${sub_commands}"
+        return 0
+    fi
+
+    local -r command="${QB_alone_args[0]}"
+
+    case "${command}" in
+        add | a)
+        
+            if (( QB_alone_args_count == 1 )); then
+
+                __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
+                __complete_all_flags_if_needed '' && return 0
+                
+                # new complete existing names allowing to change it to a new one
+                # it may be removed in the future
+                __complete_pools_list
+            
+            elif (( QB_alone_args_count == 2 )); then
+                
+                __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
+
+                # complete drivers
+                __complete_string 'callback file file-reflink linux-kernel lvm_thin zfs'
+                return 0
+            
+            elif (( QB_alone_args_count == 3 )); then
+            
+                local -r driver="${QB_alone_args[2]}"
+                
+                if __need_flags ; then
+                    __complete_string '--option -o'
+                    return 0
+                fi
+                
+                case "${QB_prev_flag}" in
+                    --option | -o)
+
+                        # if only one = char and not from the beginning
+                        # then it's a proper option=value candidate
+                        if [[ "${QB_cur}" == *=*=* ]]; then
+                            # not a valid option=value candidate, too many = chars
+                            return 0
+                        fi
+                        
+                        if [[ "${QB_cur}" == *?=* ]]; then
+                            # Complete option values
+                            
+                            # TODO: values for options have no documentation,
+                            # so the completion for values is limited
+                            
+                            local option_name="${QB_cur%%=*}"
+                            option_name="$( __strip_quotes "${option_name}" )"
+                            # local option_value="${QB_cur#*=}"
+                            readonly option_name
+                            # __debug_msg "option_name = ${option_name}"
+                            
+                            case "${option_name}" in
+                                dir_path)
+                                    # directory, like /var/lib/qubes
+                                    __run_filedir
+                                    return 0
+                                    ;;
+                                ephemeral_volatile)
+                                    __complete_string 'True False'
+                                    return 0
+                                    ;;
+                                *)
+                                    # No completions for others
+                                    return 0
+                                    ;;
+                            esac
+                        else
+                            # Complete option names, based on driver
+                            
+                            case "${driver}" in
+                                callback)
+                                    __complete_string 'conf_id='
+                                    ;;
+                                file)
+                                    __complete_string 'revisions_to_keep= dir_path= ephemeral_volatile='
+                                    ;;
+                                file-reflink)
+                                    __complete_string 'revisions_to_keep= dir_path= setup_check= ephemeral_volatile='
+                                    ;;
+                                linux-kernel)
+                                    __complete_string 'dir_path='
+                                    ;;
+                                lvm_thin)
+                                    __complete_string 'revisions_to_keep= volume_group= thin_pool= ephemeral_volatile='
+                                    ;;
+                                zfs)
+                                    __complete_string 'revisions_to_keep= container= ephemeral_volatile= snap_on_start_forensics='
+                                    ;;
+                                ?*)
+                                    # unknown driver
+                                    return 0
+                                    ;;
+                            esac
+                            
+                            compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
+                            return 0
+                        fi
+                        ;;
+                    ?*)
+                        # unknown prev flag expects sub-argument
+                        return 0
+                        ;;
+                esac
+                
+                # add some_name file <here>
+                
+                # No need to check __need_flags, because here we expect only --option
+                # We intentionally use --option instead of forcing user to choose it or -o
+                __complete_string '--option'
+                
+                return 0
+
+            else 
+                # too many arguments
+                return 0
+            fi
+            ;;
+
+        drivers | d)
+            if (( QB_alone_args_count != 1 )); then
+                return 0
+            fi
+            
+            __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
+            __complete_all_flags_if_needed '' && return 0
+            return 0
+            ;;
+
+        info | i)
+            if (( QB_alone_args_count == 1 )); then
+                __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
+                __complete_all_flags_if_needed '' && return 0
+            
+                __complete_pools_list
+                
+                return 0
+            fi
+            
+            # too many standalone arguments
+            return 0
+            ;;
+
+        list | l | ls)
+            if (( QB_alone_args_count == 1 )); then
+                __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
+                __complete_all_flags_if_needed '' && return 0
+                return 0
+            fi
+            
+            # No standalone arguments are allowed after list
+            return 0
+            ;;
+            
+        remove | r | rm)
+            if (( QB_alone_args_count == 1 )); then
+                __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
+                __complete_all_flags_if_needed '' && return 0
+            fi
+            
+            # provide pool names (including many times)
+            __complete_pools_list
+            
+            return 0
+            ;;
+        
+        set | s)
+        
+            if (( QB_alone_args_count == 1 )); then
+            
+                # set <here>
+                
+                __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
+                
+                # Force using --option after the name, as in man example.
+                # Because in this case we in theory can complete option=value
+                #__complete_all_flags_if_needed '--option -o' && return 0
+            
+                __complete_pools_list
+                
+                return 0
+                
+            elif (( QB_alone_args_count == 2 )); then
+                
+                # set POOL_NAME <here>, complete --option
+                                
+                case "${QB_prev_flag}" in
+                    --option | -o)
+
+                        # if only one = char and not from the beginning
+                        # then it's a proper option=value candidate
+                        if [[ "${QB_cur}" == *=*=* ]]; then
+                            # not a valid option=value candidate, too many = chars
+                            return 0
+                        fi
+                        
+                        if [[ "${QB_cur}" == *?=* ]]; then
+                            # Complete option values
+                            
+                            # TODO: values for options have no documentation,
+                            # so the completion for values is limited
+                            
+                            local option_name="${QB_cur%%=*}"
+                            option_name="$( __strip_quotes "${option_name}" )"
+                            # local option_value="${QB_cur#*=}"
+                            readonly option_name
+                            # __debug_msg "option_name = ${option_name}"
+                            
+                            case "${option_name}" in
+                                dir_path)
+                                    # directory, like /var/lib/qubes
+                                    __run_filedir
+                                    return 0
+                                    ;;
+                                ephemeral_volatile)
+                                    __complete_string 'True False'
+                                    return 0
+                                    ;;
+                                *)
+                                    # No completions for others
+                                    return 0
+                                    ;;
+                            esac
+                        else
+                            # Complete option names
+                            # NOTE: But we do not know the driver, so
+                            # we use all known options, because we do not know the driver
+                            __complete_string 'conf_id= revisions_to_keep= dir_path= ephemeral_volatile= setup_check= volume_group= thin_pool= container= snap_on_start_forensics='
+                            compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
+                            return 0
+                        fi
+                        ;;
+                    ?*)
+                        # unknown prev flag expects sub-argument
+                        return 0
+                        ;;
+                esac
+                
+                # No need to check __need_flags, because here we expect only --option
+                # We intentionally use --option instead of forcing user to choose it or -o
+                __complete_string '--option'
+                
+                return 0
+                
+            else # QB_alone_args_count > 2
+                # Too many standalone arguments
+                return 0
+            fi
             ;;
     esac
     

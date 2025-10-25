@@ -47,6 +47,7 @@
     "qubesmanager",
     "QVMTOOL",
     "readline",
+    "reflink",
     "releasever",
     "repoid",
     "repolist",
