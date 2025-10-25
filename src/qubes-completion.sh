@@ -56,6 +56,8 @@ QVM_VM_PROPERTY_VALUES_FOR_VIRTMODE='hvm pv pvh'
 QVM_VM_PROPERTY_VALUES_FOR_KLASS="${QVM_VM_CLASSES}"
 QVM_VM_PROPERTY_VALUES_FOR_LABEL='red orange yellow green gray blue purple black'
 
+# We use this list of flags to remove from line before passing to dnf completion (no --help here, because dnf also has it)
+QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF='--clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal'
 
 # NOTE: class `testclass` is not on the list as it is not documenteted at all
 QVM_DEVICE_CLASSES='block mic pci usb'
@@ -270,7 +272,7 @@ QB_full_line_args=()    # All args in all line, even after cursor (almost not us
 
 QB_cur=''               # Current word, can be different from cur due to different splitting
 QB_prev_flag=''         # Previous arg only if it must be related to the next one (qt_cur)
-QB_real_cur=''          # String that is used for __complete_string() and other __complete_* functions
+QB_real_cur=''          # String that is used for __complete_string and other __complete_* functions
 QB_was_quoted=0
 
 QB_orig_cur=''          # Original value of cur that BASH really wants us to complete
@@ -1527,7 +1529,7 @@ function __replace_cur_and_add_to_compreply() {
     readonly converted_comp
 
     COMPREPLY+=( $(compgen -W "${converted_comp[*]}" -- "${QB_orig_cur}") )
-    __debug_msg "$( __debug_print_array 'COMPREPLY' COMPREPLY )"
+    #__debug_msg "$( __debug_print_array 'COMPREPLY' COMPREPLY )" # Very slow call for big output even when debug is off
 }
 
 
@@ -3785,164 +3787,237 @@ function _qubes_dom0_update() {
 
     __debug_msg "action_for_dnf = \"${action_for_dnf}\""
 
+    local dnf_comp_count=0
     # Call dnf completion (but only if action is a valid option)
     if __is_argument_in_list_string "${action_for_dnf}" "${dnf_all_actions}"; then
         __qubes_dom0_update_pass_completion_to_dnf "${action_for_dnf}"
+        dnf_comp_count="${#COMPREPLY[@]}"
     fi
-
-
+    
     # NOTE: qubes-dom0-update has issues in man and output of --help,
     # e.g. not mentioning --help argument there at all.
     # It also requires --action to be followed only by '=', unlike other qvm/qubes tools,
     # so we provide this --action completion with = at the end.
 
+    local our_comp_count=0
+        
     # Now we can add our flags if we need to
     if (( QB_alone_args_count == 0 )) && ! __is_prev_flag_not_empty && __need_flags ; then
         
         # We remove --help, because dnf will provide it and there would be 2 --help otherwise
         #__complete_string '--help --action= --clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal'
-        __complete_string '--action= --clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal'
-
+        __complete_string "--action= ${QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF}"
+        (( our_comp_count = "${#COMPREPLY[@]}" - dnf_comp_count ))
+    fi
+    
+    if (( dnf_comp_count > 0 )) && (( our_comp_count == 0 )); then
+        
+        # dnf inserts spaces itself in the COMPREPLY, 
+        # so if we have only dnf's results and none of ours (COMPREPLY),
+        # then we should use nospace option
+        compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
+        
+    elif (( dnf_comp_count == 0 )) && (( our_comp_count > 0 )); then
+        
         # Use for case of '--action='
-        if (( "${#COMPREPLY[@]}" == 1 )) && [[ "${COMPREPLY[0]}" == *= ]]; then
+        if (( our_comp_count == 1 )) && [[ "${COMPREPLY[0]}" == *= ]]; then
             compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
         fi
-
+    
+    elif (( dnf_comp_count > 0 )) && (( our_comp_count > 0 )); then
+        
+        # Combined results
+        
         # NOTE: we can keep order to separate dnf and qubes arguments better
         compopt -o nosort &>/dev/null # to /dev/null because output interferes with running tests
+        
     fi
 
     return 0
 }
 
 
-function __qubes_dom0_update_remove_action_from_compline() {
-
-    # NOTE: we actually should remove --action=command substring and
-    # remove 3 words form COMP_WORDS (--action, =, command)
-    # but it works even without it, because dnf breaks this substring and
-    # already uses command as a first standalone argument.
-
+function __qubes_dom0_update_remove_non_dnf_from_compline() {
+    
+    # dnf completion currently does not ignore unknown flags
+    # so we have to manually remove --action and other
+    # qubes-dom-update flags (QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF)
+    # from the call, and recreate COMP_* context for running dnf.
+    
     local -r command="${1}"
 
-    local -r action_arg_name='--action'
-    local -r action_arg_sep='='
-    local -r action_arg_value="${command}"
-    local -r action_arg_full_substring="${action_arg_name}${action_arg_sep}${action_arg_value}"
+    local new_line=''
+    local new_words=()
+    local new_point=0
+    local new_cword=0
+    
+    # local chars_removed=0
+    # local words_removed=0
+    local words_to_skip=0
+    
+    local line_left="${COMP_LINE}"
+    local line_position=0
+    
+    for (( i=0; i < "${#COMP_WORDS[@]}"; i++ )); do
 
-    # If we have a '--action=command' substring
-    if [[ "${COMP_LINE}" == *"${action_arg_full_substring}"* ]]; then
-
-        # TODO: it has a minor flaw:
-        # The substring can be surrounded by some chars that 
-        # are not from COMP_WORDBREAKS or there can be multiple
-        # occurrences of substring and we will replace only one.
-        # But this scenario is improbable, we neglect it.
-
-        COMP_LINE="${COMP_LINE/"${action_arg_full_substring}"/}"
-
-        local words_to_skip=0
-        local words_skipped=0
-        local new_comp_words=()
-
-        local i
-        local cursor_is_after_skipped=0
-        for (( i=0; i < "${#COMP_WORDS[@]}"; i++ )); do
-
-            if (( words_to_skip > 0 )); then
-                (( words_to_skip-- ))
-                (( words_skipped++ ))
-                continue; # skip
-            fi
-
-            # in case '=' of '--action=command' is a COMP_WORDBREAKS, 
-            # we skip up to 3 words ('--action', '=', 'command')
-            if [[ "${COMP_WORDBREAKS}" == *"${action_arg_sep}"* ]]; then
-
-                # we should skip 3 up to words
-                if [[ "${COMP_WORDS[${i}]}" == "${action_arg_name}" ]]; then
-
-                    if (( COMP_CWORD >= i )) && (( COMP_CWORD <= i + 2 )); then
-                        # completion from dnf for current word is not possible
-                        __debug_msg "i=\"${i}\" COMP_CWORD=\"${COMP_CWORD}\""
-                        __debug_msg "Completion from dnf for current word is not possible"
-                        return 1;
-                    fi
-
-                    if (( i < COMP_CWORD )); then
-                        cursor_is_after_skipped=1;
-                    fi
+        local curr_word="${COMP_WORDS[${i}]}"
+        
+        __debug_msg '--------------'
+        __debug_msg "i = \"${i}\""
+        __debug_msg "curr_word = \"${curr_word}\""
+        __debug_msg "new_line = \"${new_line}\""
+        __debug_msg "$( __debug_print_array 'new_words' new_words )"
+        __debug_msg "new_point = \"${new_point}\""
+        __debug_msg "new_cword = \"${new_cword}\""
+        # __debug_msg "words_removed = \"${words_removed}\""
+        __debug_msg "words_to_skip = \"${words_to_skip}\""
+        __debug_msg "line_position = \"${line_position}\""
+        __debug_msg "line_left = \"${line_left}\""
+        __debug_msg ''
+        
+        if [[ "${curr_word}" == '' ]]; then 
+            # cursor is after the space(s) following the last word
+            __debug_msg 'cursor is after the space(s) following the last word'
+            new_line="${new_line} " # add single space
+            new_words+=('') # add empty word too
+            (( new_point = ${#new_line} ))
+            (( new_cword = ${#new_words[@]} - 1 ))
+            break
+        fi
+        
+        if (( words_to_skip == 0)); then
+            local action_eq_value_regex=$'^[\'\"]?--action=.*$'
                     
-                    # skip 2 more words after '--action'
-                    (( words_to_skip = 2 ))
-                    (( words_skipped++ )) # +1 for skipping current '--action'
-                    continue;
-                fi
-            else
-                # we should skip 1 word
-                if [[ "${COMP_WORDS[${i}]}" == "${action_arg_full_substring}" ]]; then
-
-                    if (( i == COMP_CWORD )); then
-                        # completion from dnf for current word is not possible
-                        __debug_msg "i=\"${i}\" COMP_CWORD=\"${COMP_CWORD}\""
-                        __debug_msg "Completion from dnf for current word is not possible"
-                        return 1;
+            if [[ "${curr_word}" == '--action' ]] ; then
+                
+                if (( i + 1 < "${#COMP_WORDS[@]}" )); then 
+                    local next_i
+                    (( next_i = i + 1))
+                    if [[ "${COMP_WORDS[${next_i}]}" == '=' ]]; then
+                        ((words_to_skip += 3 )) # remove (action, =, value)
+                    else 
+                        ((words_to_skip += 2 )) # remove (action, value)
                     fi
-
-                    if (( i < COMP_CWORD )); then
-                        cursor_is_after_skipped=1;
-                    fi
-
-                    (( words_to_skip == 0 ))
-                    (( words_skipped++ ))
-                    continue;
                 fi
+            elif [[ "${curr_word}" =~ ${action_eq_value_regex} ]] ; then
+                
+                ((words_to_skip += 1 )) # remove ("action=value")
+                
+            elif [[ " ${QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF}" == *" ${curr_word} "* ]] ; then
+                (( words_to_skip += 1 ))
+            fi
+        fi
+        
+        # remove curr_word with possible minimal length allowed breaks
+        # keep tail and remember how many chars we removed from the beginning
+        
+        local tail="${line_left#*"${curr_word}"}"
+        local chars_to_remove="$(( ${#line_left} - ${#tail} ))"
+        local removed_part="${line_left:0:chars_to_remove}"
+        
+        __debug_msg "words_to_skip = \"${words_to_skip}\""
+        __debug_msg "tail = \"${tail}\""
+        __debug_msg "chars_to_remove = \"${chars_to_remove}\""
+        __debug_msg "removed_part = \"${removed_part}\""
+        __debug_msg ''
+        
+        # check if we surpass COMP_POINT and stop building new completion context
+        if (( line_position + chars_to_remove == COMP_POINT)); then
+            # just after that word we get cursor
+            # complete this word:
+            __debug_msg 'just after that word we get cursor'
+            new_line="${new_line}${removed_part}"
+            new_words+=("${curr_word}")
+            (( new_point = ${#new_line} ))
+            (( new_cword = ${#new_words[@]} - 1 ))
+            
+            __debug_msg "new_line = \"${new_line}\""
+            __debug_msg "$( __debug_print_array 'new_words' new_words )"
+            __debug_msg "new_point = \"${new_point}\""
+            __debug_msg "new_cword = \"${new_cword}\""
+            break
+            
+        elif (( line_position + chars_to_remove > COMP_POINT)); then
+            # inside this word we have cursor
+            __debug_msg 'inside this word we have cursor'
+            
+            # first check point is inside the word, or in whitespaces before
+            local whitespaces=0
+            (( whitespaces = chars_to_remove - ${#curr_word} ))
+            
+            local char_to_keep;
+            (( char_to_keep = COMP_POINT - line_position))
+            
+            if (( char_to_keep <= whitespaces )); then 
+                # we complete whitespaces
+                __debug_msg '=> we complete whitespaces'
+                
+                new_line="${new_line}${removed_part:0:char_to_keep}"
+                new_words+=('') # empty word
+                (( new_point = ${#new_line} ))
+                (( new_cword = ${#new_words[@]} - 1 ))
+                
+                
+            else 
+                # complete the word from the middle
+                __debug_msg '=> complete the word from the middle'
+                
+                (( new_point = ${#new_line} + char_to_keep ))
+                new_line="${new_line}${removed_part}"
+                # new_line="${new_line}${removed_part:0:char_to_keep}"
+                new_words+=("${curr_word}")
+                (( new_cword = ${#new_words[@]} - 1 ))
             fi
             
-            # collect not skipped words:
-            new_comp_words+=("${COMP_WORDS[${i}]}")
-        done
-
-        COMP_WORDS=("${new_comp_words[@]}")
-        unset new_comp_words
-
-        # Replace the beginning of the line COMP_LINE
-        if (( cursor_is_after_skipped == 1 )); then
-            (( COMP_POINT = COMP_POINT - ${#action_arg_full_substring} ))
-
-            (( COMP_CWORD = COMP_CWORD - words_skipped ))
+            __debug_msg "new_line = \"${new_line}\""
+            __debug_msg "$( __debug_print_array 'new_words' new_words )"
+            __debug_msg "new_point = \"${new_point}\""
+            __debug_msg "new_cword = \"${new_cword}\""
+            break
+            
         fi
-    fi
-}
+        
+        # update line_left and go on with filtering
+        line_left="${tail}"
+        (( line_position += chars_to_remove ))
+        
+        if (( i == 0)); then
+            # First word
+            # remove qubes-dom0-command and place `dnf $command` instead
+            # (( words_removed-- ))
+            
+            local -r new_prefix="dnf ${command}" # e.g. "dnf install"
+            new_line="${new_prefix}"
+            (( new_point = ${#new_line} ))
+            new_words+=('dnf')
+            new_words+=("${command}")
+            (( new_cword = ${#new_words[@]} ))
+            
+        elif (( words_to_skip > 0 )); then
+            (( words_to_skip-- ))
+            # (( words_removed++ ))
+        else
+            # keep this word and related line part
+            new_line="${new_line}${removed_part}"
+            new_words+=("${curr_word}")
+            (( new_point = ${#new_line} ))
+            #(( new_cword = COMP_CWORD - words_removed ))
+            (( new_cword = ${#new_words[@]} ))
+            
+            __debug_msg "new_line = \"${new_line}\""
+            __debug_msg "$( __debug_print_array 'new_words' new_words )"
+            __debug_msg "new_point = \"${new_point}\""
+            __debug_msg "new_cword = \"${new_cword}\""
+        fi
+    done
+    
+    # Add empty element if needed
+    #if (( new_cword == ))
 
-
-# Replace starting 'qubes-dom0-update' with 'dnf command' (e.g. 'dnf install')
-function __qubes_dom0_update_replace_beginning_of_compline() {
-
-    local -r original_start="${COMP_WORDS[0]}" # 'qubes-dom0-update'
-    local -r rewritten_word0_dnf='dnf'
-    local -r rewritten_word1_command="${command}"
-    local -r rewritten_start="${rewritten_word0_dnf} ${rewritten_word1_command}" # e.g. "dnf install"
-
-    # Replace the beginning of the line COMP_LINE
-    local -r original_length_of_COMP_LINE="${#COMP_LINE}"
-
-    # remove leading whitespace characters
-    COMP_LINE="${COMP_LINE#"${COMP_LINE%%[![:space:]]*}"}"
-
-    COMP_LINE="${COMP_LINE#"${original_start}"}"
-    COMP_LINE="${rewritten_start}${COMP_LINE}"
-
-    # Recalculate cursor position COMP_POINT
-    # (( COMP_POINT = COMP_POINT + ${#rewritten_start} - ${#original_start} ))
-    (( COMP_POINT = COMP_POINT + ${#COMP_LINE} - original_length_of_COMP_LINE ))
-
-    # Replace first word with two new
-    COMP_WORDS[0]="${rewritten_word1_command}"
-    COMP_WORDS=( "${rewritten_word0_dnf}" "${COMP_WORDS[@]}")
-
-    # Recalculate the current word after adding one word at the beginning
-    (( COMP_CWORD++ ))
+    COMP_LINE="${new_line}"
+    COMP_POINT="${new_point}"
+    COMP_WORDS=("${new_words[@]}")
+    COMP_CWORD="${new_cword}"
 }
 
 
@@ -3966,6 +4041,7 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
     local -r original_COMP_POINT="${COMP_POINT}"
     local -r original_COMP_WORDS=( "${COMP_WORDS[@]}" )
     local -r original_COMP_CWORD="${COMP_CWORD}"
+    local -r original_COMP_WORDBREAKS="${COMP_WORDBREAKS}"
 
     __debug_msg '--------------------------------------------------------'
     __debug_msg '1. Before passing completion to dnf'
@@ -3981,19 +4057,17 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
     # It luckily still works but better to hide it anyway, because the
     # dnf completion script can be changed someday.
 
-    __qubes_dom0_update_remove_action_from_compline "${command}" || return 1
+    __qubes_dom0_update_remove_non_dnf_from_compline "${command}" || return 1
     __debug_msg '--------------------------------------------------------'
-    __debug_msg '2. After removing action from command line'
+    __debug_msg '2. After filtering command line for dnf'
     __debug_msg ''
     __debug_log_env
 
-    __qubes_dom0_update_replace_beginning_of_compline || return 1
     __debug_msg '--------------------------------------------------------'
-    __debug_msg '3. After replacing the beginning of the command line'
-    __debug_msg ''
-    __debug_log_env
-
+    
     __qubes_dom0_update_run_dnf_completion
+    
+    __debug_msg '--------------------------------------------------------'
 
     # Revert original values for bash completion variables,
     # to avoid possible problems with wrappers like sudo
@@ -4001,6 +4075,7 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
     COMP_POINT="${original_COMP_POINT}"
     COMP_WORDS=( "${original_COMP_WORDS[@]}" )
     COMP_CWORD="${original_COMP_CWORD}"
+    COMP_WORDBREAKS="${original_COMP_WORDBREAKS}"
     __debug_msg '--------------------------------------------------------'
     __debug_msg '4. After restoring the original values'
     __debug_msg ''
