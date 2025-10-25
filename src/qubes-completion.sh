@@ -128,8 +128,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-guid'                # R4.2. Tests: Basic # Features: 100% # can be better, but no need
     
     'qvm-template'              # R4.2. Tests: Basic # Features: 100%
-    'qvm-template-postprocess'  #TODO: Not implemented yet
-    
+
     # New commands
     'qubes-vm-update'           # R4.2. Tests: Basic  # Features: 100%
     'qubes-fwupgmr'             #TODO: Not implemented yet
@@ -207,7 +206,8 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     # -----------------------------------------------------------
     # Not supported, outdated or deprecated
     # -----------------------------------------------------------
-    # 'qvm-pool-legacy'
+    # 'qvm-template-postprocess'  # Internal app: Do not call this tool directly.
+    # 'qvm-pool-legacy'           # Deprecated?
     # -----------------------------------------------------------
 )
 
