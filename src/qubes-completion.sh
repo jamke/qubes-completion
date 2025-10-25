@@ -127,7 +127,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-prefs'               # R4.2. Tests: Basic # Features: 100% # but can be better
     'qubes-guid'                # R4.2. Tests: Basic # Features: 100% # can be better, but no need
     
-    'qvm-template'              # TODO: Test for R4.2. Tests: NONE # Features: 100%
+    'qvm-template'              # R4.2. Tests: Basic # Features: 100%
     'qvm-template-postprocess'  #TODO: Not implemented yet
     
     # New commands
