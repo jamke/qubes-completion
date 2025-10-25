@@ -1,13 +1,13 @@
 #!/bin/bash
 
 function tests_generator_init() {
-    
+
     local script_dir
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)"
 
     # shellcheck source=tests_common.sh
     source "${script_dir}/tests_common.sh"
-    
+
     HEADER_FOR_TESTS="${script_dir}/header_for_tests.bats"
     RESULT_OUTPUT_FILEPATH="default_generated_test_filename.txt"
     TEST_INDEX=0
@@ -41,7 +41,7 @@ function tests_create_all_basic_tests_and_save() {
     local command="${1}"
 
     tests_setup_new_output "basic_${command}"
-    
+
     # cSpell:disable
 
     # command itself
@@ -89,7 +89,7 @@ function tests_create_all_basic_tests_and_save() {
     tests_create_test_and_save "${command} --something_unknown -- "
     tests_create_test_and_save "${command} --something_unknown -h"
     tests_create_test_and_save "${command} --something_unknown --h"
-    
+
     # cSpell:enable
 }
 

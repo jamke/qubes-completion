@@ -255,15 +255,15 @@ function tests_generate_test_for_qubes_dom0_update() {
 
     # argument-less call is not used, because it provides a lot of packages, huge list
     # tests_create_test_and_save 'qubes-dom0-update '
-    
+
     # flags
     tests_create_test_and_save 'qubes-dom0-update -'
     tests_create_test_and_save 'qubes-dom0-update --'
     tests_create_test_and_save 'qubes-dom0-update -h'
-    
+
     tests_create_test_and_save 'qubes-dom0-update --en'
     tests_create_test_and_save 'qubes-dom0-update --enablerep'
-    
+
     tests_create_test_and_save 'qubes-dom0-update --a'
     tests_create_test_and_save 'qubes-dom0-update --act'
     tests_create_test_and_save 'qubes-dom0-update --action'
@@ -273,7 +273,7 @@ function tests_generate_test_for_qubes_dom0_update() {
     tests_create_test_and_save 'qubes-dom0-update --action='\'''
     tests_create_test_and_save 'qubes-dom0-update --action="remo'
     tests_create_test_and_save 'qubes-dom0-update --action='\''remo'
-    
+
     tests_create_test_and_save 'qubes-dom0-update --action=remove'
     tests_create_test_and_save 'qubes-dom0-update --action=remove -'
     tests_create_test_and_save 'qubes-dom0-update --action=remove --'
@@ -289,15 +289,15 @@ function tests_generate_test_for_qubes_dom0_update() {
     # NOTE:dnf itself provides the full list of packages for call:
     # dnf install --something_unknown=
     # It is a bug of dnf completion, we will not deal with it
-    #tests_create_test_and_save 'qubes-dom0-update --something_unknown=' 
-    
+    #tests_create_test_and_save 'qubes-dom0-update --something_unknown='
+
     # invalid flags
     tests_create_test_and_save 'qubes-dom0-update --something_unknown -'
     tests_create_test_and_save 'qubes-dom0-update --something_unknown --'
     tests_create_test_and_save 'qubes-dom0-update --something_unknown -- -'
     tests_create_test_and_save 'qubes-dom0-update --something_unknown -h'
     tests_create_test_and_save 'qubes-dom0-update --something_unknown --act'
-    
+
     # invalid arguments
     tests_create_test_and_save 'qubes-dom0-update something_unknown='
     tests_create_test_and_save 'qubes-dom0-update something_unknown -'
@@ -318,7 +318,7 @@ function tests_generator_main() {
     source "${script_dir}/tests_generator_helper.sh"
     tests_generator_init
     tests_common_setup
-    
+
     # Example for generation a single command basic test:
     # tests_create_all_basic_tests_and_save 'qvm-service'
     # return
@@ -379,12 +379,12 @@ function tests_generator_main() {
     tests_create_all_basic_tests_and_save 'qubesd-query'
     tests_create_all_basic_tests_and_save 'qvm-backup'
     tests_create_all_basic_tests_and_save 'qvm-backup-restore'
-    
+
     tests_create_all_basic_tests_and_save 'qubes-vm-update'
-    
-    
+
+
     # dnf provides too big output with a full list of packages that are also env-dependent
-    #tests_create_all_basic_tests_and_save 'qubes-dom0-update' 
+    #tests_create_all_basic_tests_and_save 'qubes-dom0-update'
 }
 
 # Calling main

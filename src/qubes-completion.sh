@@ -128,7 +128,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qubes-prefs'               # R4.2. Tests: Basic # Features: 100% # but can be better
     'qubes-guid'                # R4.2. Tests: Basic # Features: 100% # can be better, but no need
-    
+
     'qvm-template'              # R4.2. Tests: Basic # Features: 100%
 
     # New commands
@@ -138,7 +138,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-app-menu'            # R4.2. Tests: Basic # Features: 100% # No man, GUI app
     'qubes-policy-lint'         # R4.2. Tests: Basic # Features: 100% # No man
     'qubes-policy-editor'       # R4.2. Tests: Basic # Features: 100% # No man
-    
+
      # Commands that have no --quiet/verbose
     'qubesctl'                  # R4.2. Tests: Basic # Features: 100%
     'qubesd-query'              # R4.2. Tests: Basic # Features: 100%
@@ -218,7 +218,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 # =================================================================
 # Between Fedora 39 and Fedora 42 the function names were changed
 # The change was made in bash-completion 2.12.
-# Because dom0 has old Fedora, while development and testing 
+# Because dom0 has old Fedora, while development and testing
 # requires a newer one, we have to support both.
 
 # _init_completion() and _comp_initialize()
@@ -315,7 +315,7 @@ function __debug_msg() {
     if (( QB_DEBUG_MODE == 0 )) || (( QB_DEBUG_LOG == 0 )); then
         return
     fi
-    
+
     # NOTE: file for "tail -f" monitoring
     echo "${1}" >> "${QB_DEBUG_LOG_PATH}"
 }
@@ -426,7 +426,7 @@ function __run_filedir() {
     # We need file completion
 
     __debug_msg "Running completion for files (filedir)"
-    
+
     # Use stub filedir output for debug and running tests
     if (( QB_DEBUG_MODE != 0 )); then
         __complete_string "${QB_DEBUG_STUB_FILEDIR_OUTPUT}"
@@ -676,10 +676,10 @@ function __parse_and_fix_cur() {
 
     # save information about quotes at the beginning or original cur
     QB_was_quoted=0
-    if [[ "${orig_cur:0:1}" == '"' || "${orig_cur:0:1}" == "'" ]]; then 
+    if [[ "${orig_cur:0:1}" == '"' || "${orig_cur:0:1}" == "'" ]]; then
         QB_was_quoted=1
     fi
-    
+
     # strip quotes at the beginning, let `__complete_string` and `__complete_array` worry about it
     QB_cur="$( __strip_quotes_on_left "${orig_cur}" )"
 
@@ -1242,16 +1242,16 @@ function __complete_backup_profile() {
 
     # Profile is a filename without extension in directory /etc/qubes/backup
     local backup_profile_dir='/etc/qubes/backup'
-    
+
     if (( QB_DEBUG_MODE != 0 )); then
         backup_profile_dir="${QB_DEBUG_STUB_PROFILES_DIR}"
     fi
 
     # In this function we should support spaces in completion strings
-    
+
     local profile_names=()
     readarray -d '' profile_names < <(find "${backup_profile_dir}" -maxdepth 1 -type f -name '*.conf' -print0)
-    
+
     if (( "${#profile_names[@]}" > 0 )); then
         # remove full path
         profile_names=("${profile_names[@]##*/}")
@@ -1259,9 +1259,9 @@ function __complete_backup_profile() {
         profile_names=("${profile_names[@]%.*}")
         # Escape spaces in file names
         profile_names=("${profile_names[@]/ /\\ }")
-        
+
         __complete_array profile_names
-        
+
         # For correct quoting we use -o filenames
         compopt -o filenames &>/dev/null # to /dev/null because output interferes with running tests
     fi
@@ -1417,7 +1417,7 @@ function __complete_array() {
     # the passed array can be readonly, so we copy it
     local -n arr_readonly_ref="${1}"
     local arr=("${arr_readonly_ref[@]}")
-    
+
     __debug_msg '--------------------------------------------------------'
     __debug_msg '* Called __complete_array()'
     __debug_msg ''
@@ -1425,24 +1425,24 @@ function __complete_array() {
     __debug_msg "=> QB_cur = \"${QB_cur}\""
     __debug_msg "=> QB_real_cur = \"${QB_real_cur}\""
     __debug_msg "=> QB_orig_cur = \"${QB_orig_cur}\""
-    __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""    
+    __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""
 
     # We consider case with quotes at the beginning by checking QB_was_quoted
 
     local full_comp=()
-    
-    local local_QB_real_cur_to_use="${QB_real_cur}"    
-    
-    # To preserve escape chars in the arr[] after calling `compgen` 
+
+    local local_QB_real_cur_to_use="${QB_real_cur}"
+
+    # To preserve escape chars in the arr[] after calling `compgen`
     # we have to explicitly double them in case it was not quoted
     if (( QB_was_quoted == 0 )); then
         arr=("${arr[@]/\\/\\\\}")
-        
-        # we also have to use different escaped QB_real_cur, 
+
+        # we also have to use different escaped QB_real_cur,
         # because otherwise it would not match modified arr
         local_QB_real_cur_to_use="${QB_real_cur/\\/\\\\}"
     fi
-    
+
     local i
     for (( i=0; i < "${#arr[@]}"; i++ )); do
         local comp_str
@@ -1474,13 +1474,13 @@ function __complete_string() {
     __debug_msg "=> QB_real_cur = \"${QB_real_cur}\""
     __debug_msg "=> QB_orig_cur = \"${QB_orig_cur}\""
     __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""
-    
+
     # We use more general __complete_array to avoid code duplication
     # So, convert strings to array and go.
-    
+
     # In this function we should support both new lines, nulls and spaces as separators of completion strings
     # convert spaces and newlines to proper newlines
-    
+
     local options_arr=()
     readarray -t -d '' options_arr < <(printf '%s' "${options}" | tr ' ' '\0' | tr '\n' '\0' | tr '\r' '\0')
     #__debug_msg "$( __debug_print_array 'options_arr' options_arr )"
@@ -1490,13 +1490,13 @@ function __complete_string() {
     local -r options_arr_count="${#options_arr[@]}"
     local i
     for (( i=0; i < options_arr_count; i++ )); do
-    
+
         if [[ "${options_arr[${i}]}" != '' ]]; then
             options_arr_cleaned+=( "${options_arr[${i}]}" )
         fi
     done
     #__debug_msg "$( __debug_print_array 'options_arr_cleaned' options_arr_cleaned )"
-    
+
     __complete_array options_arr_cleaned
 }
 
@@ -1589,7 +1589,7 @@ function __complete_general_firewall_rule() {
     else
         # `accept` and `drop` are not provided here, because they must be used first, not in any position
         __complete_string 'tcp udp icmp'
-        
+
         # NOTE: `comment=` is still not documented for R4.2 in `man qvm-firewall` and `qvm-firewall --help`
         __complete_string 'action= dsthost= dst4= dst6= dstports= icmptype= proto= specialtarget= expire= comment='
 
@@ -1695,21 +1695,21 @@ function _qvm_create() {
     # NOTE: `--force-root` is not provided in `--help` but mistakenly mentioned in man
 
     local -r flags_require_one='--class -C --property --prop -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R'
-    
+
     # NOTE: intentionally skipping --prop (short version of --property)
     local -r flags_all="--class -C --property -P --pool -p --template -t --label -l --root-copy-from -r --root-move-from -R --standalone --disp --help-classes"
-    
+
     __init_qubes_completion "${flags_require_one}"  || return 0
 
     # Call with --help-classes needs no more arguments
     __was_flag_used '--help-classes' && return 0
-    
+
     if (( QB_alone_args_count > 0 )); then
-        # Standalone argument (VMNAME) must be the last one, 
+        # Standalone argument (VMNAME) must be the last one,
         # so, nothing to complete anymore
         return 0
     fi
-    
+
     case "${QB_prev_flag}" in
         -C | --class)
             __complete_string "${QVM_VM_CLASSES}"
@@ -1720,11 +1720,11 @@ function _qvm_create() {
             return 0
             ;;
         -p | --pool)
-            # NOTE: `man qvm-create` shows "--pool=POOL:VOLUME, -p POOL:VOLUME", 
+            # NOTE: `man qvm-create` shows "--pool=POOL:VOLUME, -p POOL:VOLUME",
             # while `qvm-create --help` shows "--pool VOLUME_NAME=POOL_NAME, -p VOLUME_NAME=POOL_NAME"
             # --help is right, the code is:
             # volume_name, pool_name = pool_vol.split('=')
-            
+
             # NOTE: unfortunately, we do not list the volumes because
             # qvm-volume list takes like seconds on a modern computer,
             # that is 10 times slower than sudo lvs that provides almost
@@ -1732,8 +1732,8 @@ function _qvm_create() {
             #
             # The completion for volumes can be added when qvm-volume
             # is either optimized or rewritten to be not that slow.
-            
-            # Do not even complete pools as the order is VOLUME_NAME=POOL_NAME            
+
+            # Do not even complete pools as the order is VOLUME_NAME=POOL_NAME
             #__complete_pools_list
             return 0
             ;;
@@ -1785,11 +1785,11 @@ function _qvm_clone() {
             return 0
             ;;
         -p | --pool)
-            # NOTE: `man qvm-clone` shows "--pool=POOL:VOLUME, -p POOL:VOLUME", 
+            # NOTE: `man qvm-clone` shows "--pool=POOL:VOLUME, -p POOL:VOLUME",
             # while `qvm-clone --help` shows "--pool VOLUME=POOL, -p VOLUME=POOL"
             # --help is right, the code is:
             # volume_name, pool_name = pool_vol.split('=')
-            
+
             # NOTE: unfortunately, we do not list the volumes because
             # qvm-volume list takes like seconds on a modern computer,
             # that is 10 times slower than sudo lvs that provides almost
@@ -1797,7 +1797,7 @@ function _qvm_clone() {
             #
             # The completion for volumes can be added when qvm-volume
             # is either optimized or rewritten to be not that slow.
-            
+
             # Do not even complete pools as the order is VOLUME=POOL
             #__complete_pools_list
             return 0
@@ -2445,11 +2445,11 @@ function _qvm_volume() {
         # complete basic flags if needed.
         # NOTE: man is missing such arg order, but --help shows it
         __complete_all_starting_flags_if_needed '' && return 0
-    
+
         __complete_string 'list info config resize revert import'
         return 0
     fi
-    
+
     if (( QB_alone_args_count >= 1 )); then
 
         local -r command="${QB_alone_args[0]}"
@@ -2471,7 +2471,7 @@ function _qvm_volume() {
                     # flags are allowed only before the first VMNAME and after `list`
                     __complete_all_flags_if_needed '-p --pool --full --all --exclude' && return 0
                 fi
-                
+
                 # Complete qube (many times if needed)
                 __complete_qubes_list 'all'
                 return 0
@@ -2481,14 +2481,14 @@ function _qvm_volume() {
                 if (( QB_alone_args_count == 1 )); then
                     # flags are allowed only before the first VMNAME and after `list`
                     __complete_all_flags_if_needed '' && return 0
-                    
+
                     # Complete a single qube (VMNAME)
                     # Currently complete only VMNAME out of VMNAME:VOLUME
                     __complete_qubes_list 'all'
                 fi
-                
+
                 # TODO: We can also complete :VOLUME, and PROPERTY in the future
-                
+
                 return 0
                 ;;
 
@@ -2496,12 +2496,12 @@ function _qvm_volume() {
                 if (( QB_alone_args_count == 1 )); then
                     # flags are allowed only before the first VMNAME and after `list`
                     __complete_all_flags_if_needed '' && return 0
-                    
+
                     # Complete a single qube (VMNAME)
                     # Currently complete only VMNAME out of VMNAME:VOLUME
                     __complete_qubes_list 'all'
                 fi
-                
+
                 # TODO: We can also complete :VOLUME, PROPERTY and VALUE in the future
                 return 0
                 ;;
@@ -2510,12 +2510,12 @@ function _qvm_volume() {
                 if (( QB_alone_args_count == 1 )); then
                     # flags are allowed only before the first VMNAME and after `list`
                     __complete_all_flags_if_needed '-f --force' && return 0
-                    
+
                     # Complete a single qube (VMNAME)
                     # Currently complete only VMNAME out of VMNAME:VOLUME
                     __complete_qubes_list 'all'
                 fi
-                
+
                 # TODO: We can also complete :VOLUME in the future
                 return 0
                 ;;
@@ -2524,19 +2524,19 @@ function _qvm_volume() {
                 if (( QB_alone_args_count == 1 )); then
                     # flags are allowed only before the first VMNAME and after `list`
                     __complete_all_flags_if_needed '' && return 0
-                    
+
                     # Complete a single qube (VMNAME)
                     # Currently complete only VMNAME out of VMNAME:VOLUME
                     __complete_qubes_list 'all'
                 fi
-                
+
                 # TODO: We can also complete :VOLUME and rev in the future
-                
+
                 return 0
                 ;;
 
             # no aliases for import one
-            import) 
+            import)
                 if (( QB_alone_args_count == 1 )); then
                     case "${QB_prev_flag}" in
                         --size)
@@ -2545,17 +2545,17 @@ function _qvm_volume() {
                             ;;
                     esac
 
-                
+
                     # flags are allowed only before the first VMNAME and after `list`
                     __complete_all_flags_if_needed '--size --no-resize' && return 0
-                    
+
                     # Complete a single qube (VMNAME)
                     # Currently complete only VMNAME out of VMNAME:VOLUME
                     __complete_qubes_list 'all'
                 fi
-                
+
                 # TODO: We can also complete :VOLUME and PATH in the future
-                
+
                 return 0
                 ;;
 
@@ -2636,7 +2636,7 @@ function _qvm_backup() {
 
             return 0
         else
-            # The first positional parameter is the backup location 
+            # The first positional parameter is the backup location
             # (absolute directory path, or command to pipe backup to)
 
             # so, we provide directory completion if --dest-vm was not provided
@@ -2740,13 +2740,13 @@ function _qvm_sync_appmenus() {
 
 
 function _qvm_appmenus() {
-    
+
     # NOTE: R4.2 has experimental and unstable feature that may be changed.
     # TODO: Check that it was not changed someday in the future
     # --get-available [EXPERIMENTAL] [REQUIRES --i-understand-format-is-unstable]
     # List all available applications for the VM.  The current format is UNSTABLE.  The applications are
     # listed as hyphen-separated pairs consisting of file name and application name.
-    
+
     # NOTE: `--template` is not mentioned in man, but is in --help output
     __init_qubes_completion '--set-whitelist --set-default-whitelist --source --file-field --template' || return 0
 
@@ -2791,7 +2791,7 @@ function _qvm_copy_to_vm() {
 
     __init_qubes_completion || return 0
     __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
-    
+
     # NOTE: `man qvm-move` mistakenly says that `qvm-move-to-vm` supports flag
     # --without-progress while it actually does not, I checked the command code in `dom0`
 
@@ -3170,7 +3170,7 @@ function _qubesctl() {
 
     # NOTE: This command does not support --quiet and --verbose args.
     # So, we have to do things manually
-    
+
     # NOTE: man qubesctl is missing `--standalones` option, but --help shows it
 
     __init_qubes_completion '--max-concurrency --targets' || return 0
@@ -3660,11 +3660,11 @@ function _qubes_input_trigger() {
             local event_files=()
             readarray -d '' event_files < <(find '/dev/input' -maxdepth 1 -type c -name 'event*' -print0)
             readonly event_files
-            
+
             if (( "${#event_files[@]}" > 0 )); then
                 __complete_string "${event_files[*]##*/}"
             fi
-            
+
             return 0
             ;;
         ?*)
@@ -3793,44 +3793,44 @@ function _qubes_dom0_update() {
         __qubes_dom0_update_pass_completion_to_dnf "${action_for_dnf}"
         dnf_comp_count="${#COMPREPLY[@]}"
     fi
-    
+
     # NOTE: qubes-dom0-update has issues in man and output of --help,
     # e.g. not mentioning --help argument there at all.
     # It also requires --action to be followed only by '=', unlike other qvm/qubes tools,
     # so we provide this --action completion with = at the end.
 
     local our_comp_count=0
-        
+
     # Now we can add our flags if we need to
     if (( QB_alone_args_count == 0 )) && ! __is_prev_flag_not_empty && __need_flags ; then
-        
+
         # We remove --help, because dnf will provide it and there would be 2 --help otherwise
         #__complete_string '--help --action= --clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal'
         __complete_string "--action= ${QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF}"
         (( our_comp_count = "${#COMPREPLY[@]}" - dnf_comp_count ))
     fi
-    
+
     if (( dnf_comp_count > 0 )) && (( our_comp_count == 0 )); then
-        
-        # dnf inserts spaces itself in the COMPREPLY, 
+
+        # dnf inserts spaces itself in the COMPREPLY,
         # so if we have only dnf's results and none of ours (COMPREPLY),
         # then we should use nospace option
         compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
-        
+
     elif (( dnf_comp_count == 0 )) && (( our_comp_count > 0 )); then
-        
+
         # Use for case of '--action='
         if (( our_comp_count == 1 )) && [[ "${COMPREPLY[0]}" == *= ]]; then
             compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
         fi
-    
+
     elif (( dnf_comp_count > 0 )) && (( our_comp_count > 0 )); then
-        
+
         # Combined results
-        
+
         # NOTE: we can keep order to separate dnf and qubes arguments better
         compopt -o nosort &>/dev/null # to /dev/null because output interferes with running tests
-        
+
     fi
 
     return 0
@@ -3838,30 +3838,30 @@ function _qubes_dom0_update() {
 
 
 function __qubes_dom0_update_remove_non_dnf_from_compline() {
-    
+
     # dnf completion currently does not ignore unknown flags
     # so we have to manually remove --action and other
     # qubes-dom-update flags (QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF)
     # from the call, and recreate COMP_* context for running dnf.
-    
+
     local -r command="${1}"
 
     local new_line=''
     local new_words=()
     local new_point=0
     local new_cword=0
-    
+
     # local chars_removed=0
     # local words_removed=0
     local words_to_skip=0
-    
+
     local line_left="${COMP_LINE}"
     local line_position=0
-    
+
     for (( i=0; i < "${#COMP_WORDS[@]}"; i++ )); do
 
         local curr_word="${COMP_WORDS[${i}]}"
-        
+
         __debug_msg '--------------'
         __debug_msg "i = \"${i}\""
         __debug_msg "curr_word = \"${curr_word}\""
@@ -3874,8 +3874,8 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
         __debug_msg "line_position = \"${line_position}\""
         __debug_msg "line_left = \"${line_left}\""
         __debug_msg ''
-        
-        if [[ "${curr_word}" == '' ]]; then 
+
+        if [[ "${curr_word}" == '' ]]; then
             # cursor is after the space(s) following the last word
             __debug_msg 'cursor is after the space(s) following the last word'
             new_line="${new_line} " # add single space
@@ -3884,43 +3884,43 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
             (( new_cword = ${#new_words[@]} - 1 ))
             break
         fi
-        
+
         if (( words_to_skip == 0)); then
             local action_eq_value_regex=$'^[\'\"]?--action=.*$'
-                    
+
             if [[ "${curr_word}" == '--action' ]] ; then
-                
-                if (( i + 1 < "${#COMP_WORDS[@]}" )); then 
+
+                if (( i + 1 < "${#COMP_WORDS[@]}" )); then
                     local next_i
                     (( next_i = i + 1))
                     if [[ "${COMP_WORDS[${next_i}]}" == '=' ]]; then
                         ((words_to_skip += 3 )) # remove (action, =, value)
-                    else 
+                    else
                         ((words_to_skip += 2 )) # remove (action, value)
                     fi
                 fi
             elif [[ "${curr_word}" =~ ${action_eq_value_regex} ]] ; then
-                
+
                 ((words_to_skip += 1 )) # remove ("action=value")
-                
+
             elif [[ " ${QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF}" == *" ${curr_word} "* ]] ; then
                 (( words_to_skip += 1 ))
             fi
         fi
-        
+
         # remove curr_word with possible minimal length allowed breaks
         # keep tail and remember how many chars we removed from the beginning
-        
+
         local tail="${line_left#*"${curr_word}"}"
         local chars_to_remove="$(( ${#line_left} - ${#tail} ))"
         local removed_part="${line_left:0:chars_to_remove}"
-        
+
         __debug_msg "words_to_skip = \"${words_to_skip}\""
         __debug_msg "tail = \"${tail}\""
         __debug_msg "chars_to_remove = \"${chars_to_remove}\""
         __debug_msg "removed_part = \"${removed_part}\""
         __debug_msg ''
-        
+
         # check if we surpass COMP_POINT and stop building new completion context
         if (( line_position + chars_to_remove == COMP_POINT)); then
             # just after that word we get cursor
@@ -3930,69 +3930,69 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
             new_words+=("${curr_word}")
             (( new_point = ${#new_line} ))
             (( new_cword = ${#new_words[@]} - 1 ))
-            
+
             __debug_msg "new_line = \"${new_line}\""
             __debug_msg "$( __debug_print_array 'new_words' new_words )"
             __debug_msg "new_point = \"${new_point}\""
             __debug_msg "new_cword = \"${new_cword}\""
             break
-            
+
         elif (( line_position + chars_to_remove > COMP_POINT)); then
             # inside this word we have cursor
             __debug_msg 'inside this word we have cursor'
-            
+
             # first check point is inside the word, or in whitespaces before
             local whitespaces=0
             (( whitespaces = chars_to_remove - ${#curr_word} ))
-            
+
             local char_to_keep;
             (( char_to_keep = COMP_POINT - line_position))
-            
-            if (( char_to_keep <= whitespaces )); then 
+
+            if (( char_to_keep <= whitespaces )); then
                 # we complete whitespaces
                 __debug_msg '=> we complete whitespaces'
-                
+
                 new_line="${new_line}${removed_part:0:char_to_keep}"
                 new_words+=('') # empty word
                 (( new_point = ${#new_line} ))
                 (( new_cword = ${#new_words[@]} - 1 ))
-                
-                
-            else 
+
+
+            else
                 # complete the word from the middle
                 __debug_msg '=> complete the word from the middle'
-                
+
                 (( new_point = ${#new_line} + char_to_keep ))
                 new_line="${new_line}${removed_part}"
                 # new_line="${new_line}${removed_part:0:char_to_keep}"
                 new_words+=("${curr_word}")
                 (( new_cword = ${#new_words[@]} - 1 ))
             fi
-            
+
             __debug_msg "new_line = \"${new_line}\""
             __debug_msg "$( __debug_print_array 'new_words' new_words )"
             __debug_msg "new_point = \"${new_point}\""
             __debug_msg "new_cword = \"${new_cword}\""
             break
-            
+
         fi
-        
+
         # update line_left and go on with filtering
         line_left="${tail}"
         (( line_position += chars_to_remove ))
-        
+
         if (( i == 0)); then
             # First word
             # remove qubes-dom0-command and place `dnf $command` instead
             # (( words_removed-- ))
-            
+
             local -r new_prefix="dnf ${command}" # e.g. "dnf install"
             new_line="${new_prefix}"
             (( new_point = ${#new_line} ))
             new_words+=('dnf')
             new_words+=("${command}")
             (( new_cword = ${#new_words[@]} ))
-            
+
         elif (( words_to_skip > 0 )); then
             (( words_to_skip-- ))
             # (( words_removed++ ))
@@ -4003,14 +4003,14 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
             (( new_point = ${#new_line} ))
             #(( new_cword = COMP_CWORD - words_removed ))
             (( new_cword = ${#new_words[@]} ))
-            
+
             __debug_msg "new_line = \"${new_line}\""
             __debug_msg "$( __debug_print_array 'new_words' new_words )"
             __debug_msg "new_point = \"${new_point}\""
             __debug_msg "new_cword = \"${new_cword}\""
         fi
     done
-    
+
     # Add empty element if needed
     #if (( new_cword == ))
 
@@ -4064,9 +4064,9 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
     __debug_log_env
 
     __debug_msg '--------------------------------------------------------'
-    
+
     __qubes_dom0_update_run_dnf_completion
-    
+
     __debug_msg '--------------------------------------------------------'
 
     # Revert original values for bash completion variables,
@@ -4120,7 +4120,7 @@ function __qubes_dom0_update_run_dnf_completion() {
         local func_name="${cspec#*-F[[:blank:]]}"
         func_name="${func_name%%[[:blank:]]*}"
         readonly func_name
-        
+
         __debug_msg "func_name = \"${func_name}\""
 
         # Call function with dnf as $1 arg, and last and one before last as $2 and optional $3 (more in `man complete`)
@@ -4145,7 +4145,7 @@ function __qubes_dom0_update_run_dnf_completion() {
         cspec="${cspec%%[[:blank:]]"${dnf_cmd}"}"
         COMPREPLY=( $( eval "compgen ${cspec} -- '${QB_orig_cur}'" ) )
     fi
-    
+
     # fix dnf strange problem (at least on f42) when it returns COMPREPLY with 1 empty element instead of empty COMPREPLY
     if (( "${#COMPREPLY[@]}" == 1 )); then
         if [[ "${COMPREPLY[0]}" == '' ]]; then
@@ -4205,7 +4205,7 @@ function _qubes_vm_update() {
             return 0
             ;;
     esac
-    
+
     # cSpell:disable-next-line
     local -r flags='--max-concurrency -x --dry-run --signal-no-updates --apply-to-sys --restart -r --apply-to-all -R --no-apply --force-update --update-if-stale --update-if-available --skip --targets --templates -T --standalones -S --apps -A --all --log --no-refresh --force-upgrade -f --no-cleanup --leave-obsolete --show-output --no-progress'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
@@ -4218,21 +4218,21 @@ function _qubes_fwupdmgr() {
 
     # NOTE: This command does not support --quiet and --verbose args.
     # So, we have to do things manually
-    
+
     __init_qubes_completion '--device --url' || return 0
 
     if (( QB_alone_args_count == 0 )); then
 
         if __need_flags ; then
             # I check, it works like that without standalone argument
-            __complete_string '-h --help' 
+            __complete_string '-h --help'
             return 0
         fi
 
         __complete_string 'get-devices get-updates refresh update update-heads downgrade clean'
         return 0
-    fi    
-    
+    fi
+
     case "${QB_prev_flag}" in
         --device)
             # default value is x230
@@ -4247,14 +4247,14 @@ function _qubes_fwupdmgr() {
             return 0
             ;;
     esac
-    
+
     # NOTE: we can check the option (the first standalone arg)
-    # and provide no flags completion. 
+    # and provide no flags completion.
     # But the --help output suggests we should complete flags anyway
-    
+
     # NOTE: it does not support --help and -h after standalone arg
     __complete_string "--whonix --device --url"
-    
+
     return 0
 }
 
@@ -4264,17 +4264,17 @@ function _qubes_prepare_vm_kernel() {
     # NOTE: This command does not support --quiet and --verbose args.
     # It does not even support --help, but outputs usage on any unknown flag like --help
     # It is a bash script (at least in R4.2 and before)
-    
+
     __init_qubes_completion '' || return 0
 
     if (( QB_alone_args_count == 0 )); then
 
         if __need_flags ; then
             # I check, it works like that without standalone argument
-            __complete_string '--modules-only --include-devel' 
+            __complete_string '--modules-only --include-devel'
             return 0
         fi
-        
+
         # We complete kernel-version (the first standalone arg)
         # Use stub filedir output for debug and running tests
         if (( QB_DEBUG_MODE != 0 )); then
@@ -4284,11 +4284,11 @@ function _qubes_prepare_vm_kernel() {
             __complete_string "$( rpm --query 'kernel-*' | grep '^kernel-' | sed 's/^kernel-//' | sort -V )"
         fi
     fi
-    
+
     # NOTE: the second standalone arg is `display-kernel-version`, not completion for it.
-    
+
     # Further arguments are not allowed
-    
+
     return 0
 }
 
@@ -4297,14 +4297,14 @@ function _qubes_app_menu() {
 
     # NOTE: This command does not support --quiet and --verbose args.
     # So, we have to do things manually
-    
+
     __init_qubes_completion '--display' || return 0
 
     if (( QB_alone_args_count == 0 )); then
-    
-        # Only flags are allowed. 
+
+        # Only flags are allowed.
         # Disable completion if standalone found
-        
+
         case "${QB_prev_flag}" in
             --display)
                 # No completion for display
@@ -4315,13 +4315,13 @@ function _qubes_app_menu() {
                 return 0
                 ;;
         esac
-        
+
         # No need to check __need_flags, because command expects only flags
         __complete_string '--help -h --help-all --help-gapplication --help-gtk --keep-visible -k --page -p --background -b --display'
-        
+
         return 0
     fi
-    
+
     return 0
 }
 
@@ -4330,20 +4330,20 @@ function _qubes_policy_lint() {
 
     # NOTE: This command does not support --quiet and --verbose args.
     # So, we have to do things manually
-    
+
     __init_qubes_completion '' || return 0
 
     if (( QB_alone_args_count == 0 )); then
-    
+
         if __need_flags ; then
             __complete_string '--help -h --show-line -s --include-service -i'
             return 0
         fi
     fi
-    
+
     # file (FILE [FILE ...])
     __run_filedir
-    
+
     return 0
 }
 
@@ -4352,39 +4352,39 @@ function _qubes_policy_editor() {
 
     # NOTE: This command does not support --quiet and --verbose args.
     # So, we have to do things manually
-    
+
     __init_qubes_completion '' || return 0
 
     if (( QB_alone_args_count == 0 )); then
-    
+
         if __need_flags ; then
             __complete_string '--help -h'
             return 0
         fi
     fi
-    
+
     # Do not provide completion for now. It's a file without extension:
-    
+
     # [[include/]FILE]
     # [include/]FILE  set file to be edited.
     # The '.policy' suffix must not be
     # included. Will search for an editor by looking at $EDITOR,
     # $VISUAL if previous entry is unset or 'vi' if previous entry
     # is also unset. Defaults to the user file.
-    
+
     return 0
 }
 
 
 function __complete_repo() {
-    
+
     local -r command_to_run="${QVMTOOL_QVM_TEMPLATE}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
         __debug_msg "No command to run: ${command_to_run}"
         return 1
     fi
-        
+
     local repos
     repos="$( "${command_to_run}" repolist | cut --fields=1 --delimiter=' ' )"
 
@@ -4411,13 +4411,13 @@ function __complete_templatespec() {
             return 1
             ;;
     esac
-    
+
     local -r command_to_run="${QVMTOOL_QVM_TEMPLATE}"
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
         __debug_msg "No command to run: ${command_to_run}"
         return 1
     fi
-    
+
     # NOTE: machine readable format is faster
     local template
     template="$( "${command_to_run}" list --machine-readable ${filter} | cut --fields=2 --delimiter='|' )"
@@ -4435,10 +4435,10 @@ function _qvm_template() {
     local -r sub_flags_require_one='--pool --downloaddir --retries'
     local -r sub_commands='install reinstall downgrade upgrade download list info search remove purge clean repolist migrate-from-rpmdb'
     local -r releasever='4.2 4.3'
-    
+
     local -r sub_flags_command_install='--pool --allow-pv --downloaddir --retries --nogpgcheck'
     local -r sub_flags_command_reinstall_downgrade_upgrade='--allow-pv --downloaddir --retries --nogpgcheck'
-    local -r sub_flags_command_download='--downloaddir --retries --nogpgcheck' # man does not mention --nogpgcheck 
+    local -r sub_flags_command_download='--downloaddir --retries --nogpgcheck' # man does not mention --nogpgcheck
     local -r sub_flags_command_list='--all --installed --available --extras --upgrades --all-versions --machine-readable --machine-readable-json'
     local -r sub_flags_command_info='--all --installed --available --extras --upgrades --all-versions --machine-readable --machine-readable-json'
     local -r sub_flags_command_search='--all'
@@ -4493,10 +4493,10 @@ function _qvm_template() {
 
         __complete_string "${sub_commands}"
         return 0
-    
+
     fi
-    
-    # Starting from here we have 1+ standalone arguments, 
+
+    # Starting from here we have 1+ standalone arguments,
     # the first one ("${QB_alone_args[0]}") is a sub_command
 
     case "${QB_alone_args[0]}" in
@@ -4516,7 +4516,7 @@ function _qvm_template() {
                     return 0
                     ;;
             esac
-            
+
             __complete_all_flags_if_needed "${sub_flags_command_install}" && return 0
             __complete_templatespec 'all'
             return 0
@@ -4533,7 +4533,7 @@ function _qvm_template() {
                     return 0
                     ;;
             esac
-                    
+
             __complete_all_flags_if_needed "${sub_flags_command_reinstall_downgrade_upgrade}" && return 0
             __complete_templatespec 'installed'
             return 0
@@ -4550,7 +4550,7 @@ function _qvm_template() {
                     return 0
                     ;;
             esac
-                    
+
             __complete_all_flags_if_needed "${sub_flags_command_download}" && return 0
             __complete_templatespec 'all'
             return 0
@@ -4599,7 +4599,7 @@ function _qvm_template() {
             return 0
             ;;
     esac
-    
+
     return 0
 }
 
@@ -4607,7 +4607,7 @@ function _qvm_template() {
 function _qvm_pool() {
 
     __init_qubes_completion '--option -o' || return 0
-    
+
     local -r sub_commands='add drivers info list remove set'
 
     if (( QB_alone_args_count == 0 )); then
@@ -4624,33 +4624,33 @@ function _qvm_pool() {
 
     case "${command}" in
         add | a)
-        
+
             if (( QB_alone_args_count == 1 )); then
 
                 __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
                 __complete_all_flags_if_needed '' && return 0
-                
+
                 # new complete existing names allowing to change it to a new one
                 # it may be removed in the future
                 __complete_pools_list
-            
+
             elif (( QB_alone_args_count == 2 )); then
-                
+
                 __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
                 # complete drivers
                 __complete_string 'callback file file-reflink linux-kernel lvm_thin zfs'
                 return 0
-            
+
             elif (( QB_alone_args_count == 3 )); then
-            
+
                 local -r driver="${QB_alone_args[2]}"
-                
+
                 if __need_flags ; then
                     __complete_string '--option -o'
                     return 0
                 fi
-                
+
                 case "${QB_prev_flag}" in
                     --option | -o)
 
@@ -4660,19 +4660,19 @@ function _qvm_pool() {
                             # not a valid option=value candidate, too many = chars
                             return 0
                         fi
-                        
+
                         if [[ "${QB_cur}" == *?=* ]]; then
                             # Complete option values
-                            
+
                             # TODO: values for options have no documentation,
                             # so the completion for values is limited
-                            
+
                             local option_name="${QB_cur%%=*}"
                             option_name="$( __strip_quotes "${option_name}" )"
                             # local option_value="${QB_cur#*=}"
                             readonly option_name
                             # __debug_msg "option_name = ${option_name}"
-                            
+
                             case "${option_name}" in
                                 dir_path)
                                     # directory, like /var/lib/qubes
@@ -4690,7 +4690,7 @@ function _qvm_pool() {
                             esac
                         else
                             # Complete option names, based on driver
-                            
+
                             case "${driver}" in
                                 callback)
                                     __complete_string 'conf_id='
@@ -4715,7 +4715,7 @@ function _qvm_pool() {
                                     return 0
                                     ;;
                             esac
-                            
+
                             compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
                             return 0
                         fi
@@ -4725,16 +4725,16 @@ function _qvm_pool() {
                         return 0
                         ;;
                 esac
-                
+
                 # add some_name file <here>
-                
+
                 # No need to check __need_flags, because here we expect only --option
                 # We intentionally use --option instead of forcing user to choose it or -o
                 __complete_string '--option'
-                
+
                 return 0
 
-            else 
+            else
                 # too many arguments
                 return 0
             fi
@@ -4744,7 +4744,7 @@ function _qvm_pool() {
             if (( QB_alone_args_count != 1 )); then
                 return 0
             fi
-            
+
             __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
             __complete_all_flags_if_needed '' && return 0
             return 0
@@ -4754,12 +4754,12 @@ function _qvm_pool() {
             if (( QB_alone_args_count == 1 )); then
                 __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
                 __complete_all_flags_if_needed '' && return 0
-            
+
                 __complete_pools_list
-                
+
                 return 0
             fi
-            
+
             # too many standalone arguments
             return 0
             ;;
@@ -4770,43 +4770,43 @@ function _qvm_pool() {
                 __complete_all_flags_if_needed '' && return 0
                 return 0
             fi
-            
+
             # No standalone arguments are allowed after list
             return 0
             ;;
-            
+
         remove | r | rm)
             if (( QB_alone_args_count == 1 )); then
                 __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
                 __complete_all_flags_if_needed '' && return 0
             fi
-            
+
             # provide pool names (including many times)
             __complete_pools_list
-            
+
             return 0
             ;;
-        
+
         set | s)
-        
+
             if (( QB_alone_args_count == 1 )); then
-            
+
                 # set <here>
-                
+
                 __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
-                
+
                 # Force using --option after the name, as in man example.
                 # Because in this case we in theory can complete option=value
                 #__complete_all_flags_if_needed '--option -o' && return 0
-            
+
                 __complete_pools_list
-                
+
                 return 0
-                
+
             elif (( QB_alone_args_count == 2 )); then
-                
+
                 # set POOL_NAME <here>, complete --option
-                                
+
                 case "${QB_prev_flag}" in
                     --option | -o)
 
@@ -4816,19 +4816,19 @@ function _qvm_pool() {
                             # not a valid option=value candidate, too many = chars
                             return 0
                         fi
-                        
+
                         if [[ "${QB_cur}" == *?=* ]]; then
                             # Complete option values
-                            
+
                             # TODO: values for options have no documentation,
                             # so the completion for values is limited
-                            
+
                             local option_name="${QB_cur%%=*}"
                             option_name="$( __strip_quotes "${option_name}" )"
                             # local option_value="${QB_cur#*=}"
                             readonly option_name
                             # __debug_msg "option_name = ${option_name}"
-                            
+
                             case "${option_name}" in
                                 dir_path)
                                     # directory, like /var/lib/qubes
@@ -4858,20 +4858,20 @@ function _qvm_pool() {
                         return 0
                         ;;
                 esac
-                
+
                 # No need to check __need_flags, because here we expect only --option
                 # We intentionally use --option instead of forcing user to choose it or -o
                 __complete_string '--option'
-                
+
                 return 0
-                
+
             else # QB_alone_args_count > 2
                 # Too many standalone arguments
                 return 0
             fi
             ;;
     esac
-    
+
     return 0
 }
 

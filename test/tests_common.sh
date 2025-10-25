@@ -238,7 +238,7 @@ function test_command() {
         local i2
         for (( i2=0; i2 < "${#COMPREPLY[@]}"; i2++ )); do
             __debug_msg_and_echo "[${i2}]='${COMPREPLY[${i2}]}'"
-        done        
+        done
         __debug_msg "===================================="
         __debug_msg "ERROR: TEST FAILED"
         __debug_msg "===================================="
@@ -301,7 +301,7 @@ function create_test() {
     #
     # Revert QB_DEBUG_LOG in case we changed it above
     export QB_DEBUG_LOG="${prev_QB_DEBUG_LOG}"
-    
+
 
     # Formatting test output
     local result_compreply
