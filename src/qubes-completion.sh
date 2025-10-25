@@ -91,10 +91,10 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-clone'                 # R4.2. Tests: Basic # Features: can be better and provide pool:volumes, but qvm-volume is too slow
     'qvm-remove'                # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-device'                # TODO:R4.2. Tests: Basic # Features: 100%
-    'qvm-block'                 # TODO:R4.2. Tests: Basic # Features: 100%
-    'qvm-usb'                   # TODO:R4.2. Tests: Basic # Features: 100%
-    'qvm-pci'                   # TODO:R4.2. Tests: Basic # Features: 100%
+    'qvm-device'                # R4.2. Tests: Basic # Features: 100%
+    'qvm-block'                 # R4.2. Tests: Basic # Features: 100%
+    'qvm-usb'                   # R4.2. Tests: Basic # Features: 100%
+    'qvm-pci'                   # R4.2. Tests: Basic # Features: 100%
 
     'qvm-prefs'                 # R4.2. Tests: Basic # Features: 100% # but can be better
     'qvm-features'              # R4.2. Tests: Basic # Features: 100%
@@ -2067,7 +2067,7 @@ function __prepare_device_completion() {
 
     __process_device_completion "${device_class}" "${command}" "${qube_name}" "${extra_argument}"
 
-    return $?
+    return ${?}
 }
 
 
@@ -2296,9 +2296,7 @@ function _qvm_device() {
     local -r device_class="${QB_alone_args[0]}"
 
     __prepare_device_completion "${device_class}" '0'
-    res="$?"
-
-    return "${res}"
+    return ${?}
 }
 
 
