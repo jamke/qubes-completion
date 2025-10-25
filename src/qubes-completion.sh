@@ -4552,3 +4552,4 @@ function main() {
 main "$@"
 
 # ex: filetype=sh
+# vim: set ft=bash et ts=4 sw=4:
