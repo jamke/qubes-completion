@@ -133,7 +133,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-vm-update'           # R4.2. Tests: Basic  # Features: 100%
     'qubes-fwupdmgr'            # R4.2. Tests: Basic  # Features: 100% # NOTE: Does not run without root even for --help. And has no man.
     'qubes-prepare-vm-kernel'   # R4.2. Tests: Basic  # Features: 100%
-    'qubes-app-menu'            #TODO: Not implemented yet
+    'qubes-app-menu'            # R4.2. Tests: Basic  # Features: 100%
     'qubes-policy-lint'         #TODO: Not implemented yet
     'qubes-policy-editor'       #TODO: Not implemented yet
     
@@ -4199,6 +4199,39 @@ function _qubes_prepare_vm_kernel() {
     # NOTE: the second standalone arg is `display-kernel-version`, not completion for it.
     
     # Further arguments are not allowed
+    
+    return 0
+}
+
+
+function _qubes_app_menu() {
+
+    # NOTE: This command does not support --quiet and --verbose args.
+    # So, we have to do things manually
+    
+    __init_qubes_completion '--display' || return 0
+
+    if (( QB_alone_args_count == 0 )); then
+    
+        # Only flags are allowed. 
+        # Disable completion if standalone found
+        
+        case "${QB_prev_flag}" in
+            --display)
+                # No completion for display
+                return 0
+                ;;
+            ?*)
+                # unknown prev flag expects sub-argument
+                return 0
+                ;;
+        esac
+        
+        # No need to check __need_flags, because command expects only flags
+        __complete_string '--help -h --help-all --help-gapplication --help-gtk --keep-visible -k --page -p --background -b --display'
+        
+        return 0
+    fi
     
     return 0
 }
