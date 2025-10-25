@@ -134,7 +134,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-fwupdmgr'            # R4.2. Tests: Basic  # Features: 100% # NOTE: Does not run without root even for --help. And has no man.
     'qubes-prepare-vm-kernel'   # R4.2. Tests: Basic  # Features: 100%
     'qubes-app-menu'            # R4.2. Tests: Basic  # Features: 100% # No man, GUI app
-    'qubes-policy-lint'         #TODO: Not implemented yet
+    'qubes-policy-lint'         # R4.2. Tests: Basic  # Features: 100% # No man
     'qubes-policy-editor'       #TODO: Not implemented yet
     
      # Commands that have no --quiet/verbose
@@ -4232,6 +4232,28 @@ function _qubes_app_menu() {
         
         return 0
     fi
+    
+    return 0
+}
+
+
+function _qubes_policy_lint() {
+
+    # NOTE: This command does not support --quiet and --verbose args.
+    # So, we have to do things manually
+    
+    __init_qubes_completion '' || return 0
+
+    if (( QB_alone_args_count == 0 )); then
+    
+        if __need_flags ; then
+            __complete_string '--help -h --show-line -s --include-service -i'
+            return 0
+        fi
+    fi
+    
+    # file (FILE [FILE ...])
+    __run_filedir
     
     return 0
 }
