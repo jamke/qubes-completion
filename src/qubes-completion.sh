@@ -79,7 +79,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
 
     'qvm-ls'                    # R4.2. Tests: FULL  # Features: 100%
     'qvm-tags'                  # R4.2. Tests: FULL  # Features: 100%
-    'qvm-start'                 # R4.2. Tests: Basic # Features: #TODOs
+    'qvm-start'                 # R4.2. Tests: Basic # Features: 100% # but can be better
     'qvm-shutdown'              # R4.2. Tests: FULL  # Features: 100%
     'qvm-kill'                  # R4.2. Tests: Basic # Features: 100%
     'qvm-run'                   # R4.2. Tests: Basic # Features: 100%
@@ -87,7 +87,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-pause'                 # R4.2. Tests: Basic # Features: 100%
     'qvm-unpause'               # R4.2. Tests: Basic # Features: 100%
 
-    'qvm-create'                # R4.2. Tests: Basic # Features: #TODOs
+    'qvm-create'                # R4.2. Tests: Basic # Features: 100% # but can be better
     'qvm-clone'                 # R4.2. Tests: Basic # Features: can be better and provide pool:volumes, but qvm-volume is too slow
     'qvm-remove'                # R4.2. Tests: Basic # Features: 100%
 
@@ -111,7 +111,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-service'               # R4.2. Tests: Basic # Features: 100%
 
     'qvm-sync-appmenus'         # R4.2. Tests: Basic # Features: 100%
-    'qvm-appmenus'              # R4.2. Tests: Basic # Features: #TODOs
+    'qvm-appmenus'              # R4.2. Tests: Basic # Features: 100% # but can be better
 
     'qvm-copy-to-vm'            # R4.2. Tests: Basic # Features: 100%
     'qvm-move-to-vm'            # R4.2. Tests: Basic # Features: 100%
@@ -130,16 +130,16 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qvm-template'              # R4.2. Tests: Basic # Features: 100%
 
     # New commands
-    'qubes-vm-update'           # R4.2. Tests: Basic  # Features: 100%
-    'qubes-fwupdmgr'            # R4.2. Tests: Basic  # Features: 100% # NOTE: Does not run without root even for --help. And has no man.
-    'qubes-prepare-vm-kernel'   # R4.2. Tests: Basic  # Features: 100%
-    'qubes-app-menu'            # R4.2. Tests: Basic  # Features: 100% # No man, GUI app
-    'qubes-policy-lint'         # R4.2. Tests: Basic  # Features: 100% # No man
-    'qubes-policy-editor'       # R4.2. Tests: Basic  # Features: 100% # No man
+    'qubes-vm-update'           # R4.2. Tests: Basic # Features: 100%
+    'qubes-fwupdmgr'            # R4.2. Tests: Basic # Features: 100% # NOTE: Does not run without root even for --help. And has no man.
+    'qubes-prepare-vm-kernel'   # R4.2. Tests: Basic # Features: 100%
+    'qubes-app-menu'            # R4.2. Tests: Basic # Features: 100% # No man, GUI app
+    'qubes-policy-lint'         # R4.2. Tests: Basic # Features: 100% # No man
+    'qubes-policy-editor'       # R4.2. Tests: Basic # Features: 100% # No man
     
      # Commands that have no --quiet/verbose
-    'qubesctl'                  # R4.2. Tests: Basic # Features: #TODOs
-    'qubesd-query'              # R4.2. Tests: Basic # Features: #TODOs
+    'qubesctl'                  # R4.2. Tests: Basic # Features: 100%
+    'qubesd-query'              # R4.2. Tests: Basic # Features: 100%
     'qubes-hcl-report'          # R4.2. Tests: Basic # Features: 100%
     'qubes-bug-report'          # R4.2. Tests: Basic # Features: 100%
     'qvm-get-image'             # R4.2. Tests: Basic # Features: 100%
@@ -1824,8 +1824,7 @@ function _qvm_start() {
 
     case "${QB_prev_flag}" in
         --drive)
-            # TODO:
-            # idea - provide qubes names and after qube being typed - device (no path)
+            # TODO: idea - provide qubes names and after qube being typed - device (no path)
             # hd:qube_name:device or hd:qube_name:path
             # cdrom:qube_name:device or cdrom:qube_name:path
             return 0
