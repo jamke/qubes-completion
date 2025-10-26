@@ -138,6 +138,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-app-menu'            # R4.2. Tests: Basic # Features: 100% # No man, GUI app
     'qubes-policy-lint'         # R4.2. Tests: Basic # Features: 100% # No man
     'qubes-policy-editor'       # R4.2. Tests: Basic # Features: 100% # No man
+    'qubes-update-gui'          # TODO: Implement for R4.2. Tests: TODO # Features: TODO # No man
 
      # Commands that have no --quiet/verbose
     'qubesctl'                  # R4.2. Tests: Basic # Features: 100%
@@ -174,7 +175,6 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     # 'qubes-backup'
     # 'qubes-template-manager'
     # 'qubes-global-settings'
-    # 'qubes-update-gui'
     # 'qubes-policy-editor-gui'
     # -----------------------------------------------------------
 
