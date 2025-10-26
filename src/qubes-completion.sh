@@ -33,7 +33,7 @@
 #
 
 # Common completion flags that are used for almost all commands
-COMPLETION_ALL_BASIC='--verbose -v --quiet -q --help -h'
+QVM_COMPLETION_ALL_BASIC='--verbose -v --quiet -q --help -h'
 
 # NOTE: We do not use qvm-ls --help-formats or --help-columns because the
 # output is human-readable (includes comments), it is not reliable in future.
@@ -1612,7 +1612,7 @@ function __complete_all_flags_if_needed() {
 
     if __need_flags ; then
         __complete_string "${flags}"
-        __complete_string "${COMPLETION_ALL_BASIC}"
+        __complete_string "${QVM_COMPLETION_ALL_BASIC}"
         return 0
     fi
 
