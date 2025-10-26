@@ -278,8 +278,8 @@ QB_was_quoted=0
 QB_orig_cur=''          # Original value of cur that BASH really wants us to complete
 
 # Keeping track of parsing command-line through out different functions:
-__PARSING_ARGS_REQUIRE_ONE=0         # of being after flag that requires one argument
-__PARSING_ARGS_REQUIRE_MULTIPLE=0    # of being after flag that allows multiple arguments
+QB__PARSING_ARGS_REQUIRE_ONE=0         # of being after flag that requires one argument
+QB__PARSING_ARGS_REQUIRE_MULTIPLE=0    # of being after flag that allows multiple arguments
 
 
 # =================================================================
@@ -633,10 +633,10 @@ function __parse_flag() {
         fi
 
         if __is_argument_in_list_string "${flag_name}" "${flags_require_one}" ; then
-            __PARSING_ARGS_REQUIRE_ONE=1
+            QB__PARSING_ARGS_REQUIRE_ONE=1
             # continue
         elif __is_argument_in_list_string "${flag_name}" "${flags_require_multiple}" ; then
-            __PARSING_ARGS_REQUIRE_MULTIPLE=1
+            QB__PARSING_ARGS_REQUIRE_MULTIPLE=1
             # continue
         fi
     fi
@@ -800,8 +800,8 @@ function __init_qubes_completion() {
     __reset_result_variables
 
     # Keeping track:
-    __PARSING_ARGS_REQUIRE_ONE=0         # of being after flag that requires one argument
-    __PARSING_ARGS_REQUIRE_MULTIPLE=0    # of being after flag that allows multiple arguments
+    QB__PARSING_ARGS_REQUIRE_ONE=0           # of being after flag that requires one argument
+    QB__PARSING_ARGS_REQUIRE_MULTIPLE=0      # of being after flag that allows multiple arguments
     local allow_flags=1                    # of getting flags stopper ('--' argument)
     local allow_flags_in_cur=1             # for understanding if cur argument is before a possible flag stopper
     local before_cursor=1                  # of being before cursor (cur word)
@@ -834,7 +834,7 @@ function __init_qubes_completion() {
 
         # __debug_msg "#${i} word: \"${loop_cur_word}\""
 
-        if (( __PARSING_ARGS_REQUIRE_ONE == 1 )); then
+        if (( QB__PARSING_ARGS_REQUIRE_ONE == 1 )); then
             # consider the word as required dependent argument mo matter what it is.
             # It can even be '--', '--some=foo=bar' or anything.
             # If the user skipped the required value by mistake - it's not our problem,
@@ -843,11 +843,11 @@ function __init_qubes_completion() {
             __parse_required_one "${loop_cur_word}" "${before_cursor}"
             # __debug_msg "__parse_required_one \"${loop_cur_word}\""
 
-            __PARSING_ARGS_REQUIRE_ONE=0
+            QB__PARSING_ARGS_REQUIRE_ONE=0
             continue
         fi
 
-        if (( __PARSING_ARGS_REQUIRE_MULTIPLE == 1 )); then
+        if (( QB__PARSING_ARGS_REQUIRE_MULTIPLE == 1 )); then
 
             # NOTE: it is not allowed to use something like:
             # qvm-something --tags=foo
@@ -862,7 +862,7 @@ function __init_qubes_completion() {
                     (( at_cursor == 1 )); then
                     QB_prev_flag=''
                 fi
-                __PARSING_ARGS_REQUIRE_MULTIPLE=0
+                QB__PARSING_ARGS_REQUIRE_MULTIPLE=0
             else
                 # otherwise continue collecting arguments as required values
 
