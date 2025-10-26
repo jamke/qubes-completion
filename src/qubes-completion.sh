@@ -57,7 +57,7 @@ QVM_VM_PROPERTY_VALUES_FOR_KLASS="${QVM_VM_CLASSES}"
 QVM_VM_PROPERTY_VALUES_FOR_LABEL='red orange yellow green gray blue purple black'
 
 # We use this list of flags to remove from line before passing to dnf completion (no --help here, because dnf also has it)
-QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF='--clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal'
+QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF='--clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal --skip-boot-check'
 
 # NOTE: class `testclass` is not on the list as it is not documenteted at all
 QVM_DEVICE_CLASSES='block mic pci usb'
@@ -77,7 +77,7 @@ QVM_FIREWALL_USE_TABLE_OUTPUT='1'
 # The list of supported commands for completion
 declare -a SUPPORTED_COMMANDS_LIST=(
 
-    'qubes-dom0-update'         # TODO:R4.2. Tests: Good  # Features: 100% # Breaks in f42 but works in dom0 of R4.2
+    'qubes-dom0-update'         # R4.2. Tests: Good  # Features: 100%
 
     'qvm-ls'                    # R4.2. Tests: FULL  # Features: 100%
     'qvm-tags'                  # R4.2. Tests: FULL  # Features: 100%
@@ -3767,6 +3767,12 @@ function _qubes_dom0_update() {
                 __complete_string "${dnf_all_actions}"
                 return 0
                 ;;
+            --switch-audio-server-to)
+                # do not call dnf, this flag is our business
+                __complete_string 'pulseaudio pipewire'
+                return 0
+                ;;
+
         esac
     fi
 
@@ -3807,7 +3813,7 @@ function _qubes_dom0_update() {
     if (( QB_alone_args_count == 0 )) && ! __is_prev_flag_not_empty && __need_flags ; then
         # We remove --help, because dnf will provide it and there would be 2 --help otherwise
         #__complete_string '--help --action= --clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal'
-        __complete_string "--action= ${QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF}"
+        __complete_string "--action= --switch-audio-server-to= ${QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF}"
 
         # dnf completion can clear COMPREPLY, so we better keep a copy of it.
         # And anyway, it's a good idea to clear COMPREPLY manually, to set clear context for dnf
@@ -3841,7 +3847,6 @@ function _qubes_dom0_update() {
             compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
         fi
     elif (( dnf_comp_count > 0 )) && (( our_comp_count > 0 )); then
-
         # Combined results
 
         # add our completion to COMPREPLY which already has dnf completion
@@ -3901,9 +3906,8 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
         fi
 
         if (( words_to_skip == 0)); then
-            local action_eq_value_regex=$'^[\'\"]?--action=.*$'
 
-            if [[ "${curr_word}" == '--action' ]] ; then
+            if [[ "${curr_word}" == '--action' || "${curr_word}" == '--switch-audio-server-to' ]] ; then
 
                 if (( i + 1 < "${#COMP_WORDS[@]}" )); then
                     local next_i
@@ -3914,10 +3918,6 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
                         ((words_to_skip += 2 )) # remove (action, value)
                     fi
                 fi
-            elif [[ "${curr_word}" =~ ${action_eq_value_regex} ]] ; then
-
-                ((words_to_skip += 1 )) # remove ("action=value")
-
             elif [[ " ${QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF}" == *" ${curr_word} "* ]] ; then
                 (( words_to_skip += 1 ))
             fi
