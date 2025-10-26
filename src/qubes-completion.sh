@@ -228,7 +228,7 @@ if [[ $(type -t "${QB_CALL_init_completion}") != function ]]; then
 fi
 
 if [[ $(type -t "${QB_CALL_init_completion}") != function ]]; then
-    __debug_msg "No function to run: ${QB_CALL_init_completion}"
+    # __debug_msg "No function to run: ${QB_CALL_init_completion}"
     return 1
 fi
 
@@ -239,7 +239,7 @@ if [[ $(type -t "${QB_CALL_get_cword_at_cursor}") != function ]]; then
 fi
 
 if [[ $(type -t "${QB_CALL_get_cword_at_cursor}") != function ]]; then
-    __debug_msg "No function to run: ${QB_CALL_get_cword_at_cursor}"
+    # __debug_msg "No function to run: ${QB_CALL_get_cword_at_cursor}"
     return 1
 fi
 
@@ -250,7 +250,7 @@ if [[ $(type -t "${QB_CALL_filedir}") != function ]]; then
 fi
 
 if [[ $(type -t "${QB_CALL_filedir}") != function ]]; then
-    __debug_msg "No function to run: ${QB_CALL_filedir}"
+    # __debug_msg "No function to run: ${QB_CALL_filedir}"
     return 1
 fi
 
@@ -355,14 +355,15 @@ function __debug_print_array() {
 
 # Log all BASH completion variables to the log file if debug mode is on
 function __debug_log_env() {
+    true # no-op
 
-    __debug_msg "COMP_LINE=\"${COMP_LINE}\""
-    __debug_msg "COMP_POINT=\"${COMP_POINT}\""
-    __debug_msg "$( __debug_print_array 'COMP_WORDS' COMP_WORDS )"
-    __debug_msg "COMP_CWORD=\"${COMP_CWORD}\""
-    # __debug_msg "COMP_TYPE=\"${COMP_TYPE}\""
-    # __debug_msg "COMP_KEY=\"${COMP_KEY}\""
-    # __debug_msg "COMP_WORDBREAKS=\"${COMP_WORDBREAKS}\""
+    # __debug_msg "COMP_LINE=\"${COMP_LINE}\""
+    # __debug_msg "COMP_POINT=\"${COMP_POINT}\""
+    # __debug_msg "$( __debug_print_array 'COMP_WORDS' COMP_WORDS )"
+    # __debug_msg "COMP_CWORD=\"${COMP_CWORD}\""
+    ## __debug_msg "COMP_TYPE=\"${COMP_TYPE}\""
+    ## __debug_msg "COMP_KEY=\"${COMP_KEY}\""
+    ## __debug_msg "COMP_WORDBREAKS=\"${COMP_WORDBREAKS}\""
 }
 
 
@@ -371,52 +372,54 @@ function __debug_log_start_of_init_qubes_completion() {
     local -r flags_require_one="${1}"
     local -r flags_require_multiple="${2}"
 
-    __debug_msg ''
-    __debug_msg '========================================================'
-    __debug_msg "$( date )"
-    __debug_msg ''
-    __debug_msg "flags_require_one=\"${flags_require_one}\""
-    __debug_msg "flags_require_multiple=\"${flags_require_multiple}\""
-    __debug_msg '========================================================'
+    # __debug_msg ''
+    # __debug_msg '========================================================'
+    # __debug_msg "$( date )"
+    # __debug_msg ''
+    # __debug_msg "flags_require_one=\"${flags_require_one}\""
+    # __debug_msg "flags_require_multiple=\"${flags_require_multiple}\""
+    # __debug_msg '========================================================'
 
-    __debug_msg '--------------------------------------------------------'
-    __debug_msg '* BASH original COMP env:'
-    __debug_msg ''
-    __debug_log_env
-    __debug_msg '--------------------------------------------------------'
+    # __debug_msg '--------------------------------------------------------'
+    # __debug_msg '* BASH original COMP env:'
+    # __debug_msg ''
+    # __debug_log_env
+    # __debug_msg '--------------------------------------------------------'
 
 }
 
 
 function __debug_log_after_modified_init_completion() {
+    true # no-op
 
     # shellcheck disable=SC2034 # Shellcheck does not understand usage of passing arrays
     local -r -n arr_words="${1}"
 
-    __debug_msg '--------------------------------------------------------'
-    __debug_msg "* After calling \"_init_completion -n ':='\":"
-    __debug_msg ''
-    __debug_msg "cur=\"${cur}\""
-    __debug_msg "prev=\"${prev}\""
-    __debug_msg "$( __debug_print_array 'words' arr_words )"
-    __debug_msg "cword=\"${cword}\""
-    __debug_msg '--------------------------------------------------------'
+    # __debug_msg '--------------------------------------------------------'
+    # __debug_msg "* After calling \"_init_completion -n ':='\":"
+    # __debug_msg ''
+    # __debug_msg "cur=\"${cur}\""
+    # __debug_msg "prev=\"${prev}\""
+    # __debug_msg "$( __debug_print_array 'words' arr_words )"
+    # __debug_msg "cword=\"${cword}\""
+    # __debug_msg '--------------------------------------------------------'
 }
 
 
 function __debug_log_parsing_results() {
+    true # no-op
 
-    __debug_msg '--------------------------------------------------------'
-    __debug_msg '* Final result of parsing:'
-    __debug_msg ''
-    __debug_msg "QB_cur = \"${QB_cur}\""
-    __debug_msg "QB_prev_flag = \"${QB_prev_flag}\""
-    __debug_msg "QB_orig_cur = \"${QB_orig_cur}\""
-    __debug_msg "$( __debug_print_array 'QB_flag_args' QB_flag_args )"
-    __debug_msg "$( __debug_print_array 'QB_alone_args' QB_alone_args )"
-    __debug_msg "$( __debug_print_array 'QB_all_args' QB_all_args )"
-    __debug_msg "$( __debug_print_array 'QB_full_line_args' QB_full_line_args )"
-    __debug_msg '--------------------------------------------------------'
+    # __debug_msg '--------------------------------------------------------'
+    # __debug_msg '* Final result of parsing:'
+    # __debug_msg ''
+    # __debug_msg "QB_cur = \"${QB_cur}\""
+    # __debug_msg "QB_prev_flag = \"${QB_prev_flag}\""
+    # __debug_msg "QB_orig_cur = \"${QB_orig_cur}\""
+    # __debug_msg "$( __debug_print_array 'QB_flag_args' QB_flag_args )"
+    # __debug_msg "$( __debug_print_array 'QB_alone_args' QB_alone_args )"
+    # __debug_msg "$( __debug_print_array 'QB_all_args' QB_all_args )"
+    # __debug_msg "$( __debug_print_array 'QB_full_line_args' QB_full_line_args )"
+    # __debug_msg '--------------------------------------------------------'
 }
 # =================================================================
 
@@ -425,7 +428,7 @@ function __run_filedir() {
 
     # We need file completion
 
-    __debug_msg "Running completion for files (filedir)"
+    # __debug_msg "Running completion for files (filedir)"
 
     # Use stub filedir output for debug and running tests
     if (( QB_DEBUG_MODE != 0 )); then
@@ -587,8 +590,8 @@ function __parse_flag() {
 
         local -r flag_name="${cur_word%%=*}"
         local -r flag_value="${cur_word#*=}"
-        # __debug_msg "flag_name=\"${flag_name}\""
-        # __debug_msg "flag_value=\"${flag_value}\""
+        ## __debug_msg "flag_name=\"${flag_name}\""
+        ## __debug_msg "flag_value=\"${flag_value}\""
 
         QB_full_line_args+=( "${flag_name}" )
         QB_full_line_args+=( "${flag_value}" )
@@ -614,7 +617,7 @@ function __parse_flag() {
 
         local -r flag_name="${cur_word}"
 
-        # __debug_msg "flag_name=\"${flag_name}\""
+        ## __debug_msg "flag_name=\"${flag_name}\""
 
         QB_full_line_args+=( "${flag_name}" )
         if (( before_cursor == 1)); then
@@ -666,10 +669,10 @@ function __parse_and_fix_cur() {
     local -r flags_require_multiple="${3}"
     local -r allow_flags_in_cur="${4}"
 
-    # __debug_msg '--------------------------------------------------------'
-    # __debug_msg '* Fixing cur, getting QB_cur from cur:'
-    # __debug_msg ''
-    # __debug_msg "orig_cur = ${orig_cur}"
+    ## __debug_msg '--------------------------------------------------------'
+    ## __debug_msg '* Fixing cur, getting QB_cur from cur:'
+    ## __debug_msg ''
+    ## __debug_msg "orig_cur = ${orig_cur}"
 
     # The argument under cursor can be a --flag=something that needs splitting,
     # or something complicated like: --flag=key=value=something=else
@@ -698,12 +701,12 @@ function __parse_and_fix_cur() {
         fi
     fi
 
-    # __debug_msg "QB_cur = \"${QB_cur}\""
-    # __debug_msg '--------------------------------------------------------'
+    ## __debug_msg "QB_cur = \"${QB_cur}\""
+    ## __debug_msg '--------------------------------------------------------'
 
-    # __debug_msg '--------------------------------------------------------'
-    # __debug_msg '* Init default QB_real_cur string'
-    # __debug_msg ''
+    ## __debug_msg '--------------------------------------------------------'
+    ## __debug_msg '* Init default QB_real_cur string'
+    ## __debug_msg ''
 
     # TODO: remove this support? (replace with the second approach)
     # We kind of support --option=name=value=something arguments,
@@ -715,8 +718,8 @@ function __parse_and_fix_cur() {
 
     # strip quotes at the beginning
     QB_real_cur="$( __strip_quotes_on_left "${QB_real_cur}" )"
-    # __debug_msg "QB_real_cur = \"${QB_real_cur}\""
-    # __debug_msg '--------------------------------------------------------'
+    ## __debug_msg "QB_real_cur = \"${QB_real_cur}\""
+    ## __debug_msg '--------------------------------------------------------'
 }
 
 
@@ -785,12 +788,13 @@ function __init_qubes_completion() {
     # like --tags tag1 tag2 tag3 --other-flag
     local -r flags_require_multiple="${2-}"
 
-    __debug_log_start_of_init_qubes_completion "${flags_require_one}" "${flags_require_multiple}"
+    # __debug_log_start_of_init_qubes_completion "${flags_require_one}" "${flags_require_multiple}"
 
     # Run "${QB_CALL_init_completion}"() with options
+    # shellcheck disable=SC2034 # prev is not used, by design
     local cur prev words cword
     "${QB_CALL_init_completion}" -n ':=' || return 1
-    __debug_log_after_modified_init_completion words
+    # __debug_log_after_modified_init_completion words
 
     # Reset all result variables
     __reset_result_variables
@@ -828,7 +832,7 @@ function __init_qubes_completion() {
         # strip quotes around the loop_cur_word (but once)
         loop_cur_word="$( __strip_quotes_once_if_needed "${loop_cur_word}" )"
 
-        __debug_msg "#${i} word: \"${loop_cur_word}\""
+        # __debug_msg "#${i} word: \"${loop_cur_word}\""
 
         if (( __PARSING_ARGS_REQUIRE_ONE == 1 )); then
             # consider the word as required dependent argument mo matter what it is.
@@ -837,7 +841,7 @@ function __init_qubes_completion() {
             # because we should allow passing any argument even ones that look like flags
 
             __parse_required_one "${loop_cur_word}" "${before_cursor}"
-            __debug_msg "__parse_required_one \"${loop_cur_word}\""
+            # __debug_msg "__parse_required_one \"${loop_cur_word}\""
 
             __PARSING_ARGS_REQUIRE_ONE=0
             continue
@@ -863,7 +867,7 @@ function __init_qubes_completion() {
                 # otherwise continue collecting arguments as required values
 
                 __parse_require_multiple "${loop_cur_word}" "${before_cursor}"
-                __debug_msg "__parse_require_multiple \"${loop_cur_word}\""
+                # __debug_msg "__parse_require_multiple \"${loop_cur_word}\""
 
                 continue
             fi
@@ -877,7 +881,7 @@ function __init_qubes_completion() {
 
             # but save the last flag if it's not the last word
             __parse_flags_stopper "${loop_cur_word}" "${before_cursor}"
-            __debug_msg "__parse_flags_stopper \"${loop_cur_word}\""
+            # __debug_msg "__parse_flags_stopper \"${loop_cur_word}\""
 
             continue
         fi
@@ -894,14 +898,14 @@ function __init_qubes_completion() {
             fi
 
             __parse_flag "${loop_cur_word}" "${flags_require_one}" "${flags_require_multiple}" "${before_cursor}" "${is_current_cursor}"
-            __debug_msg "__parse_flag \"${loop_cur_word}\""
+            # __debug_msg "__parse_flag \"${loop_cur_word}\""
 
         else
             # not a flag argument
             # consider it to be a standalone argument
 
             __parse_standalone "${loop_cur_word}" "${flags_require_one}" "${flags_require_multiple}" "${before_cursor}"
-            __debug_msg "__parse_standalone \"${loop_cur_word}\""
+            # __debug_msg "__parse_standalone \"${loop_cur_word}\""
         fi
     done
 
@@ -912,7 +916,7 @@ function __init_qubes_completion() {
 
     __find_original_really_completing
 
-    __debug_log_parsing_results
+    # __debug_log_parsing_results
 
     return 0
 }
@@ -933,7 +937,7 @@ function __find_original_really_completing() {
         # Colon is also a delimiter for BASH by default
         QB_orig_cur=''
     fi
-    # __debug_msg "QB_orig_cur = \"${QB_orig_cur}\""
+    ## __debug_msg "QB_orig_cur = \"${QB_orig_cur}\""
 }
 
 
@@ -957,7 +961,7 @@ function __get_firewall_rules_raw_data() {
     local -r command_to_run="${QVMTOOL_QVM_FIREWALL}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
-        __debug_msg "No command to run: ${command_to_run}"
+        # __debug_msg "No command to run: ${command_to_run}"
         return
     fi
 
@@ -976,7 +980,7 @@ function __get_qube_tags() {
     local -r command_to_run="${QVMTOOL_QVM_TAGS}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
-        __debug_msg "No command to run: ${command_to_run}"
+        # __debug_msg "No command to run: ${command_to_run}"
         return
     fi
 
@@ -992,7 +996,7 @@ function __get_device_ids_raw_data() {
     local -r command_to_run="${QVMTOOL_QVM_DEVICE}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
-        __debug_msg "No command to run: ${command_to_run}"
+        # __debug_msg "No command to run: ${command_to_run}"
         return
     fi
 
@@ -1012,7 +1016,7 @@ function __get_qubes_list_raw_data() {
     local -r command_to_run="${QVMTOOL_QVM_LS}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
-        __debug_msg "No command to run: ${command_to_run}"
+        # __debug_msg "No command to run: ${command_to_run}"
         return
     fi
 
@@ -1137,7 +1141,7 @@ function __complete_firewall_rule_numbers() {
     readarray -t rules_array < <(printf '%s' "${raw_data}")
     readonly rules_array
 
-    __debug_msg "$( __debug_print_array 'rules_array' rules_array )"
+    # __debug_msg "$( __debug_print_array 'rules_array' rules_array )"
 
     # short (only-numbers) and long (with description) versions:
     local only_numbers_rules_array=()
@@ -1174,15 +1178,15 @@ function __complete_firewall_rule_numbers() {
         fi
     done
 
-    __debug_msg "$( __debug_print_array 'only_numbers_rules_array' only_numbers_rules_array )"
-    __debug_msg "$( __debug_print_array 'with_desc_rules_array' with_desc_rules_array )"
+    # __debug_msg "$( __debug_print_array 'only_numbers_rules_array' only_numbers_rules_array )"
+    # __debug_msg "$( __debug_print_array 'with_desc_rules_array' with_desc_rules_array )"
 
 
     local count_completions
     count_completions="$( __count_completions_for_array only_numbers_rules_array )"
     readonly count_completions
 
-    __debug_msg "count_completions=\"${count_completions}\""
+    # __debug_msg "count_completions=\"${count_completions}\""
 
     if (( count_completions == 1 )); then
         __complete_array only_numbers_rules_array
@@ -1207,7 +1211,7 @@ function __get_pools_list_raw_data() {
     local -r command_to_run="${QVMTOOL_QVM_POOL}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
-        __debug_msg "No command to run: ${command_to_run}"
+        # __debug_msg "No command to run: ${command_to_run}"
         return
     fi
 
@@ -1312,7 +1316,7 @@ function __complete_device_ids() {
 
     local data_array=()
     readarray -t data_array < <(printf '%s' "${raw_data}")
-    __debug_msg "$( __debug_print_array 'data_array' data_array )"
+    # __debug_msg "$( __debug_print_array 'data_array' data_array )"
     readonly data_array
 
     # short and long (with description) strings for completion:
@@ -1328,14 +1332,14 @@ function __complete_device_ids() {
     readonly result_device_ids_short_array
     readonly result_device_ids_long_array
 
-    __debug_msg "$( __debug_print_array 'result_device_ids_short_array' result_device_ids_short_array )"
-    __debug_msg "$( __debug_print_array 'result_device_ids_long_array' result_device_ids_long_array )"
+    # __debug_msg "$( __debug_print_array 'result_device_ids_short_array' result_device_ids_short_array )"
+    # __debug_msg "$( __debug_print_array 'result_device_ids_long_array' result_device_ids_long_array )"
 
     local count_completions
     count_completions="$( __count_completions_for_array result_device_ids_short_array )"
     readonly count_completions
 
-    __debug_msg "count_completions=\"${count_completions}\""
+    # __debug_msg "count_completions=\"${count_completions}\""
 
     if (( count_completions <= 1 )); then
         __complete_array result_device_ids_short_array
@@ -1418,14 +1422,14 @@ function __complete_array() {
     local -n arr_readonly_ref="${1}"
     local arr=("${arr_readonly_ref[@]}")
 
-    __debug_msg '--------------------------------------------------------'
-    __debug_msg '* Called __complete_array()'
-    __debug_msg ''
-    __debug_msg "=> $( __debug_print_array 'arr' arr )"
-    __debug_msg "=> QB_cur = \"${QB_cur}\""
-    __debug_msg "=> QB_real_cur = \"${QB_real_cur}\""
-    __debug_msg "=> QB_orig_cur = \"${QB_orig_cur}\""
-    __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""
+    # __debug_msg '--------------------------------------------------------'
+    # __debug_msg '* Called __complete_array()'
+    # __debug_msg ''
+    # __debug_msg "=> $( __debug_print_array 'arr' arr )"
+    # __debug_msg "=> QB_cur = \"${QB_cur}\""
+    # __debug_msg "=> QB_real_cur = \"${QB_real_cur}\""
+    # __debug_msg "=> QB_orig_cur = \"${QB_orig_cur}\""
+    # __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""
 
     # We consider case with quotes at the beginning by checking QB_was_quoted
 
@@ -1446,9 +1450,9 @@ function __complete_array() {
     local i
     for (( i=0; i < "${#arr[@]}"; i++ )); do
         local comp_str
-        #__debug_msg "=> arr[i] = \"${arr[${i}]}\""
+        ## __debug_msg "=> arr[i] = \"${arr[${i}]}\""
         comp_str="$(compgen -W "${arr[${i}]}" -- "${local_QB_real_cur_to_use}")"
-        #__debug_msg "=> comp_str = \"${comp_str}\""
+        ## __debug_msg "=> comp_str = \"${comp_str}\""
         if (( "${#comp_str}" > 0 )); then
             full_comp+=( "${comp_str}" )
         fi
@@ -1456,7 +1460,7 @@ function __complete_array() {
     readonly full_comp
 
     # local full_comp=( $(compgen -W "${options}" -- "${QB_cur}") ) #TODO: use something like that?
-    __debug_msg "$( __debug_print_array 'full_comp' full_comp )"
+    # __debug_msg "$( __debug_print_array 'full_comp' full_comp )"
 
     __replace_cur_and_add_to_compreply full_comp
 }
@@ -1466,14 +1470,14 @@ function __complete_string() {
 
     local -r options="${1}"
 
-    __debug_msg '--------------------------------------------------------'
-    __debug_msg '* Called __complete_string()'
-    __debug_msg ''
-    __debug_msg "=> options = \"${options}\""
-    __debug_msg "=> QB_cur = \"${QB_cur}\""
-    __debug_msg "=> QB_real_cur = \"${QB_real_cur}\""
-    __debug_msg "=> QB_orig_cur = \"${QB_orig_cur}\""
-    __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""
+    # __debug_msg '--------------------------------------------------------'
+    # __debug_msg '* Called __complete_string()'
+    # __debug_msg ''
+    # __debug_msg "=> options = \"${options}\""
+    # __debug_msg "=> QB_cur = \"${QB_cur}\""
+    # __debug_msg "=> QB_real_cur = \"${QB_real_cur}\""
+    # __debug_msg "=> QB_orig_cur = \"${QB_orig_cur}\""
+    # __debug_msg "=> QB_was_quoted = \"${QB_was_quoted}\""
 
     # We use more general __complete_array to avoid code duplication
     # So, convert strings to array and go.
@@ -1483,7 +1487,7 @@ function __complete_string() {
 
     local options_arr=()
     readarray -t -d '' options_arr < <(printf '%s' "${options}" | tr ' ' '\0' | tr '\n' '\0' | tr '\r' '\0')
-    #__debug_msg "$( __debug_print_array 'options_arr' options_arr )"
+    ## __debug_msg "$( __debug_print_array 'options_arr' options_arr )"
 
     # remove any empty elements
     local options_arr_cleaned=()
@@ -1495,7 +1499,7 @@ function __complete_string() {
             options_arr_cleaned+=( "${options_arr[${i}]}" )
         fi
     done
-    #__debug_msg "$( __debug_print_array 'options_arr_cleaned' options_arr_cleaned )"
+    ## __debug_msg "$( __debug_print_array 'options_arr_cleaned' options_arr_cleaned )"
 
     __complete_array options_arr_cleaned
 }
@@ -1516,20 +1520,20 @@ function __replace_cur_and_add_to_compreply() {
     local -r full_comp_arr_count="${#full_comp_arr[@]}"
     for (( i=0; i < full_comp_arr_count; i++ )); do
 
-        #__debug_msg "    => full_comp_arr[${i}] = \"${full_comp_arr[${i}]}\""
+        ## __debug_msg "    => full_comp_arr[${i}] = \"${full_comp_arr[${i}]}\""
 
         local without_beginning="${full_comp_arr[${i}]:${#QB_real_cur}}"
-        #__debug_msg "    => without_beginning = \"${without_beginning}\""
+        ## __debug_msg "    => without_beginning = \"${without_beginning}\""
 
         local with_bash_beginning="${QB_orig_cur}${without_beginning}"
-        #__debug_msg "    => with_bash_beginning = \"${with_bash_beginning}\""
+        ## __debug_msg "    => with_bash_beginning = \"${with_bash_beginning}\""
 
         converted_comp+=( "${with_bash_beginning}" )
     done
     readonly converted_comp
 
     COMPREPLY+=( $(compgen -W "${converted_comp[*]}" -- "${QB_orig_cur}") )
-    #__debug_msg "$( __debug_print_array 'COMPREPLY' COMPREPLY )" # Very slow call for big output even when debug is off
+    ## __debug_msg "$( __debug_print_array 'COMPREPLY' COMPREPLY )" # Very slow call for big output even when debug is off
 }
 
 
@@ -1547,7 +1551,7 @@ function __complete_general_firewall_rule() {
 
         local option_name="${QB_cur%%=*}"
         option_name="$( __strip_quotes "${option_name}" )"
-        # __debug_msg "option_name = ${option_name}"
+        ## __debug_msg "option_name = ${option_name}"
         # option_value="${QB_cur#*=}"
         readonly option_name
 
@@ -1646,7 +1650,7 @@ function _qvm_ls() {
             last_qube_name_typing="$( __strip_quotes_on_left "${last_qube_name_typing}" )"
             readonly last_qube_name_typing
 
-            __debug_msg "last_qube_name_typing = \"${last_qube_name_typing}\""
+            # __debug_msg "last_qube_name_typing = \"${last_qube_name_typing}\""
 
             # NOTE: Additionally any VM property may be used as a column, see qvm-prefs --help-properties for available values
             # cSpell:disable-next-line
@@ -2083,10 +2087,10 @@ function __process_device_completion() {
     # Stop completion is --list-device-classes was used and device_class is known
     __was_flag_used '--list-device-classes' && return 0
 
-    __debug_msg "device_class = ${device_class}"
-    __debug_msg "command = ${command}"
-    __debug_msg "qube_name = ${qube_name}"
-    __debug_msg "extra_argument = ${extra_argument}"
+    # __debug_msg "device_class = ${device_class}"
+    # __debug_msg "command = ${command}"
+    # __debug_msg "qube_name = ${qube_name}"
+    # __debug_msg "extra_argument = ${extra_argument}"
 
     if [[ "${command}" == '' ]]; then
 
@@ -2158,7 +2162,7 @@ function __process_device_completion() {
                                     option_name="$( __strip_quotes "${option_name}" )"
                                     # local option_value="${QB_cur#*=}"
                                     readonly option_name
-                                    # __debug_msg "option_name = ${option_name}"
+                                    ## __debug_msg "option_name = ${option_name}"
 
                                     case "${option_name}" in
                                         frontend-dev)
@@ -2193,7 +2197,7 @@ function __process_device_completion() {
                                     option_name="$( __strip_quotes "${option_name}" )"
                                     # local option_value="${QB_cur#*=}"
                                     readonly option_name
-                                    # __debug_msg "option_name = ${option_name}"
+                                    ## __debug_msg "option_name = ${option_name}"
 
                                     case "${option_name}" in
                                         no-strict-reset)
@@ -2453,7 +2457,7 @@ function _qvm_volume() {
     if (( QB_alone_args_count >= 1 )); then
 
         local -r command="${QB_alone_args[0]}"
-        __debug_msg "command = \"${command}\""
+        # __debug_msg "command = \"${command}\""
 
         case "${command}" in
             list | ls | l)
@@ -2916,7 +2920,7 @@ function _qvm_run() {
     # We have to find out which of 3 uses of command we deal with
     if __was_flag_used '--all'; then
         # Case 2 - no qube name, run all
-        # __debug_msg "Case 2 - no qube name, run all"
+        ## __debug_msg "Case 2 - no qube name, run all"
         # --exclude or COMMAND are allowed
         if (( QB_alone_args_count == 0 )); then
             case "${QB_prev_flag}" in
@@ -2936,7 +2940,7 @@ function _qvm_run() {
 
     elif __was_flag_used '--dispvm'; then
         # Case 3 - uses dispvm
-        # __debug_msg "Case 3 - uses dispvm"
+        ## __debug_msg "Case 3 - uses dispvm"
         # The --dispvm flag can be followed by qube name or --all
         if (( QB_alone_args_count == 0 )); then
             case "${QB_prev_flag}" in
@@ -2956,7 +2960,7 @@ function _qvm_run() {
         return 0
     else
         # Case 1 - default use with qube name
-        # __debug_msg "Case 1 - default use with qube name"
+        ## __debug_msg "Case 1 - default use with qube name"
 
         __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
@@ -3038,8 +3042,8 @@ function _qvm_firewall() {
         local -r qube="${QB_alone_args[0]}" # can be used for del and add
         local -r action="${QB_alone_args[1]}"
 
-        __debug_msg "qube = \"${qube}\""
-        __debug_msg "action = \"${action}\""
+        # __debug_msg "qube = \"${qube}\""
+        # __debug_msg "action = \"${action}\""
 
         case "${action}" in
             add)
@@ -3189,7 +3193,7 @@ function _qubesctl() {
                 local last_qube_name_typing="${QB_cur##*,}"
                 last_qube_name_typing="$( __strip_quotes_on_left "${last_qube_name_typing}" )"
                 readonly last_qube_name_typing
-                __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
+                # __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
 
                 # NOTE: we save the original QB_real_cur value and return it back, should work even without it
                 local -r saved_QB_real_cur="${QB_real_cur}"  # save original QB_real_cur just in case
@@ -3789,7 +3793,7 @@ function _qubes_dom0_update() {
     done
     readonly action_for_dnf
 
-    __debug_msg "action_for_dnf = \"${action_for_dnf}\""
+    # __debug_msg "action_for_dnf = \"${action_for_dnf}\""
 
     # NOTE: qubes-dom0-update has issues in man and output of --help,
     # e.g. not mentioning --help argument there at all.
@@ -3805,8 +3809,7 @@ function _qubes_dom0_update() {
         #__complete_string '--help --action= --clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal'
         __complete_string "--action= ${QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF}"
 
-        # __qubes_dom0_update_pass_completion_to_dnf() calls dnf completion,
-        # that clears COMPREPLY, so we have to keep a copy of it
+        # dnf completion can clear COMPREPLY, so we better keep a copy of it.
         # And anyway, it's a good idea to clear COMPREPLY manually, to set clear context for dnf
         our_comp_reply=("${COMPREPLY[@]}")
         (( our_comp_count = "${#our_comp_reply[@]}" ))
@@ -3817,12 +3820,8 @@ function _qubes_dom0_update() {
     local dnf_comp_count=0
     if __is_argument_in_list_string "${action_for_dnf}" "${dnf_all_actions}"; then
 
-        # We do not exclude ':' (and optionally '='),
-        # so it would be used properly by dnf completion
-        # in packages names like `package-3:175-12.fc42.x86_64`
-        #"${QB_CALL_init_completion}" -n '' || return 1
-
         __qubes_dom0_update_pass_completion_to_dnf "${action_for_dnf}"
+
         (( dnf_comp_count = "${#COMPREPLY[@]}" ))
     fi
 
@@ -3879,21 +3878,21 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
 
         local curr_word="${COMP_WORDS[${i}]}"
 
-        # __debug_msg '--------------'
-        # __debug_msg "i = \"${i}\""
-        # __debug_msg "curr_word = \"${curr_word}\""
-        # __debug_msg "new_line = \"${new_line}\""
-        # __debug_msg "$( __debug_print_array 'new_words' new_words )"
-        # __debug_msg "new_point = \"${new_point}\""
-        # __debug_msg "new_cword = \"${new_cword}\""
-        # __debug_msg "words_to_skip = \"${words_to_skip}\""
-        # __debug_msg "line_position = \"${line_position}\""
-        # __debug_msg "line_left = \"${line_left}\""
-        # __debug_msg ''
+        ## __debug_msg '--------------'
+        ## __debug_msg "i = \"${i}\""
+        ## __debug_msg "curr_word = \"${curr_word}\""
+        ## __debug_msg "new_line = \"${new_line}\""
+        ## __debug_msg "$( __debug_print_array 'new_words' new_words )"
+        ## __debug_msg "new_point = \"${new_point}\""
+        ## __debug_msg "new_cword = \"${new_cword}\""
+        ## __debug_msg "words_to_skip = \"${words_to_skip}\""
+        ## __debug_msg "line_position = \"${line_position}\""
+        ## __debug_msg "line_left = \"${line_left}\""
+        ## __debug_msg ''
 
         if [[ "${curr_word}" == '' ]]; then
             # cursor is after the space(s) following the last word
-            __debug_msg 'cursor is after the space(s) following the last word'
+            # __debug_msg 'cursor is after the space(s) following the last word'
             new_line="${new_line} " # add single space
             new_words+=('') # add empty word too
             (( new_point = ${#new_line} ))
@@ -3931,31 +3930,31 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
         local chars_to_remove="$(( ${#line_left} - ${#tail} ))"
         local removed_part="${line_left:0:chars_to_remove}"
 
-        # __debug_msg "words_to_skip = \"${words_to_skip}\""
-        # __debug_msg "tail = \"${tail}\""
-        # __debug_msg "chars_to_remove = \"${chars_to_remove}\""
-        # __debug_msg "removed_part = \"${removed_part}\""
-        # __debug_msg ''
+        ## __debug_msg "words_to_skip = \"${words_to_skip}\""
+        ## __debug_msg "tail = \"${tail}\""
+        ## __debug_msg "chars_to_remove = \"${chars_to_remove}\""
+        ## __debug_msg "removed_part = \"${removed_part}\""
+        ## __debug_msg ''
 
         # check if we surpass COMP_POINT and stop building new completion context
         if (( line_position + chars_to_remove == COMP_POINT)); then
             # just after that word we get cursor
             # complete this word:
-            __debug_msg 'just after that word we get cursor'
+            # __debug_msg 'just after that word we get cursor'
             new_line="${new_line}${removed_part}"
             new_words+=("${curr_word}")
             (( new_point = ${#new_line} ))
             (( new_cword = ${#new_words[@]} - 1 ))
 
-            # __debug_msg "new_line = \"${new_line}\""
-            # __debug_msg "$( __debug_print_array 'new_words' new_words )"
-            # __debug_msg "new_point = \"${new_point}\""
-            # __debug_msg "new_cword = \"${new_cword}\""
+            ## __debug_msg "new_line = \"${new_line}\""
+            ## __debug_msg "$( __debug_print_array 'new_words' new_words )"
+            ## __debug_msg "new_point = \"${new_point}\""
+            ## __debug_msg "new_cword = \"${new_cword}\""
             break
 
         elif (( line_position + chars_to_remove > COMP_POINT)); then
             # inside this word we have cursor
-            # __debug_msg 'inside this word we have cursor'
+            ## __debug_msg 'inside this word we have cursor'
 
             # first check point is inside the word, or in whitespaces before
             local whitespaces=0
@@ -3966,7 +3965,7 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
 
             if (( char_to_keep <= whitespaces )); then
                 # we complete whitespaces
-                # __debug_msg '=> we complete whitespaces'
+                ## __debug_msg '=> we complete whitespaces'
 
                 new_line="${new_line}${removed_part:0:char_to_keep}"
                 new_words+=('') # empty word
@@ -3976,7 +3975,7 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
 
             else
                 # complete the word from the middle
-                # __debug_msg '=> complete the word from the middle'
+                ## __debug_msg '=> complete the word from the middle'
 
                 (( new_point = ${#new_line} + char_to_keep ))
                 new_line="${new_line}${removed_part}"
@@ -3985,10 +3984,10 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
                 (( new_cword = ${#new_words[@]} - 1 ))
             fi
 
-            # __debug_msg "new_line = \"${new_line}\""
-            # __debug_msg "$( __debug_print_array 'new_words' new_words )"
-            # __debug_msg "new_point = \"${new_point}\""
-            # __debug_msg "new_cword = \"${new_cword}\""
+            ## __debug_msg "new_line = \"${new_line}\""
+            ## __debug_msg "$( __debug_print_array 'new_words' new_words )"
+            ## __debug_msg "new_point = \"${new_point}\""
+            ## __debug_msg "new_cword = \"${new_cword}\""
             break
 
         fi
@@ -4020,10 +4019,10 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
             #(( new_cword = COMP_CWORD - words_removed ))
             (( new_cword = ${#new_words[@]} ))
 
-            # __debug_msg "new_line = \"${new_line}\""
-            # __debug_msg "$( __debug_print_array 'new_words' new_words )"
-            # __debug_msg "new_point = \"${new_point}\""
-            # __debug_msg "new_cword = \"${new_cword}\""
+            ## __debug_msg "new_line = \"${new_line}\""
+            ## __debug_msg "$( __debug_print_array 'new_words' new_words )"
+            ## __debug_msg "new_point = \"${new_point}\""
+            ## __debug_msg "new_cword = \"${new_cword}\""
         fi
     done
 
@@ -4045,12 +4044,14 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
     # NOTE: a trick to avoid huge duplication of dnf completion code
     # We ask dnf itself for completion similar to what sudo does
     #
-    # We do something like _command_offset() but more complicated:
-    # we reassemble the completion line (like for sudo).
-    # We add "dnf command" and remove --action flag with its value.
-    # So _dnf() completes the line "dnf command other_args"
-    #
-    # Everything hopefully works like miracle.
+    # We do something like _command_offset() but more complicated.
+    # We have to hide all arguments used by qubes-dom0-update, including
+    # --action=command, that by default is separated to 3 arguments.
+    # We reassemble the completion line (like for sudo) in COMP_* variables.
+    # We add "dnf command" at the beginning (using command from --action=command)
+    # instead of qubes-dom0-update.
+    # So _dnf() completes the lines like "dnf command other_args..."
+
 
     # Save original values
     local -r original_COMP_LINE="${COMP_LINE}"
@@ -4059,29 +4060,17 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
     local -r original_COMP_CWORD="${COMP_CWORD}"
     local -r original_COMP_WORDBREAKS="${COMP_WORDBREAKS}"
 
-    __debug_msg '--------------------------------------------------------'
-    __debug_msg '1. Before passing completion to dnf'
-    __debug_msg ''
-    __debug_log_env
-
-    # NOTE: We have to hide some arguments used by qubes-dom0-update itself.
-    # The only exception is --action=command, because by default it is
-    # separated to 3 arguments and dnf considers command to be a standalone
-    # argument, like install/remove and etc.
-    # It luckily still works but better to hide it anyway, because the
-    # dnf completion script can be changed someday.
+    # __debug_msg '--------------------------------------------------------'
+    # __debug_msg '1. Before passing completion to dnf'
+    # __debug_log_env
 
     __qubes_dom0_update_remove_non_dnf_from_compline "${command}" || return 1
-    __debug_msg '--------------------------------------------------------'
-    __debug_msg '2. After filtering command line for dnf'
-    __debug_msg ''
-    __debug_log_env
 
-    __debug_msg '--------------------------------------------------------'
+    # __debug_msg '--------------------------------------------------------'
+    # __debug_msg '2. After filtering command line for dnf'
+    # __debug_log_env
 
     __qubes_dom0_update_run_dnf_completion
-
-    __debug_msg '--------------------------------------------------------'
 
     # Revert original values for bash completion variables,
     # to avoid possible problems with wrappers like sudo
@@ -4090,10 +4079,6 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
     COMP_WORDS=( "${original_COMP_WORDS[@]}" )
     COMP_CWORD="${original_COMP_CWORD}"
     COMP_WORDBREAKS="${original_COMP_WORDBREAKS}"
-    # __debug_msg '--------------------------------------------------------'
-    # __debug_msg '3. After restoring the original values'
-    # __debug_msg ''
-    # __debug_log_env
 }
 
 
@@ -4111,14 +4096,14 @@ function __qubes_dom0_update_run_dnf_completion() {
     # Existing completion specifications in a way that allows them to be reused as input
     local cspec
     cspec="$( complete -p "${dnf_cmd}" 2>/dev/null )"
-    __debug_msg "cspec 1 = \"${cspec}\""
+    # __debug_msg "cspec 1 = \"${cspec}\""
 
     # If we have no completion for dnf yet, try to load it
     if [[ "${cspec}" == '' ]]; then
         _completion_loader "${dnf_cmd}"
         cspec="$( complete -p "${dnf_cmd}" 2>/dev/null )"
     fi
-    __debug_msg "cspec 2 = \"${cspec}\""
+    # __debug_msg "cspec 2 = \"${cspec}\""
 
     # If fail to find dnf completion
     if [[ "${cspec}" == '' ]]; then
@@ -4128,14 +4113,14 @@ function __qubes_dom0_update_run_dnf_completion() {
     if [[ "${cspec}" =~ [[:blank:]]-F[[:blank:]] ]]; then
 
         # Completion uses `complete -F function dnf`
-        __debug_msg "Completion uses complete -F function dnf"
+        # __debug_msg "Completion uses complete -F function dnf"
 
         # Crop out function name:
         local func_name="${cspec#*-F[[:blank:]]}"
         func_name="${func_name%%[[:blank:]]*}"
         readonly func_name
 
-        __debug_msg "func_name = \"${func_name}\""
+        # __debug_msg "func_name = \"${func_name}\""
 
         # Call function with dnf as $1 arg, and last and one before last as $2 and optional $3 (more in `man complete`)
         local -r comp_words_count="${#COMP_WORDS[@]}"
@@ -4151,7 +4136,7 @@ function __qubes_dom0_update_run_dnf_completion() {
         # will not act nor process after.
     else
 
-        __debug_msg "Completion uses complete <anything> dnf"
+        # __debug_msg "Completion uses complete <anything> dnf"
 
         # Crop out string between 'complete' and 'dnf' with any options
         # and eval it to get output from compgen for any possible args inside ${cspec}
@@ -4190,7 +4175,7 @@ function _qubes_vm_update() {
             local last_qube_name_typing="${QB_cur##*,}"
             last_qube_name_typing="$( __strip_quotes_on_left "${last_qube_name_typing}" )"
             readonly last_qube_name_typing
-            __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
+            # __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
 
             # NOTE: we save the original QB_real_cur value and return it back, should work even without it
             local -r saved_QB_real_cur="${QB_real_cur}"  # save original QB_real_cur just in case
@@ -4395,7 +4380,7 @@ function __complete_repo() {
     local -r command_to_run="${QVMTOOL_QVM_TEMPLATE}"
 
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
-        __debug_msg "No command to run: ${command_to_run}"
+        # __debug_msg "No command to run: ${command_to_run}"
         return 1
     fi
 
@@ -4428,7 +4413,7 @@ function __complete_templatespec() {
 
     local -r command_to_run="${QVMTOOL_QVM_TEMPLATE}"
     if ! builtin command -v "${command_to_run}" >/dev/null 2>&1 ; then
-        __debug_msg "No command to run: ${command_to_run}"
+        # __debug_msg "No command to run: ${command_to_run}"
         return 1
     fi
 
@@ -4685,7 +4670,7 @@ function _qvm_pool() {
                             option_name="$( __strip_quotes "${option_name}" )"
                             # local option_value="${QB_cur#*=}"
                             readonly option_name
-                            # __debug_msg "option_name = ${option_name}"
+                            ## __debug_msg "option_name = ${option_name}"
 
                             case "${option_name}" in
                                 dir_path)
@@ -4841,7 +4826,7 @@ function _qvm_pool() {
                             option_name="$( __strip_quotes "${option_name}" )"
                             # local option_value="${QB_cur#*=}"
                             readonly option_name
-                            # __debug_msg "option_name = ${option_name}"
+                            ## __debug_msg "option_name = ${option_name}"
 
                             case "${option_name}" in
                                 dir_path)
