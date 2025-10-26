@@ -4896,7 +4896,7 @@ function main() {
     local supported_command
     for supported_command in "${SUPPORTED_COMMANDS_LIST[@]}"; do
 
-        if [[ -x /usr/bin/${supported_command} ]] || (( QB_DEBUG_MODE == 1 )) ; then
+        if builtin command -v "${supported_command}" >/dev/null 2>&1 || (( QB_DEBUG_MODE == 1 )) ; then
 
             local command_processor
             command_processor="$(echo "_${supported_command}" | tr '-' '_')"
