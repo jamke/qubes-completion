@@ -779,11 +779,11 @@ function __init_qubes_completion() {
 
     # List of arguments that require value after them
     # like --exclude=work or --exclude=work
-    local -r flags_require_one="${1}"
+    local -r flags_require_one="${1-}"
 
     # List of arguments that require multiple values till some flag
     # like --tags tag1 tag2 tag3 --other-flag
-    local -r flags_require_multiple="${2}"
+    local -r flags_require_multiple="${2-}"
 
     __debug_log_start_of_init_qubes_completion "${flags_require_one}" "${flags_require_multiple}"
 
@@ -3742,14 +3742,12 @@ function _qubes_dom0_update() {
     # with "--action install" format, so we does not allow it.
 
     __init_qubes_completion '--action' || return 0
-    #__init_qubes_completion || return 0
 
     # NOTE: We do not check for __is_prev_flag_not_empty because
     # there can be a lot of different unknown flags from dnf
     # __is_prev_flag_not_empty && return 0; # unknown prev flag expects sub-argument (e.g. --unknown_flag=)
 
-
-    # NOTE: maybe qubes-dom0-update does not expected to allow all valid actions of dnf
+    # NOTE: maybe qubes-dom0-update does not expected to allow all valid 'actions' of dnf
     # but it is not documented nor is it obvious from the source code of it.
     # NOTE: choose what to complete - everything or mostly used ones?
     # I do not know that the recommended action list should be.
@@ -3761,6 +3759,7 @@ function _qubes_dom0_update() {
 
         case "${QB_prev_flag}" in
             --action)
+                # do not call dnf, this flag is our business
                 __complete_string "${dnf_all_actions}"
                 return 0
                 ;;
@@ -3768,31 +3767,29 @@ function _qubes_dom0_update() {
     fi
 
     # get action (command) to pass to dnf
-    local -r action_flag_name='--action'
-
-    local max_arg_index="${#QB_full_line_args[@]}"
-    (( max_arg_index-- ))   # because we want the next argument after the flag
-    readonly max_arg_index
-
     local action_for_dnf='install' # install by default if --action is omitted
     local i
-    for (( i=0; i < "${max_arg_index}"; i++ )); do
-        if [[ "${QB_full_line_args[${i}]}" == "${action_flag_name}" ]]; then
-            (( i++ ))   # because we want the next argument after the flag
-            action_for_dnf="${QB_full_line_args[${i}]}"
-            break
+    for (( i=0; i < "${#QB_full_line_args[@]}"; i++ )); do
+        if [[ "${QB_full_line_args[${i}]}" == '--action' ]]; then
+            local next_i
+            (( next_i = i + 1))
+            if (( next_i < ${#QB_full_line_args[@]} )); then
+                if [[ "${QB_full_line_args[${next_i}]}" == '=' ]]; then
+                    # we have (action, =, value), let's skip '='
+                    (( next_i++ ))
+                    if (( next_i < ${#QB_full_line_args[@]} )) ; then
+                        action_for_dnf="${QB_full_line_args[${next_i}]}"
+                    fi
+                else
+                    # we have (action=, value)
+                    action_for_dnf="${QB_full_line_args[${next_i}]}"
+                fi
+            fi
         fi
     done
     readonly action_for_dnf
 
     __debug_msg "action_for_dnf = \"${action_for_dnf}\""
-
-    local dnf_comp_count=0
-    # Call dnf completion (but only if action is a valid option)
-    if __is_argument_in_list_string "${action_for_dnf}" "${dnf_all_actions}"; then
-        __qubes_dom0_update_pass_completion_to_dnf "${action_for_dnf}"
-        dnf_comp_count="${#COMPREPLY[@]}"
-    fi
 
     # NOTE: qubes-dom0-update has issues in man and output of --help,
     # e.g. not mentioning --help argument there at all.
@@ -3800,37 +3797,59 @@ function _qubes_dom0_update() {
     # so we provide this --action completion with = at the end.
 
     local our_comp_count=0
+    local our_comp_reply=()
 
-    # Now we can add our flags if we need to
+    # 1. Out completion, complete flags if we need to and save to $our_comp_reply
     if (( QB_alone_args_count == 0 )) && ! __is_prev_flag_not_empty && __need_flags ; then
-
         # We remove --help, because dnf will provide it and there would be 2 --help otherwise
         #__complete_string '--help --action= --clean --check-only --gui --force-xen-upgrade --console --show-output --preserve-terminal'
         __complete_string "--action= ${QVM_QUBES_DOM0_UPDATE_FLAGS_HIDE_FROM_DNF}"
-        (( our_comp_count = "${#COMPREPLY[@]}" - dnf_comp_count ))
+
+        # __qubes_dom0_update_pass_completion_to_dnf() calls dnf completion,
+        # that clears COMPREPLY, so we have to keep a copy of it
+        # And anyway, it's a good idea to clear COMPREPLY manually, to set clear context for dnf
+        our_comp_reply=("${COMPREPLY[@]}")
+        (( our_comp_count = "${#our_comp_reply[@]}" ))
+        COMPREPLY=() # clear
     fi
 
-    if (( dnf_comp_count > 0 )) && (( our_comp_count == 0 )); then
+    # 2. Call dnf completion (but only if action is a valid option)
+    local dnf_comp_count=0
+    if __is_argument_in_list_string "${action_for_dnf}" "${dnf_all_actions}"; then
 
-        # dnf inserts spaces itself in the COMPREPLY,
+        # We do not exclude ':' (and optionally '='),
+        # so it would be used properly by dnf completion
+        # in packages names like `package-3:175-12.fc42.x86_64`
+        #"${QB_CALL_init_completion}" -n '' || return 1
+
+        __qubes_dom0_update_pass_completion_to_dnf "${action_for_dnf}"
+        (( dnf_comp_count = "${#COMPREPLY[@]}" ))
+    fi
+
+    # 3. Combine completion results
+    if (( dnf_comp_count > 0 )) && (( our_comp_count == 0 )); then
+        # dnf inserts ending spaces itself in the COMPREPLY,
         # so if we have only dnf's results and none of ours (COMPREPLY),
         # then we should use nospace option
         compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
 
     elif (( dnf_comp_count == 0 )) && (( our_comp_count > 0 )); then
+        # use only our completion
+        COMPREPLY+=("${our_comp_reply[@]}")
 
         # Use for case of '--action='
         if (( our_comp_count == 1 )) && [[ "${COMPREPLY[0]}" == *= ]]; then
             compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
         fi
-
     elif (( dnf_comp_count > 0 )) && (( our_comp_count > 0 )); then
 
         # Combined results
 
+        # add our completion to COMPREPLY which already has dnf completion
+        COMPREPLY+=("${our_comp_reply[@]}")
+
         # NOTE: we can keep order to separate dnf and qubes arguments better
         compopt -o nosort &>/dev/null # to /dev/null because output interferes with running tests
-
     fi
 
     return 0
@@ -3851,8 +3870,6 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
     local new_point=0
     local new_cword=0
 
-    # local chars_removed=0
-    # local words_removed=0
     local words_to_skip=0
 
     local line_left="${COMP_LINE}"
@@ -3862,18 +3879,17 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
 
         local curr_word="${COMP_WORDS[${i}]}"
 
-        __debug_msg '--------------'
-        __debug_msg "i = \"${i}\""
-        __debug_msg "curr_word = \"${curr_word}\""
-        __debug_msg "new_line = \"${new_line}\""
-        __debug_msg "$( __debug_print_array 'new_words' new_words )"
-        __debug_msg "new_point = \"${new_point}\""
-        __debug_msg "new_cword = \"${new_cword}\""
-        # __debug_msg "words_removed = \"${words_removed}\""
-        __debug_msg "words_to_skip = \"${words_to_skip}\""
-        __debug_msg "line_position = \"${line_position}\""
-        __debug_msg "line_left = \"${line_left}\""
-        __debug_msg ''
+        # __debug_msg '--------------'
+        # __debug_msg "i = \"${i}\""
+        # __debug_msg "curr_word = \"${curr_word}\""
+        # __debug_msg "new_line = \"${new_line}\""
+        # __debug_msg "$( __debug_print_array 'new_words' new_words )"
+        # __debug_msg "new_point = \"${new_point}\""
+        # __debug_msg "new_cword = \"${new_cword}\""
+        # __debug_msg "words_to_skip = \"${words_to_skip}\""
+        # __debug_msg "line_position = \"${line_position}\""
+        # __debug_msg "line_left = \"${line_left}\""
+        # __debug_msg ''
 
         if [[ "${curr_word}" == '' ]]; then
             # cursor is after the space(s) following the last word
@@ -3915,11 +3931,11 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
         local chars_to_remove="$(( ${#line_left} - ${#tail} ))"
         local removed_part="${line_left:0:chars_to_remove}"
 
-        __debug_msg "words_to_skip = \"${words_to_skip}\""
-        __debug_msg "tail = \"${tail}\""
-        __debug_msg "chars_to_remove = \"${chars_to_remove}\""
-        __debug_msg "removed_part = \"${removed_part}\""
-        __debug_msg ''
+        # __debug_msg "words_to_skip = \"${words_to_skip}\""
+        # __debug_msg "tail = \"${tail}\""
+        # __debug_msg "chars_to_remove = \"${chars_to_remove}\""
+        # __debug_msg "removed_part = \"${removed_part}\""
+        # __debug_msg ''
 
         # check if we surpass COMP_POINT and stop building new completion context
         if (( line_position + chars_to_remove == COMP_POINT)); then
@@ -3931,15 +3947,15 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
             (( new_point = ${#new_line} ))
             (( new_cword = ${#new_words[@]} - 1 ))
 
-            __debug_msg "new_line = \"${new_line}\""
-            __debug_msg "$( __debug_print_array 'new_words' new_words )"
-            __debug_msg "new_point = \"${new_point}\""
-            __debug_msg "new_cword = \"${new_cword}\""
+            # __debug_msg "new_line = \"${new_line}\""
+            # __debug_msg "$( __debug_print_array 'new_words' new_words )"
+            # __debug_msg "new_point = \"${new_point}\""
+            # __debug_msg "new_cword = \"${new_cword}\""
             break
 
         elif (( line_position + chars_to_remove > COMP_POINT)); then
             # inside this word we have cursor
-            __debug_msg 'inside this word we have cursor'
+            # __debug_msg 'inside this word we have cursor'
 
             # first check point is inside the word, or in whitespaces before
             local whitespaces=0
@@ -3950,7 +3966,7 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
 
             if (( char_to_keep <= whitespaces )); then
                 # we complete whitespaces
-                __debug_msg '=> we complete whitespaces'
+                # __debug_msg '=> we complete whitespaces'
 
                 new_line="${new_line}${removed_part:0:char_to_keep}"
                 new_words+=('') # empty word
@@ -3960,7 +3976,7 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
 
             else
                 # complete the word from the middle
-                __debug_msg '=> complete the word from the middle'
+                # __debug_msg '=> complete the word from the middle'
 
                 (( new_point = ${#new_line} + char_to_keep ))
                 new_line="${new_line}${removed_part}"
@@ -3969,10 +3985,10 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
                 (( new_cword = ${#new_words[@]} - 1 ))
             fi
 
-            __debug_msg "new_line = \"${new_line}\""
-            __debug_msg "$( __debug_print_array 'new_words' new_words )"
-            __debug_msg "new_point = \"${new_point}\""
-            __debug_msg "new_cword = \"${new_cword}\""
+            # __debug_msg "new_line = \"${new_line}\""
+            # __debug_msg "$( __debug_print_array 'new_words' new_words )"
+            # __debug_msg "new_point = \"${new_point}\""
+            # __debug_msg "new_cword = \"${new_cword}\""
             break
 
         fi
@@ -4004,10 +4020,10 @@ function __qubes_dom0_update_remove_non_dnf_from_compline() {
             #(( new_cword = COMP_CWORD - words_removed ))
             (( new_cword = ${#new_words[@]} ))
 
-            __debug_msg "new_line = \"${new_line}\""
-            __debug_msg "$( __debug_print_array 'new_words' new_words )"
-            __debug_msg "new_point = \"${new_point}\""
-            __debug_msg "new_cword = \"${new_cword}\""
+            # __debug_msg "new_line = \"${new_line}\""
+            # __debug_msg "$( __debug_print_array 'new_words' new_words )"
+            # __debug_msg "new_point = \"${new_point}\""
+            # __debug_msg "new_cword = \"${new_cword}\""
         fi
     done
 
@@ -4048,9 +4064,7 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
     __debug_msg ''
     __debug_log_env
 
-    # NOTE: We can hide some arguments used by qubes-dom0-update itself,
-    # but it does not seem to be necessary as dnf completion does not worry
-    # about any of them, nor completions do, probably by design.
+    # NOTE: We have to hide some arguments used by qubes-dom0-update itself.
     # The only exception is --action=command, because by default it is
     # separated to 3 arguments and dnf considers command to be a standalone
     # argument, like install/remove and etc.
@@ -4076,10 +4090,10 @@ function __qubes_dom0_update_pass_completion_to_dnf() {
     COMP_WORDS=( "${original_COMP_WORDS[@]}" )
     COMP_CWORD="${original_COMP_CWORD}"
     COMP_WORDBREAKS="${original_COMP_WORDBREAKS}"
-    __debug_msg '--------------------------------------------------------'
-    __debug_msg '4. After restoring the original values'
-    __debug_msg ''
-    __debug_log_env
+    # __debug_msg '--------------------------------------------------------'
+    # __debug_msg '3. After restoring the original values'
+    # __debug_msg ''
+    # __debug_log_env
 }
 
 
