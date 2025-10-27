@@ -24,7 +24,7 @@ Running **states** of qubes are respected, e.g. provide only halted qubes for `q
 ```
 $ qvm-start <TAB><TAB>
 
-work  sys-whonix  fedora-37
+work  sys-whonix  fedora-42
 ```
 
 Also **classes (types)** of qubes are used, like `TemplateVMs` and `DispVMs`:
@@ -32,7 +32,7 @@ Also **classes (types)** of qubes are used, like `TemplateVMs` and `DispVMs`:
 ```
 $ qvm-create --template <TAB><TAB>
 
-debian-11  fedora-37  fedora-37-minimal
+debian-11  fedora-42  fedora-42-minimal
 ```
 
 #### 2. All flags of commands (long and short versions):
@@ -52,8 +52,8 @@ $ qvm-ls -<TAB><TAB>
 --exclude     -k              -q            --tree
 --fields      --kernel        --quiet       -v
 --format      -n              --raw-data    --verbose
--h            --network       --raw-list    
---halted      --no-spinner    --running     
+-h            --network       --raw-list
+--halted      --no-spinner    --running
 ```
 
 
@@ -96,27 +96,27 @@ $ qvm-firewall sys-firewall del -<TAB>
 $ qvm-firewall sys-firewall del --rule-no=<TAB><TAB>
 
 NO  ACTION  HOST                PROTOCOL  PORT(S)  SPECIAL TARGET  ICMP TYPE  EXPIRE   COMMENT
-0   accept  1.1.1.1/32          tcp       443      -               -          -       -                      
-1   accept  200.200.200.200/32  udp       443      -               -          -       -                      
-2   accept  222.222.222.222/32  udp       80       -               -          -       -                      
-3   drop    111.111.111.111/32  udp       443      -               -          -       -                      
-4   drop    111.111.111.112/32  udp       443      -               -          -       -                      
-5   drop    111.111.111.113/32  udp       443      -               -          -       -                      
-6   drop    92.168.0.2/16       udp       443      -               -          -       -                      
-7   drop    192.168.0.0/16      tcp       81-90    dns             -          -       -                      
-8   drop    -                   icmp      -        dns             7          +1905s  -                      
-9   drop    92.168.0.2/16       icmp      -        dns             6          +99905s -                      
-10  drop    111.111.111.114/32  udp       443      -               -          -       -                      
-11  drop    -                   -         -        -               -          -       -                      
+0   accept  1.1.1.1/32          tcp       443      -               -          -       -
+1   accept  200.200.200.200/32  udp       443      -               -          -       -
+2   accept  222.222.222.222/32  udp       80       -               -          -       -
+3   drop    111.111.111.111/32  udp       443      -               -          -       -
+4   drop    111.111.111.112/32  udp       443      -               -          -       -
+5   drop    111.111.111.113/32  udp       443      -               -          -       -
+6   drop    92.168.0.2/16       udp       443      -               -          -       -
+7   drop    192.168.0.0/16      tcp       81-90    dns             -          -       -
+8   drop    -                   icmp      -        dns             7          +1905s  -
+9   drop    92.168.0.2/16       icmp      -        dns             6          +99905s -
+10  drop    111.111.111.114/32  udp       443      -               -          -       -
+11  drop    -                   -         -        -               -          -       -
 ```
 
 ```
 $ qvm-firewall sys-firewall del --rule-no=1<TAB><TAB>
 
 NO  ACTION  HOST                PROTOCOL  PORT(S)  SPECIAL TARGET  ICMP TYPE  EXPIRE   COMMENT
-1   accept  200.200.200.200/32  udp       443      -               -          -       -                      
-10  drop    111.111.111.114/32  udp       443      -               -          -       -                      
-11  drop    -                   -         -        -               -          -       -                      
+1   accept  200.200.200.200/32  udp       443      -               -          -       -
+10  drop    111.111.111.114/32  udp       443      -               -          -       -
+11  drop    -                   -         -        -               -          -       -
 ```
 
 #### 5. Device IDs with name hints for all types (block, usb, pci and mic).
@@ -153,9 +153,9 @@ default_user        keyboard_layout    shutdown_timeout     visible_ip
 dns                 klass              start_time           visible_ip6
 gateway             label              stubdom_mem          visible_netmask
 gateway6            mac                stubdom_xid          xid
-guivm               management_dispvm  template             
-icon                maxmem             template_for_dispvms 
-include_in_backups  memory             updateable           
+guivm               management_dispvm  template
+icon                maxmem             template_for_dispvms
+include_in_backups  memory             updateable
 ```
 
 ```
@@ -276,17 +276,15 @@ See yourself.
 
 Currently completion is provided for Qubes OS commands listed below.
 
-Symbol `*` marks commands that have completion with limited implementation or a room for improvement.
-
 * `qvm-ls`
 * `qvm-tags`
-* `qvm-start` *
+* `qvm-start`
 * `qvm-shutdown`
 * `qvm-kill`
 * `qvm-run`
 * `qvm-pause`
 * `qvm-unpause`
-* `qvm-create` *
+* `qvm-create`
 * `qvm-clone`
 * `qvm-remove`
 * `qvm-device`
@@ -294,15 +292,17 @@ Symbol `*` marks commands that have completion with limited implementation or a 
 * `qvm-usb`
 * `qvm-pci`
 * `qvm-prefs`
+* `qvm-template`
 * `qvm-features`
-* `qvm-volume` *
+* `qvm-volume`
 * `qvm-backup`
 * `qvm-backup-restore`
+* `qvm-pool`
 * `qvm-check`
 * `qvm-firewall`
 * `qvm-service`
 * `qvm-sync-appmenus`
-* `qvm-appmenus` *
+* `qvm-appmenus`
 * `qvm-copy-to-vm`
 * `qvm-move-to-vm`
 * `qvm-copy`
@@ -314,9 +314,17 @@ Symbol `*` marks commands that have completion with limited implementation or a 
 * `qvm-get-image`
 * `qvm-get-tinted-image`
 * `qvm-console-dispvm`
-* `qubes-dom0-update` *
+
+* `qubes-dom0-update`
 * `qubes-prefs`
 * `qubes-guid`
+* `qubes-vm-update`
+* `qubes-fwupdmgr`
+* `qubes-prepare-vm-kernel`
+* `qubes-app-menu`
+* `qubes-policy-lint`
+* `qubes-policy-editor`
+* `qubes-update-gui`
 * `qubes-hcl-report`
 * `qubes-bug-report`
 * `qubes-policy`
@@ -325,8 +333,10 @@ Symbol `*` marks commands that have completion with limited implementation or a 
 * `qubes-vm-boot-from-device`
 * `qubes-input-trigger`
 * `qubes-guivm-session`
-* `qubesctl` *
-* `qubesd-query` *
+
+* `qubesctl`
+* `qubesd-query`
+
 
 ## How to install and use
 
@@ -446,7 +456,7 @@ The script has general logging functions that allow to debug the completion usin
 
 ### When arguments are changed for Qubes OS tools
 
-When arguments or flags of Qubes OS tool were changed the completion script should be changed accordingly. The starting point of making such modifications should be the function that corresponds to the changed tool.
+When arguments or flags of Qubes OS tool are changed, the completion script should be changed accordingly. The starting point of making such modifications should be the function that corresponds to the changed tool.
 E.g. `_qvm_create()` function for `qvm-create` tool.
 
 In most cases the strings with the list or arguments and flags are located inside these functions where they are used, and not in one place at the top of the file with some constant strings for all commands.
