@@ -138,7 +138,7 @@ declare -a SUPPORTED_COMMANDS_LIST=(
     'qubes-app-menu'            # R4.2. Tests: Basic # Features: 100% # No man, GUI app
     'qubes-policy-lint'         # R4.2. Tests: Basic # Features: 100% # No man
     'qubes-policy-editor'       # R4.2. Tests: Basic # Features: 100% # No man
-    'qubes-update-gui'          # TODO: Implement for R4.2. Tests: TODO # Features: TODO # No man
+    'qubes-update-gui'          # R4.2. Tests: #TODO # Features: 100% # No man
 
      # Commands that have no --quiet/verbose
     'qubesctl'                  # R4.2. Tests: Basic # Features: 100%
@@ -4208,6 +4208,72 @@ function _qubes_vm_update() {
     # cSpell:disable-next-line
     local -r flags='--max-concurrency -x --dry-run --signal-no-updates --apply-to-sys --restart -r --apply-to-all -R --no-apply --force-update --update-if-stale --update-if-available --skip --targets --templates -T --standalones -S --apps -A --all --log --no-refresh --force-upgrade -f --no-cleanup --leave-obsolete --show-output --no-progress'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
+
+    return 0;
+}
+
+
+function _qubes_update_gui() {
+
+    # NOTE: this command does not support --verbose and --quiet args
+    __init_qubes_completion '--log --max-concurrency --update-if-stale --skip --targets' || return 0
+
+    if (( QB_alone_args_count > 0 )); then
+        # too many standalone args, completion should not work
+        return;
+    fi
+
+    case "${QB_prev_flag}" in
+        --max-concurrency | --update-if-stale)
+            # Number here, no completion
+            return 0
+            ;;
+        --targets | --skip)
+            # complete comma separated list of qubes
+
+            local last_qube_name_typing="${QB_cur##*,}"
+            last_qube_name_typing="$( __strip_quotes_on_left "${last_qube_name_typing}" )"
+            readonly last_qube_name_typing
+            # __debug_msg "last_qube_name_typing=\"${last_qube_name_typing}\""
+
+            # NOTE: we save the original QB_real_cur value and return it back, should work even without it
+            local -r saved_QB_real_cur="${QB_real_cur}"  # save original QB_real_cur just in case
+            #
+                # We have to manually set QB_real_cur, because comma is non-standard separator
+                QB_real_cur="${last_qube_name_typing}"
+                __complete_qubes_list 'all'
+            #
+            QB_real_cur="${saved_QB_real_cur}"           # return the original value of QB_real_cur back
+
+            # Nospace because it is comma separated list of qubes
+            compopt -o nospace &>/dev/null # to /dev/null because output interferes with running tests
+
+            return 0
+            ;;
+        --log)
+
+            # cSpell:disable-next-line
+            local -r log_types='DEBUG INFO WARNING ERROR CRITICAL'
+
+            __complete_string "${log_types}"
+            return 0
+            ;;
+        ?*)
+            # unknown prev flag expects sub-argument
+            return 0
+            ;;
+    esac
+
+    # To avoid giving unsupported --verbose and --quiet,
+    # we would not use __complete_all_starting_flags_if_needed
+
+    # We also do not check for __need_flags, because only
+    # flags are expected, no standalones. So, provide flags in any case
+
+    # cSpell:disable-next-line
+    local -r flags='--help -h --log --max-concurrency --signal-no-updates --apply-to-sys --restart -r --apply-to-all -R --no-apply --force-update --update-if-stale --update-if-available --skip --targets --templates -T --standalones -S --all --dom0 --non-interactive -n'
+
+    __complete_string "${flags}"
 
     return 0;
 }
