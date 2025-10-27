@@ -18,27 +18,27 @@ function test_wrapper() {
 }
 
 @test "Test 000. qubes-vm-update: qubes-vm-update " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--verbose" [3]="-v" [4]="--quiet" [5]="-q" [6]="--max-concurrency" [7]="-x" [8]="--dry-run" [9]="--signal-no-updates" [10]="--apply-to-sys" [11]="--restart" [12]="-r" [13]="--apply-to-all" [14]="-R" [15]="--no-apply" [16]="--force-update" [17]="--update-if-stale" [18]="--update-if-available" [19]="--skip" [20]="--targets" [21]="--templates" [22]="-T" [23]="--standalones" [24]="-S" [25]="--apps" [26]="-A" [27]="--all" [28]="--log" [29]="--no-refresh" [30]="--force-upgrade" [31]="-f" [32]="--no-cleanup" [33]="--leave-obsolete" [34]="--show-output" [35]="--no-progress")
     test_wrapper 'qubes-vm-update '
 }
 
 @test "Test 001. qubes-vm-update: qubes-vm-update -" {
-    EXPECTED_COMPREPLY=([0]="--max-concurrency" [1]="-x" [2]="--dry-run" [3]="--signal-no-updates" [4]="--apply-to-sys" [5]="--restart" [6]="-r" [7]="--apply-to-all" [8]="-R" [9]="--no-apply" [10]="--force-update" [11]="--update-if-stale" [12]="--update-if-available" [13]="--skip" [14]="--targets" [15]="--templates" [16]="-T" [17]="--standalones" [18]="-S" [19]="--apps" [20]="-A" [21]="--all" [22]="--log" [23]="--no-refresh" [24]="--force-upgrade" [25]="-f" [26]="--no-cleanup" [27]="--leave-obsolete" [28]="--show-output" [29]="--no-progress" [30]="--verbose" [31]="-v" [32]="--quiet" [33]="-q" [34]="--help" [35]="-h")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--verbose" [3]="-v" [4]="--quiet" [5]="-q" [6]="--max-concurrency" [7]="-x" [8]="--dry-run" [9]="--signal-no-updates" [10]="--apply-to-sys" [11]="--restart" [12]="-r" [13]="--apply-to-all" [14]="-R" [15]="--no-apply" [16]="--force-update" [17]="--update-if-stale" [18]="--update-if-available" [19]="--skip" [20]="--targets" [21]="--templates" [22]="-T" [23]="--standalones" [24]="-S" [25]="--apps" [26]="-A" [27]="--all" [28]="--log" [29]="--no-refresh" [30]="--force-upgrade" [31]="-f" [32]="--no-cleanup" [33]="--leave-obsolete" [34]="--show-output" [35]="--no-progress")
     test_wrapper 'qubes-vm-update -'
 }
 
 @test "Test 002. qubes-vm-update: qubes-vm-update --" {
-    EXPECTED_COMPREPLY=([0]="--max-concurrency" [1]="--dry-run" [2]="--signal-no-updates" [3]="--apply-to-sys" [4]="--restart" [5]="--apply-to-all" [6]="--no-apply" [7]="--force-update" [8]="--update-if-stale" [9]="--update-if-available" [10]="--skip" [11]="--targets" [12]="--templates" [13]="--standalones" [14]="--apps" [15]="--all" [16]="--log" [17]="--no-refresh" [18]="--force-upgrade" [19]="--no-cleanup" [20]="--leave-obsolete" [21]="--show-output" [22]="--no-progress" [23]="--verbose" [24]="--quiet" [25]="--help")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="--verbose" [2]="--quiet" [3]="--max-concurrency" [4]="--dry-run" [5]="--signal-no-updates" [6]="--apply-to-sys" [7]="--restart" [8]="--apply-to-all" [9]="--no-apply" [10]="--force-update" [11]="--update-if-stale" [12]="--update-if-available" [13]="--skip" [14]="--targets" [15]="--templates" [16]="--standalones" [17]="--apps" [18]="--all" [19]="--log" [20]="--no-refresh" [21]="--force-upgrade" [22]="--no-cleanup" [23]="--leave-obsolete" [24]="--show-output" [25]="--no-progress")
     test_wrapper 'qubes-vm-update --'
 }
 
 @test "Test 003. qubes-vm-update: qubes-vm-update -- " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--verbose" [3]="-v" [4]="--quiet" [5]="-q" [6]="--max-concurrency" [7]="-x" [8]="--dry-run" [9]="--signal-no-updates" [10]="--apply-to-sys" [11]="--restart" [12]="-r" [13]="--apply-to-all" [14]="-R" [15]="--no-apply" [16]="--force-update" [17]="--update-if-stale" [18]="--update-if-available" [19]="--skip" [20]="--targets" [21]="--templates" [22]="-T" [23]="--standalones" [24]="-S" [25]="--apps" [26]="-A" [27]="--all" [28]="--log" [29]="--no-refresh" [30]="--force-upgrade" [31]="-f" [32]="--no-cleanup" [33]="--leave-obsolete" [34]="--show-output" [35]="--no-progress")
     test_wrapper 'qubes-vm-update -- '
 }
 
 @test "Test 004. qubes-vm-update: qubes-vm-update -- -" {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--verbose" [3]="-v" [4]="--quiet" [5]="-q" [6]="--max-concurrency" [7]="-x" [8]="--dry-run" [9]="--signal-no-updates" [10]="--apply-to-sys" [11]="--restart" [12]="-r" [13]="--apply-to-all" [14]="-R" [15]="--no-apply" [16]="--force-update" [17]="--update-if-stale" [18]="--update-if-available" [19]="--skip" [20]="--targets" [21]="--templates" [22]="-T" [23]="--standalones" [24]="-S" [25]="--apps" [26]="-A" [27]="--all" [28]="--log" [29]="--no-refresh" [30]="--force-upgrade" [31]="-f" [32]="--no-cleanup" [33]="--leave-obsolete" [34]="--show-output" [35]="--no-progress")
     test_wrapper 'qubes-vm-update -- -'
 }
 
@@ -153,7 +153,7 @@ function test_wrapper() {
 }
 
 @test "Test 027. qubes-vm-update: qubes-vm-update --something_unknown " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--verbose" [3]="-v" [4]="--quiet" [5]="-q" [6]="--max-concurrency" [7]="-x" [8]="--dry-run" [9]="--signal-no-updates" [10]="--apply-to-sys" [11]="--restart" [12]="-r" [13]="--apply-to-all" [14]="-R" [15]="--no-apply" [16]="--force-update" [17]="--update-if-stale" [18]="--update-if-available" [19]="--skip" [20]="--targets" [21]="--templates" [22]="-T" [23]="--standalones" [24]="-S" [25]="--apps" [26]="-A" [27]="--all" [28]="--log" [29]="--no-refresh" [30]="--force-upgrade" [31]="-f" [32]="--no-cleanup" [33]="--leave-obsolete" [34]="--show-output" [35]="--no-progress")
     test_wrapper 'qubes-vm-update --something_unknown '
 }
 
@@ -163,17 +163,17 @@ function test_wrapper() {
 }
 
 @test "Test 029. qubes-vm-update: qubes-vm-update --something_unknown -" {
-    EXPECTED_COMPREPLY=([0]="--max-concurrency" [1]="-x" [2]="--dry-run" [3]="--signal-no-updates" [4]="--apply-to-sys" [5]="--restart" [6]="-r" [7]="--apply-to-all" [8]="-R" [9]="--no-apply" [10]="--force-update" [11]="--update-if-stale" [12]="--update-if-available" [13]="--skip" [14]="--targets" [15]="--templates" [16]="-T" [17]="--standalones" [18]="-S" [19]="--apps" [20]="-A" [21]="--all" [22]="--log" [23]="--no-refresh" [24]="--force-upgrade" [25]="-f" [26]="--no-cleanup" [27]="--leave-obsolete" [28]="--show-output" [29]="--no-progress" [30]="--verbose" [31]="-v" [32]="--quiet" [33]="-q" [34]="--help" [35]="-h")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--verbose" [3]="-v" [4]="--quiet" [5]="-q" [6]="--max-concurrency" [7]="-x" [8]="--dry-run" [9]="--signal-no-updates" [10]="--apply-to-sys" [11]="--restart" [12]="-r" [13]="--apply-to-all" [14]="-R" [15]="--no-apply" [16]="--force-update" [17]="--update-if-stale" [18]="--update-if-available" [19]="--skip" [20]="--targets" [21]="--templates" [22]="-T" [23]="--standalones" [24]="-S" [25]="--apps" [26]="-A" [27]="--all" [28]="--log" [29]="--no-refresh" [30]="--force-upgrade" [31]="-f" [32]="--no-cleanup" [33]="--leave-obsolete" [34]="--show-output" [35]="--no-progress")
     test_wrapper 'qubes-vm-update --something_unknown -'
 }
 
 @test "Test 030. qubes-vm-update: qubes-vm-update --something_unknown --" {
-    EXPECTED_COMPREPLY=([0]="--max-concurrency" [1]="--dry-run" [2]="--signal-no-updates" [3]="--apply-to-sys" [4]="--restart" [5]="--apply-to-all" [6]="--no-apply" [7]="--force-update" [8]="--update-if-stale" [9]="--update-if-available" [10]="--skip" [11]="--targets" [12]="--templates" [13]="--standalones" [14]="--apps" [15]="--all" [16]="--log" [17]="--no-refresh" [18]="--force-upgrade" [19]="--no-cleanup" [20]="--leave-obsolete" [21]="--show-output" [22]="--no-progress" [23]="--verbose" [24]="--quiet" [25]="--help")
+    EXPECTED_COMPREPLY=([0]="--help" [1]="--verbose" [2]="--quiet" [3]="--max-concurrency" [4]="--dry-run" [5]="--signal-no-updates" [6]="--apply-to-sys" [7]="--restart" [8]="--apply-to-all" [9]="--no-apply" [10]="--force-update" [11]="--update-if-stale" [12]="--update-if-available" [13]="--skip" [14]="--targets" [15]="--templates" [16]="--standalones" [17]="--apps" [18]="--all" [19]="--log" [20]="--no-refresh" [21]="--force-upgrade" [22]="--no-cleanup" [23]="--leave-obsolete" [24]="--show-output" [25]="--no-progress")
     test_wrapper 'qubes-vm-update --something_unknown --'
 }
 
 @test "Test 031. qubes-vm-update: qubes-vm-update --something_unknown -- " {
-    EXPECTED_COMPREPLY=()
+    EXPECTED_COMPREPLY=([0]="--help" [1]="-h" [2]="--verbose" [3]="-v" [4]="--quiet" [5]="-q" [6]="--max-concurrency" [7]="-x" [8]="--dry-run" [9]="--signal-no-updates" [10]="--apply-to-sys" [11]="--restart" [12]="-r" [13]="--apply-to-all" [14]="-R" [15]="--no-apply" [16]="--force-update" [17]="--update-if-stale" [18]="--update-if-available" [19]="--skip" [20]="--targets" [21]="--templates" [22]="-T" [23]="--standalones" [24]="-S" [25]="--apps" [26]="-A" [27]="--all" [28]="--log" [29]="--no-refresh" [30]="--force-upgrade" [31]="-f" [32]="--no-cleanup" [33]="--leave-obsolete" [34]="--show-output" [35]="--no-progress")
     test_wrapper 'qubes-vm-update --something_unknown -- '
 }
 
