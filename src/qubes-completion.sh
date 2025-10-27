@@ -4156,7 +4156,6 @@ function __qubes_dom0_update_run_dnf_completion() {
 
 function _qubes_vm_update() {
 
-    # NOTE: this command does not support --verbose arg
     __init_qubes_completion '--max-concurrency -x --update-if-stale --skip --targets --log' || return 0
 
     if (( QB_alone_args_count > 0 )); then
@@ -4205,9 +4204,13 @@ function _qubes_vm_update() {
             ;;
     esac
 
+    # We do not check for __need_flags, because only flags are
+    # expected, no standalones. So, provide flags in any case
+
     # cSpell:disable-next-line
-    local -r flags='--max-concurrency -x --dry-run --signal-no-updates --apply-to-sys --restart -r --apply-to-all -R --no-apply --force-update --update-if-stale --update-if-available --skip --targets --templates -T --standalones -S --apps -A --all --log --no-refresh --force-upgrade -f --no-cleanup --leave-obsolete --show-output --no-progress'
-    __complete_all_starting_flags_if_needed "${flags}" && return 0
+    local -r flags='--help -h --verbose -v --quiet -q --max-concurrency -x --dry-run --signal-no-updates --apply-to-sys --restart -r --apply-to-all -R --no-apply --force-update --update-if-stale --update-if-available --skip --targets --templates -T --standalones -S --apps -A --all --log --no-refresh --force-upgrade -f --no-cleanup --leave-obsolete --show-output --no-progress'
+
+    __complete_string "${flags}"
 
     return 0;
 }
