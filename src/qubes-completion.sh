@@ -1690,6 +1690,12 @@ function _qvm_ls() {
         --spinner --no-spinner'
     __complete_all_starting_flags_if_needed "${flags}" && return 0
 
+    # NOTE: In man qvm-ls there is a bug - it does not mention possibility
+    # to provide standalone args qube names after command, while --help shows it.
+
+    # So, we provide qube names:
+    __complete_qubes_list 'all'
+
     return 0
 }
 
